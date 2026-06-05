@@ -6,9 +6,19 @@
   margin: 0;
 }
 
+body, html {
+    min-height: -webkit-fill-available;
+    overflow-y: visible;
+    overflow-x: clip;
+}
+
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+
+  display: flex;
+  flex-direction: column;
+  min-width: 330px;
 }
 
 img, picture, video, canvas, svg {
@@ -30,4 +40,43 @@ p {
 
 h1, h2, h3, h4, h5, h6 {
   text-wrap: balance;
+}
+
+#allContent {
+	min-height: calc(100vh - 4rem);
+	overflow-y: visible;
+	position: relative;
+
+	width: 77.5%;
+	margin: 2rem auto;
+	border: 3px solid darkgrey;
+	border-top: none;
+}
+
+#control {
+	background-color: darkgray;
+	height: 4rem;
+
+	display: grid;
+	justify-content: center;
+	align-items: center;
+	padding: 0.5rem 2rem;
+}
+
+#control > nav {
+	display: grid;
+	grid-template-columns: 3rem 1fr;
+	gap: 1rem;
+}
+
+#control > nav > button:last-child {
+	display: grid;
+	grid-template-columns: 2rem 1fr;
+	gap: 0.5rem;
+	justify-content: center;
+	align-items: center;
+}
+
+#control > nav > button > img {
+	height: 2rem;
 }
