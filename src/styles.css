@@ -65,18 +65,122 @@ h1, h2, h3, h4, h5, h6 {
 
 #control > nav {
 	display: grid;
-	grid-template-columns: 3rem 1fr;
+	grid-template-columns: 0.75fr 1fr;
 	gap: 1rem;
 }
 
-#control > nav > button:last-child {
+#control > nav > button {
 	display: grid;
 	grid-template-columns: 2rem 1fr;
 	gap: 0.5rem;
 	justify-content: center;
 	align-items: center;
+	padding-inline-end: 12px;
 }
 
 #control > nav > button > img {
 	height: 2rem;
+}
+
+fieldset {
+	--gap: 9px;
+	position: absolute;
+	top: 5rem;
+	right: -5px;
+	border: none;
+	margin: 0;
+	padding: 0;
+	width: 40px;
+	
+	legend {
+		position: absolute;
+		inset: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0;
+	}
+
+	input {
+		position: absolute;
+		opacity: 0;
+		pointer-events: 0;
+	}
+
+	label {
+		position: relative;
+		display: block;
+		width: 50px;
+		height: 2.25rem;
+		background: var(--bg-color);
+		margin: var(--gap) 0;
+		border-top-left-radius: 2px;
+		border-top-right-radius: 2px;
+		border-bottom-left-radius: 2px;
+		font-size: 1;
+		box-shadow: -2px 1px 3px rgba(0 0 0 / 0.2);
+		cursor: pointer;
+		transform: translate(0, 0) scaleX(1);
+		transform-origin: left center;
+		filter: brightness(90%);
+		transition-property: transform filter;
+		transition-duration: 0.2s;
+		transition-timing-function: cubic-bezier(1, 1, 0.5, 1.3333);
+
+		&:hover {
+			transform: translate(0, 0) scaleX(1.25);
+		}
+
+		&:after {
+			content: "";
+			position: absolute;
+			top: 100%;
+			right: 0;
+			width: 0;
+			height: 0;
+			border-top: 5px solid var(--bg-color);
+			border-right: 5px solid transparent;
+			border-left: 0px solid transparent;
+			border-bottom: 5px solid transparent;
+			filter: brightness(62%);
+			transition-property: border-right filter;
+			transition-duration: 0.2s;
+			transition-timing-function: cubic-bezier(1, 1, 0.5, 1.3333);
+		}
+
+		&:hover:after {
+			border-right: 12px solid transparent;
+		}
+	}
+
+	input:checked + label,
+	input:focus + label {
+		transform: translate(0, 0) scaleX(1.25);
+		filter: brightness(100%);
+
+		&:after {
+			border-right: 12px solid transparent;
+			filter: brightness(50%);
+		}
+	}
+
+	label:nth-of-type(1) {
+		--bg-color: #f3b2af;
+	}
+
+	label:nth-of-type(2) {
+		--bg-color: #b1f4fd;
+	}
+
+	label:nth-of-type(3) {
+		--bg-color: #d5fec5;
+	}
+
+	label:nth-of-type(4) {
+		--bg-color: #feffbe;
+	}
+
+	label:nth-of-type(5) {
+		--bg-color: #f9d7ac;
+	}
 }
