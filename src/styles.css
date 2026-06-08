@@ -184,3 +184,7 @@ fieldset {
 		--bg-color: #f9d7ac;
 	}
 }
+
+.paper-note {
+	font-family: "Caveat", cursive;
+}
