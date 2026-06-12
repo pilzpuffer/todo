@@ -11,6 +11,11 @@ window.addEventListener("load", function() {
         let projectModalClose = document.querySelector("#projectClose");
         let projectModalSubmit = document.querySelector("#projectSubmit");
 
+        let newTaskButton = document.querySelector("#newTask");
+        let taskModal = document.querySelector("#taskOpen");
+        let taskModalClose = document.querySelector("#taskClose");
+        let taskModalSubmit = document.querySelector("#taskSubmit")
+
         let modals = {
                 project: {
                     button: newProjectButton,
@@ -18,16 +23,17 @@ window.addEventListener("load", function() {
                     close:  projectModalClose,
                     submit: projectModalSubmit,
                 },
-                // task: {
-                //     button: newTaskButton,
-                //     type:  taskModal,
-                //     close:  taskModalClose,
-                //     submit: taskModalSubmit,
-                // }
+                task: {
+                    button: newTaskButton,
+                    type:  taskModal,
+                    close:  taskModalClose,
+                    submit: taskModalSubmit,
+                }
         }
 
             Object.keys(modals).forEach(modal => {
                 let currentModal = modals[modal];
+                
                 currentModal.button.addEventListener("click", () => {
                     currentModal.type.showModal();
                 })
