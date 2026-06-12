@@ -10,8 +10,8 @@
     <div id="allContent">
         <div id="control">
             <nav>
-                <button> <img src="./assets/img/plus.svg"> Task </button>
-                <button> <img src="./assets/img/plus.svg"> Project</button>
+                <button id="newTask"> <img src="./assets/img/plus.svg"> Task </button>
+                <button id="newProject"> <img src="./assets/img/plus.svg"> Project</button>
             </nav>
         </div>
 
@@ -21,11 +21,18 @@
             <input type="radio" id="main" name="project" value="main" />
 		    <label for="main">Main</label>
 
-            <input type="radio" id="test" name="project" value="test" />
-		    <label for="test">test</label>
-
         </fieldset>
     </div>
+
+    <dialog id="projectOpen">
+        <div>Do you want to add a new project?</div>
+        <button id="projectClose">Close</button>
+        <button id="projectSubmit">Submit</button>
+    </dialog>
+
+    <dialog id="taskOpen">
+
+    </dialog>
     
 </body>
 </html>
