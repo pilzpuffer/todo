@@ -82,6 +82,11 @@ h1, h2, h3, h4, h5, h6 {
 	height: 2rem;
 }
 
+button[id$="Close"] > img {
+	height: 1rem;
+	transform: rotate(45deg);
+}
+
 fieldset {
 	--gap: 9px;
 	position: absolute;
