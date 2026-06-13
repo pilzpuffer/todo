@@ -1,6 +1,7 @@
 import "./styles.css";
 
 import { projectSetUp } from "./projectCreate.js";
+import { newNote } from "./noteCreate.js";
 
 window.addEventListener("load", function() {
 
@@ -41,6 +42,12 @@ window.addEventListener("load", function() {
                 currentModal.close.addEventListener("click", () => {
                     currentModal.type.close();
                 })
+
+                currentModal.submit.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    newNote(); //submit functionality will need to be set up based on the modal form
+                })
+                
         });
     }
     

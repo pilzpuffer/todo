@@ -27,15 +27,51 @@
     <dialog id="projectOpen">
         <button id="projectClose"><img src="./assets/img/plus.svg"></button>
         <div>Do you want to add a new project?</div>
+
+        <form id="projectInfo"> 
+            <input id="projectSubmit" type="submit" value="Submit" />
+        </form>
         
-        <button id="projectSubmit">Submit</button>
     </dialog>
 
     <dialog id="taskOpen">
         <button id="taskClose"><img src="./assets/img/plus.svg"></button>
         <div>Do you want to add a new task?</div>
-        
-        <button id="taskSubmit">Submit</button>
+
+        <form id="taskInfo">
+            <div>
+                <label for="title">Task title:</label>
+                <input name="title" id="title">
+            </div>
+
+            <div>
+                <label for="description">Task description:</label>
+                <input name="description" id="description">
+            </div>
+
+            <div>
+                <label for="description">Task description:</label>
+                <input name="description" id="description">
+            </div>
+
+            <div>
+                <label for="priority">Priority</label>
+                    <select name="priority" id="priority">
+                            <option>Critical</option>
+                            <option>High</option>
+                            <option>Medium</option>
+                            <option>Low</option>
+                            <option>Non-urgent</option>
+                    </select>
+            </div>
+
+            <div> 
+                <label for="due">Due</label>
+                <input type="datetime-local" name="due" id="due">
+            </div>
+
+            <input id="taskSubmit" type="submit" value="Submit" />
+        </form>
     </dialog>
     
 </body>
