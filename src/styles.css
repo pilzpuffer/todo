@@ -9,6 +9,8 @@
 	--blue: #ccf;
 	--green: #cfc;
 	--yellow: #ffc;
+	--orange: #ffe0c0;
+	--red: #fcc;
 }
 
 *, *::before, *::after {
@@ -119,7 +121,7 @@ ul {
 	font-family: "Caveat";
 	text-decoration: none;
 
-	background-color: var(--yellow);
+	background-color: var(--red);
   color: #000;
   height: 12rem;
   aspect-ratio: 1/1;
@@ -143,7 +145,8 @@ ul .note:nth-child(even){
   position:relative;
   top:5px;
 }
-ul .note:nth-child(3n) {
+ul .note:nth-child(3n),
+ul .note:first-child  {
   transform:rotate(-3deg);
   position:relative;
   top:-5px;
@@ -160,6 +163,18 @@ ul .note:focus{
   transform: scale(1.25);
   position:relative;
   z-index:5;
+}
+
+.pin {
+	background: #c26565;
+	background: radial-gradient(circle,rgba(194, 101, 101, 1) 0%, rgba(250, 0, 0, 1) 100%);
+	aspect-ratio: 1/1;
+	height: 0.8rem;
+	border-radius: 50%;
+	position: absolute;
+	align-self: end;
+	justify-self: center;
+	box-shadow: -2px 1px 3px rgba(0 0 0 / 0.2);
 }
 
 fieldset {
@@ -263,4 +278,9 @@ fieldset {
 	label:nth-of-type(5) {
 		--bg-color: #f9d7ac;
 	}
+}
+
+button[type="submit"] {
+	display: grid;
+	grid-template-columns: 1fr 2fr
 }

@@ -46,6 +46,7 @@ window.addEventListener("load", function() {
                 currentModal.submit.addEventListener("click", (event) => {
                     event.preventDefault();
                     newNote(); //submit functionality will need to be set up based on the modal form
+                    currentModal.type.close();
                 })
                 
         });
