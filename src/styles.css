@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'Caveat';
+    src: url('./assets/fonts/Caveat-Regular.woff2') format('woff2'),
+        url('./assets/fonts/Caveat-Regular.woff') format('woff');
+    font-style: normal;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -86,6 +93,31 @@ button[id$="Close"] > img {
 	height: 1rem;
 	transform: rotate(45deg);
 }
+
+ul,li {
+  list-style: none;
+}
+
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.note {
+	font-family: "Caveat";
+	text-decoration: none;
+
+  color: #000;
+  background: #ffc; 
+	/* make up separate classes for background colors */
+  display: block;
+  height: 10em;
+  width: 10em;
+  padding: 1em;
+	margin: 1em;
+}
+
 
 fieldset {
 	--gap: 9px;
@@ -188,8 +220,4 @@ fieldset {
 	label:nth-of-type(5) {
 		--bg-color: #f9d7ac;
 	}
-}
-
-.paper-note {
-	font-family: "Caveat", cursive;
 }
