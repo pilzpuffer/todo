@@ -5,6 +5,12 @@
     font-style: normal;
 }
 
+:root {
+	--blue: #ccf;
+	--green: #cfc;
+	--yellow: #ffc;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -94,6 +100,11 @@ button[id$="Close"] > img {
 	transform: rotate(45deg);
 }
 
+#allTasks {
+	padding-inline-start: 0px;
+	padding: 1rem 2rem;
+}
+
 ul,li {
   list-style: none;
 }
@@ -108,16 +119,48 @@ ul {
 	font-family: "Caveat";
 	text-decoration: none;
 
+	background-color: var(--yellow);
   color: #000;
-  background: #ffc; 
-	/* make up separate classes for background colors */
-  display: block;
-  height: 10em;
-  width: 10em;
+  height: 12rem;
+  aspect-ratio: 1/1;
   padding: 1em;
 	margin: 1em;
+	box-shadow: 3px 5px 10px rgba(33,33,33,.7);
+	transition: transform .15s linear;
 }
 
+.note h2 {
+	font-weight: bold;
+	font-size: 2rem;
+}
+
+.note p {
+	font-size: 1.3rem;
+}
+
+ul .note:nth-child(even){
+  transform:rotate(4deg);
+  position:relative;
+  top:5px;
+}
+ul .note:nth-child(3n) {
+  transform:rotate(-3deg);
+  position:relative;
+  top:-5px;
+}
+ul .note:nth-child(5n) {
+  transform:rotate(5deg);
+  position:relative;
+  top:-10px;
+}
+
+ul .note:hover,
+ul .note:focus{
+  box-shadow:10px 10px 7px rgba(0,0,0,.7);
+  transform: scale(1.25);
+  position:relative;
+  z-index:5;
+}
 
 fieldset {
 	--gap: 9px;
