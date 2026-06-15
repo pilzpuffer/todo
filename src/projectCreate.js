@@ -1,5 +1,5 @@
 
-let projectSetUp = function() {
+let newProject = function() {
     let allProjects = document.querySelectorAll("input[name='project']");
     let projectList = [];
 
@@ -7,4 +7,4 @@ let projectSetUp = function() {
     console.log(projectList);
 }
 
-export { projectSetUp };
+export { newProject };
