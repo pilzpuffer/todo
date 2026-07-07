@@ -6,11 +6,11 @@
 }
 
 :root {
-	--blue: #ccf;
-	--green: #cfc;
-	--yellow: #ffc;
-	--orange: #ffe0c0;
-	--red: #fcc;
+	--minimal: #ccf;
+	--low: #cfc;
+	--medium: #ffc;
+	--high: #ffe0c0;
+	--critical: #fcc;
 }
 
 *, *::before, *::after {

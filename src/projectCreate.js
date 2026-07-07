@@ -5,6 +5,8 @@ let newProject = function() {
 
     allProjects.forEach(project => projectList.push(project.id));
     console.log(projectList);
+
+    console.log('yay, new project!!!')
 }
 
 export { newProject };

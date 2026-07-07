@@ -1,10 +1,12 @@
 import "./styles.css";
 
-import { projectSetUp } from "./projectCreate.js";
 import { newNote } from "./noteCreate.js";
 import { newProject } from "./projectCreate.js";
 
 window.addEventListener("load", function() {
+    let noteData = document.querySelector("#taskInfo");
+    let projectData = document.querySelector("#projectInfo");
+
     let newProjectButton = document.querySelector("#newProject");
     let projectModal = document.querySelector("#projectOpen"); 
     let projectModalClose = document.querySelector("#projectClose");
@@ -38,6 +40,11 @@ window.addEventListener("load", function() {
         modals[currentModalSubmit].new()
     }
 
+    let clearForms = function() {
+        noteData.reset();
+        projectData.reset();
+    }
+
     let handleModalClick = function() {
 
             Object.keys(modals).forEach(modal => {
@@ -52,7 +59,11 @@ window.addEventListener("load", function() {
                 })
 
                 currentModal.submit.addEventListener("click", (event) => {
-                    handleSubmit(event);
+                    event.preventDefault();
+
+                    let modalType = currentModal.button.id.replace("new", "").toLowerCase();
+                    modals[modalType].new();
+                    clearForms();
                     currentModal.type.close();
                 })
                 
