@@ -45,6 +45,23 @@ window.addEventListener("load", function() {
         projectData.reset();
     }
 
+    let validateProjectForm = function() {
+        let title = document.forms["projectInfo"]["title"].value;
+
+        let allProjects = document.querySelectorAll("input[name='project']");
+        let projectList = [];
+
+        allProjects.forEach(project => projectList.push(project.id.toLowerCase()));
+        console.log(projectList);
+
+        if (projectList.includes(title.toLowerCase())) {
+            alert("Please create a new project.");
+            return false
+        } else {
+            return true
+        }
+    }
+
     let handleModalClick = function() {
 
             Object.keys(modals).forEach(modal => {
@@ -60,11 +77,13 @@ window.addEventListener("load", function() {
 
                 currentModal.submit.addEventListener("click", (event) => {
                     event.preventDefault();
-
                     let modalType = currentModal.button.id.replace("new", "").toLowerCase();
-                    modals[modalType].new();
-                    clearForms();
-                    currentModal.type.close();
+                    
+                    if ( validateProjectForm() || modalType === "task") {
+                        modals[modalType].new();
+                        clearForms();
+                        currentModal.type.close();
+                    }
                 })
                 
         });
