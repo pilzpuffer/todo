@@ -1,24 +1,24 @@
 let newNote = function() {
     console.log('yay! this is a new note!')
     
-    let noteData = document.querySelector("#taskInfo");
+    let noteForm = document.querySelector("#taskInfo");
 
-    const data = new FormData(noteData);
+    const noteData = new FormData(noteForm);
 
     let noteHolder = document.querySelector("#allTasks");
     
     let note = document.createElement("li");
     note.classList.add("note");
-    note.style.backgroundColor = `var(--${data.get("priority").toLowerCase()})`;
+    note.style.backgroundColor = `var(--${noteData.get("priority").toLowerCase()})`;
 
     let pin = document.createElement("div");
     pin.classList.add("pin");
 
     let noteTitle = document.createElement("h2");
-    noteTitle.textContent = data.get("title");
+    noteTitle.textContent = noteData.get("title");
 
     let noteDescription = document.createElement("p");
-    noteDescription.textContent = data.get("description");
+    noteDescription.textContent = noteData.get("description");
 
     note.appendChild(pin);
     note.appendChild(noteTitle);

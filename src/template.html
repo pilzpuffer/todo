@@ -18,11 +18,11 @@
         <ul id="allTasks">
         </ul>
 
-        <fieldset>
+        <fieldset id="allProjects">
             <legend>Select a project:</legend>
 
             <input type="radio" id="main" name="project" value="main" />
-		    <label for="main">Main</label>
+		    <label class="medium" for="main">Main</label>
 
         </fieldset>
     </div>
@@ -32,6 +32,22 @@
         <div>Do you want to add a new project?</div>
 
         <form id="projectInfo"> 
+            <div>
+                <label for="title">Task title:</label>
+                <input name="title" id="title">
+            </div>
+
+            <div>
+                <label for="priority">Priority</label>
+                    <select name="priority" id="priority">
+                            <option>Critical</option>
+                            <option>High</option>
+                            <option selected>Medium</option>
+                            <option>Low</option>
+                            <option>Minimal</option>
+                    </select>
+            </div>
+
             <input id="projectSubmit" type="submit" value="Submit" />
         </form>
         
@@ -60,7 +76,6 @@
                             <option selected>Medium</option>
                             <option>Low</option>
                             <option>Minimal</option>
-                            <!-- blue - non urgent, green - low, yellow - normal, orange - high, red - critical -->
                     </select>
             </div>
 
