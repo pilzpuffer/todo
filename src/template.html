@@ -20,10 +20,6 @@
 
         <fieldset id="allProjects">
             <legend>Select a project:</legend>
-
-            <input type="radio" id="main" name="project" value="main" />
-		    <label class="medium" for="main">Main</label>
-
         </fieldset>
     </div>
 
@@ -34,7 +30,8 @@
         <form id="projectInfo"> 
             <div>
                 <label for="title">Task title:</label>
-                <input name="title" id="title">
+                <input name="title" id="title" maxlength="10">
+                <!-- maybe this value would need to be increased/decreased -->
             </div>
 
             <div>

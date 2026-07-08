@@ -15,7 +15,9 @@ window.addEventListener("load", function() {
     let newTaskButton = document.querySelector("#newTask");
     let taskModal = document.querySelector("#taskOpen");
     let taskModalClose = document.querySelector("#taskClose");
-    let taskModalSubmit = document.querySelector("#taskSubmit")
+    let taskModalSubmit = document.querySelector("#taskSubmit");
+
+    let projectHolder = document.querySelector("#allProjects");
 
     let modals = {
             project: {
@@ -34,6 +36,21 @@ window.addEventListener("load", function() {
             }
     }
 
+    let allProjects = {  }
+
+    let getCurrentProject = function(event) {
+        let activeProject = event.target.id; 
+        allProjects[event.target.id] = true;
+        Object.keys(allProjects).forEach(key => {
+            if (key !== activeProject) {
+                allProjects[key] = false;
+            }   
+        });
+        console.log(allProjects);
+    }
+
+    projectHolder.addEventListener("click", getCurrentProject)
+
     let handleSubmit = function(event) {
         event.preventDefault();
         let currentModalSubmit = event.target.id.replace("Submit", "");
@@ -48,47 +65,53 @@ window.addEventListener("load", function() {
     let validateProjectForm = function() {
         let title = document.forms["projectInfo"]["title"].value;
 
-        let allProjects = document.querySelectorAll("input[name='project']");
+        let allProjectInputs = document.querySelectorAll("input[name='project']");
         let projectList = [];
 
-        allProjects.forEach(project => projectList.push(project.id.toLowerCase()));
-        console.log(projectList);
+        allProjectInputs.forEach(project => projectList.push(project.id.toLowerCase()));
 
         if (projectList.includes(title.toLowerCase()) || title.length === 0) {
-            alert("Please create a new project.");
+            alert("Please create a unique project.");
             return false
         } else {
             return true
         }
     }
 
+    let simulateMainCreationClick = function() {
+        document.forms['projectInfo'].elements['title'].value = 'Main';
+        document.forms['projectInfo'].elements['priority'].value = 'Medium';
+        modals.project.submit.click()   
+    }
+
     let handleModalClick = function() {
 
-            Object.keys(modals).forEach(modal => {
-                let currentModal = modals[modal];
-                
-                currentModal.button.addEventListener("click", () => {
-                    currentModal.type.showModal();
-                })
+        Object.keys(modals).forEach(modal => {
+            let currentModal = modals[modal];
+            
+            currentModal.button.addEventListener("click", () => {
+                currentModal.type.showModal();
+            })
 
-                currentModal.close.addEventListener("click", () => {
+            currentModal.close.addEventListener("click", () => {
+                currentModal.type.close();
+            })
+
+            currentModal.submit.addEventListener("click", (event) => {
+                event.preventDefault();
+                let modalType = currentModal.button.id.replace("new", "").toLowerCase();
+                
+                if ( (modalType === "project" && validateProjectForm()) || modalType === "task" ) {
+                    modals[modalType].new();
+                    clearForms();
                     currentModal.type.close();
-                })
-
-                currentModal.submit.addEventListener("click", (event) => {
-                    event.preventDefault();
-                    let modalType = currentModal.button.id.replace("new", "").toLowerCase();
-                    
-                    if ( (modalType === "project" && validateProjectForm()) || modalType === "task") {
-                        modals[modalType].new();
-                        clearForms();
-                        currentModal.type.close();
-                    }
-                })
-                
+                }
+            })
+            
         });
     }
     
     handleModalClick();
+    simulateMainCreationClick();
 
 })
