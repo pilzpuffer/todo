@@ -54,7 +54,7 @@ window.addEventListener("load", function() {
         allProjects.forEach(project => projectList.push(project.id.toLowerCase()));
         console.log(projectList);
 
-        if (projectList.includes(title.toLowerCase())) {
+        if (projectList.includes(title.toLowerCase()) || title.length === 0) {
             alert("Please create a new project.");
             return false
         } else {
@@ -79,7 +79,7 @@ window.addEventListener("load", function() {
                     event.preventDefault();
                     let modalType = currentModal.button.id.replace("new", "").toLowerCase();
                     
-                    if ( validateProjectForm() || modalType === "task") {
+                    if ( (modalType === "project" && validateProjectForm()) || modalType === "task") {
                         modals[modalType].new();
                         clearForms();
                         currentModal.type.close();
