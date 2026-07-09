@@ -1,8 +1,8 @@
-import { allProjects } from "./trackActiveProject.js";
+import { allProjects } from "./trackProjectState.js";
 
 let getKeyByValue = function(object, value) {
-        return Object.keys(object).find(key => object[key] === value);
-    }
+    return Object.keys(object).find(key => object[key] === value);
+}
 
 let newNote = function() {   
     let noteForm = document.querySelector("#taskInfo");
