@@ -1,6 +1,10 @@
-let newNote = function() {
-    console.log('yay! this is a new note!')
-    
+import { allProjects } from "./trackActiveProject.js";
+
+let getKeyByValue = function(object, value) {
+        return Object.keys(object).find(key => object[key] === value);
+    }
+
+let newNote = function() {   
     let noteForm = document.querySelector("#taskInfo");
 
     const noteData = new FormData(noteForm);
@@ -9,6 +13,8 @@ let newNote = function() {
     
     let note = document.createElement("li");
     note.classList.add("note");
+    //to find currently open project and assign task that is being created to it:
+    note.classList.add(`${getKeyByValue(allProjects, true)}`); 
     note.style.backgroundColor = `var(--${noteData.get("priority").toLowerCase()})`;
 
     let pin = document.createElement("div");
