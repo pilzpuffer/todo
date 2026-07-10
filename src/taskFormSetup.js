@@ -1,6 +1,30 @@
-let stackMaker = function() {
+function getRandomNumber(max) {
+  return Math.floor(Math.random() * max);
+}
 
-    let allColors = ["critical", "high", "medium", "low", "minimal"]
+let assignRandomUniqueArrayValue = function(array, compareArray) {
+    let select;
+    let filteredArray;
+
+    if (compareArray.length === 0) {
+        select = array[getRandomNumber(array.length)];
+        compareArray.push(select);
+    } else {
+        filteredArray = array.filter(function (x) {
+            return compareArray.indexOf(x) < 0;
+        });
+
+        select = filteredArray[getRandomNumber(filteredArray.length)];
+        compareArray.push(select);
+    }
+
+    console.log(select, array, compareArray, filteredArray);
+    return select
+}
+
+let stackMaker = function() {
+    let allColors = ["critical", "high", "medium", "low", "minimal"];
+    let presentColors = [];
 
     let noteHolder = document.querySelector("#allTasks");
     let noteWrapper = document.createElement("li");
@@ -11,7 +35,7 @@ let stackMaker = function() {
         let note = document.createElement("div");
         note.classList.add("new");
         note.id = i;
-        note.classList
+        note.style.backgroundColor = `var(--${assignRandomUniqueArrayValue(allColors, presentColors)})`;
 
         noteWrapper.appendChild(note);  
     }
