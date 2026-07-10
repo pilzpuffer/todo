@@ -20,17 +20,22 @@ let newNote = function() {
     let pin = document.createElement("div");
     pin.classList.add("pin");
 
+    let noteContent = document.createElement("div");
+    noteContent.classList.add("noteContent");
+
     let noteTitle = document.createElement("h2");
     noteTitle.textContent = noteData.get("title");
 
     let noteDescription = document.createElement("p");
     noteDescription.textContent = noteData.get("description");
 
-    note.appendChild(pin);
-    note.appendChild(noteTitle);
-    note.appendChild(noteDescription);
+    noteContent.appendChild(noteTitle);
+    noteContent.appendChild(noteDescription);
 
-    noteHolder.appendChild(note);
+    note.appendChild(pin);
+    note.appendChild(noteContent);
+
+    noteHolder.appendChild(note);   
 }
 
 export { newNote };

@@ -3,6 +3,8 @@ import "./styles.css";
 import { newNote } from "./noteCreate.js";
 import { newProject } from "./projectCreate.js";
 
+import { stackMaker } from "./taskFormSetup.js";
+
 window.addEventListener("load", function() {
     let noteData = document.querySelector("#taskInfo");
     let projectData = document.querySelector("#projectInfo");
@@ -34,6 +36,18 @@ window.addEventListener("load", function() {
             }
     }
 
+    //test
+    let buttonControl = document.querySelector("#control");
+    let paperStackButton = document.createElement("button");
+    paperStackButton.textContent = "test stack!";
+
+    paperStackButton.addEventListener("click", stackMaker);
+
+    buttonControl.appendChild(paperStackButton);
+
+
+    //test
+
     let handleSubmit = function(event) {
         event.preventDefault();
         let currentModalSubmit = event.target.id.replace("Submit", "");
@@ -55,6 +69,20 @@ window.addEventListener("load", function() {
 
         if (projectList.includes(title.toLowerCase()) || title.length === 0) {
             alert("Please create a unique project.");
+            return false
+        } else {
+            return true
+        }
+    }
+
+    let validateTaskForm = function() {
+        let titleLength = document.forms["taskInfo"]["title"].value.length;
+        let descriptionLength = document.forms["taskInfo"]["description"].value.length;
+
+        console.log(titleLength, descriptionLength);
+
+        if (descriptionLength === 0 && titleLength === 0) {
+            alert("Please write something on this new note.");
             return false
         } else {
             return true
@@ -86,12 +114,14 @@ window.addEventListener("load", function() {
             currentModal.submit.addEventListener("click", (event) => {
                 event.preventDefault();
                 let modalType = currentModal.button.id.replace("new", "").toLowerCase();
+
                 
-                if ( (modalType === "project" && validateProjectForm()) || modalType === "task" ) {
+                if ( (modalType === "project" && validateProjectForm()) || (modalType === "task" && validateTaskForm()) ) {
                     modals[modalType].new();
                     clearForms();
                     currentModal.type.close();
                 }
+
             })
             
         });

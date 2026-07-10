@@ -11,6 +11,8 @@
 	--medium: #ffc;
 	--high: #ffe0c0;
 	--critical: #fcc;
+
+	--note-size: 12rem;
 }
 
 *, *::before, *::after {
@@ -46,7 +48,8 @@ input, button, textarea, select {
 }
 
 p, h1, h2, h3, h4, h5, h6 {
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
+	line-height: 1.2;
 }
 
 p {
@@ -117,18 +120,33 @@ ul {
   justify-content: center;
 }
 
-.note {
+.note,
+.new {
 	font-family: "Caveat";
 	text-decoration: none;
-
-	background-color: var(--red);
+	position: relative;
+	border: 1px solid #bbb;
+	box-shadow: 1px 1px 1px rgba(0,0,0,0.25);
   color: #000;
-  height: 12rem;
-  aspect-ratio: 1/1;
+  height: var(--note-size);
+  width: var(--note-size);
   padding: 1em;
 	margin: 1em;
-	box-shadow: 3px 5px 10px rgba(33,33,33,.7);
 	transition: transform .15s linear;
+}
+
+.new {
+	position: absolute;
+}
+
+.noteContent {
+	display: grid;
+	grid-template-rows: auto 1fr;
+	z-index: 6;
+}
+
+.wrapper {
+	position: relative;
 }
 
 .note h2 {
@@ -140,26 +158,26 @@ ul {
 	font-size: 1.3rem;
 }
 
-ul .note:nth-child(even){
+ul li:nth-child(even){
   transform:rotate(4deg);
   position:relative;
   top:5px;
 }
-ul .note:nth-child(3n),
-ul .note:first-child  {
+ul li:nth-child(3n),
+ul li:first-child  {
   transform:rotate(-3deg);
   position:relative;
   top:-5px;
 }
-ul .note:nth-child(5n) {
+ul li:nth-child(5n) {
   transform:rotate(5deg);
   position:relative;
   top:-10px;
 }
 
-ul .note:hover,
-ul .note:focus{
-  box-shadow:10px 10px 7px rgba(0,0,0,.7);
+ul li:hover,
+ul li:focus{
+  box-shadow: 3px 5px 10px rgba(33,33,33,.7);
   transform: scale(1.25);
   position:relative;
   z-index:5;
@@ -175,6 +193,7 @@ ul .note:focus{
 	align-self: end;
 	justify-self: center;
 	box-shadow: -2px 1px 3px rgba(0 0 0 / 0.2);
+	z-index: 6;
 }
 
 fieldset {
