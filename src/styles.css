@@ -138,6 +138,8 @@ ul {
 .new {
 	position: absolute;
 	box-shadow: none;
+	display: flex;
+	flex-direction: column;
 }
 
 .noteContent {
@@ -148,16 +150,18 @@ ul {
 
 .wrapper {
 	position: relative;
-	height: 12rem;
-	width: 12rem;
+	height: var(--note-size);
+	width: var(--note-size);
 }
 
-.note h2 {
+.note h2,
+.form textarea#title {
 	font-weight: bold;
 	font-size: 2rem;
 }
 
-.note p {
+.note p,
+.form textarea#description  {
 	font-size: 1.3rem;
 }
 
@@ -242,6 +246,34 @@ ul li:focus{
 	z-index: 6;
 	top: 0rem;
 	left: 0rem;
+}
+
+.form {
+	position: absolute;
+	z-index: 6;
+	height: calc(var(--note-size)*0.8);
+	width: calc(var(--note-size)*0.8);
+}
+
+.form textarea {
+	border: none;
+	background: none;
+	caret-color: gray;
+	width: 100%;
+	field-sizing: content;
+	line-height: 1.2;
+}
+
+.form textarea::-webkit-resizer {
+  display: none;
+}
+.form textarea::-moz-resizer {
+  display: none;
+}
+
+.form textarea:active,
+.form textarea:focus {
+	outline: none;
 }
 
 fieldset {
