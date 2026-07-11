@@ -10,9 +10,7 @@ let assignRandomUniqueArrayValue = function(array, compareArray) {
         select = array[getRandomNumber(array.length)];
         compareArray.push(select);
     } else {
-        filteredArray = array.filter(function (x) {
-            return compareArray.indexOf(x) < 0;
-        });
+        filteredArray = array.filter( (x) => !compareArray.includes(x) );
 
         select = filteredArray[getRandomNumber(filteredArray.length)];
         compareArray.push(select);
@@ -33,9 +31,26 @@ let stackMaker = function() {
     for (let i = 0; i < 5; i++) {
         console.log('this is running')
         let note = document.createElement("div");
-        note.classList.add("new");
-        note.id = i;
-        note.style.backgroundColor = `var(--${assignRandomUniqueArrayValue(allColors, presentColors)})`;
+        let noteColor = `${assignRandomUniqueArrayValue(allColors, presentColors)}`
+        note.classList.add("new", noteColor);
+        note.style.backgroundColor = `var(--${noteColor})`;
+        if (note.classList.contains('medium')) {
+            note.id = "selected";
+        }
+        note.addEventListener("click", function(event) {
+            console.log('I was clicked!', `I'm ${note.classList[1]}`);
+            if (event.target.id !== 'selected') {
+                let allNewNoteColors = document.querySelectorAll(".new");
+                allNewNoteColors.forEach((note) => {
+                if (note.id === 'selected') {
+                    note.removeAttribute('id');
+                }
+
+                event.target.id = 'selected';
+                })
+            }
+            
+        })
 
         noteWrapper.appendChild(note);  
     }

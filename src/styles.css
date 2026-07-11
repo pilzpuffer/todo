@@ -137,6 +137,7 @@ ul {
 
 .new {
 	position: absolute;
+	box-shadow: none;
 }
 
 .noteContent {
@@ -147,6 +148,8 @@ ul {
 
 .wrapper {
 	position: relative;
+	height: 12rem;
+	width: 12rem;
 }
 
 .note h2 {
@@ -183,6 +186,11 @@ ul li:focus{
   z-index:5;
 }
 
+.wrapper:hover,
+.wrapper:focus {
+	box-shadow: none;
+}
+
 .pin {
 	background: #c26565;
 	background: radial-gradient(circle,rgba(194, 101, 101, 1) 0%, rgba(250, 0, 0, 1) 100%);
@@ -194,6 +202,46 @@ ul li:focus{
 	justify-self: center;
 	box-shadow: -2px 1px 3px rgba(0 0 0 / 0.2);
 	z-index: 6;
+}
+
+.new.minimal {
+	transform: rotate(5deg);
+	top: 1rem;
+	left: 2rem;
+}
+
+.new.low {
+	transform: rotate(3deg);
+	top: -1.5rem;
+	left: 1rem;
+}
+
+.new.medium {
+	transform: rotate(-2deg);
+	top: 2rem;
+	left: 2rem;
+}
+
+.new.high {
+	transform: rotate(-7deg);
+	top: 1rem;
+	left: -1rem;
+}
+
+.new.critical {
+	transform: rotate(7deg);
+	top: -0.5rem;
+	left: -1rem;
+}
+
+.wrapper:hover #selected {
+	transform: translate(0, 0);
+}
+
+#selected {
+	z-index: 6;
+	top: 0rem;
+	left: 0rem;
 }
 
 fieldset {
