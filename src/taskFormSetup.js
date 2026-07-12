@@ -2,6 +2,17 @@ function getRandomNumber(max) {
   return Math.floor(Math.random() * max);
 }
 
+// small letters:
+// 9 symbols per title, 14 symbols per text
+// big letters:
+// 7 symbols per title, 10 symbols per text
+//total lines fitting in:
+// 0 lines of title = 7 of text
+// 1 line of title = 5 of text
+// 2 lines of title = 3 text
+// 3 lines of title = 2 of text
+// 4 lines of title = 0 text
+
 let createEditableInput = function(setName, setID, setPlaceholder, appendTo) {
     let newInput = document.createElement('textarea');
     newInput.setAttribute('name', `${setName}`);
@@ -9,6 +20,26 @@ let createEditableInput = function(setName, setID, setPlaceholder, appendTo) {
     newInput.setAttribute('placeholder', `${setPlaceholder}`);
     newInput.setAttribute('contenteditable', 'true');
     appendTo.appendChild(newInput);
+}
+
+let limitLines = function(lineLimit, limitingContainer, limitedChild) {
+    let containerLimits = limitingContainer.getBoundingClientRect();
+    let containerStyles = window.getComputedStyle(limitingContainer);
+    let containerHeight = parseInt(containerLimits.height);
+    
+    let childHeight = limitedChild.scrollHeight;
+    let childStyles = window.getComputedStyle(limitedChild);
+    let childFontSize = childStyles.getPropertyValue("font-size");
+    let childLineHeight = parseInt(childStyles.getPropertyValue("line-height"));
+    console.log(containerHeight);
+    console.log(limitedChild.scrollHeight);
+    console.log(childLineHeight);
+    console.log(Math.floor(containerHeight/childLineHeight));
+    console.log(Math.floor(containerHeight/childLineHeight) > lineLimit);
+
+    if (childHeight > containerHeight && Math.floor(childHeight/childLineHeight) > lineLimit){
+        limitedChild.value = limitedChild.value.slice(0, -1);
+    }
 }
 
 let assignRandomUniqueArrayValue = function(array, compareArray) {
@@ -32,40 +63,6 @@ let assignRandomUniqueArrayValue = function(array, compareArray) {
 let stackMaker = function() {
     let allColors = ["critical", "high", "medium", "low", "minimal"];
     let presentColors = [];
-
-    //  <dialog id="taskOpen">
-    //     <button id="taskClose"><img src="./assets/img/plus.svg"></button>
-
-    //     <form id="taskInfo">
-    //         <div>
-    //             <label for="title">Task title:</label>
-    //             <input name="title" id="title" maxlength="28">
-    //         </div>
-
-    //         <div>
-    //             <label for="description">Task description:</label>
-    //             <input name="description" id="description">
-    //         </div>
-
-    //         <div>
-    //             <label for="priority">Priority</label>
-    //                 <select name="priority" id="priority">
-    //                         <option>Critical</option>
-    //                         <option>High</option>
-    //                         <option selected>Medium</option>
-    //                         <option>Low</option>
-    //                         <option>Minimal</option>
-    //                 </select>
-    //         </div>
-
-    //         <div> 
-    //             <label for="due">Due</label>
-    //             <input type="datetime-local" name="due" id="due">
-    //         </div>
-
-    //         <button id="taskSubmit" type="submit" value="Pin"><img src="./assets/img/pin.svg">Pin</button>
-    //     </form>
-    // </dialog>
 
     let taskForm = document.createElement("form");
     taskForm.classList.add('form');
@@ -100,6 +97,11 @@ let stackMaker = function() {
                 event.target.appendChild(taskForm);
             }
             
+        })
+
+        note.addEventListener('input', function(event) {
+            let titleId = document.querySelector("#title")
+            limitLines(4, taskForm, titleId)
         })
 
         noteWrapper.appendChild(note);  

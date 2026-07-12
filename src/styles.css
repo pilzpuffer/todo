@@ -251,6 +251,7 @@ ul li:focus{
 .form {
 	position: absolute;
 	z-index: 6;
+
 	height: calc(var(--note-size)*0.8);
 	width: calc(var(--note-size)*0.8);
 }
@@ -258,6 +259,7 @@ ul li:focus{
 .form textarea {
 	border: none;
 	background: none;
+	padding: 0.1rem 0;
 	caret-color: gray;
 	width: 100%;
 	field-sizing: content;
