@@ -22,23 +22,46 @@ let createEditableInput = function(setName, setID, setPlaceholder, appendTo) {
     appendTo.appendChild(newInput);
 }
 
-let limitLines = function(lineLimit, limitingContainer, limitedChild) {
+let limitLines = function(lineLimit1, lineLimit2, limitingContainer, limitedChild1, limitedChild2) {
     let containerLimits = limitingContainer.getBoundingClientRect();
     let containerStyles = window.getComputedStyle(limitingContainer);
     let containerHeight = parseInt(containerLimits.height);
-    
-    let childHeight = limitedChild.scrollHeight;
-    let childStyles = window.getComputedStyle(limitedChild);
-    let childFontSize = childStyles.getPropertyValue("font-size");
-    let childLineHeight = parseInt(childStyles.getPropertyValue("line-height"));
-    console.log(containerHeight);
-    console.log(limitedChild.scrollHeight);
-    console.log(childLineHeight);
-    console.log(Math.floor(containerHeight/childLineHeight));
-    console.log(Math.floor(containerHeight/childLineHeight) > lineLimit);
 
-    if (childHeight > containerHeight && Math.floor(childHeight/childLineHeight) > lineLimit){
-        limitedChild.value = limitedChild.value.slice(0, -1);
+    let managedChildren = {
+        first: {
+            status: true,
+            height: limitedChild1.scrollHeight,
+            style: window.getComputedStyle(limitedChild1),
+            fontSize(){
+                return this.style.getPropertyValue("font-size")
+            }, 
+            lineHeight(){
+                return parseInt(this.style.getPropertyValue("line-height"))
+            },
+            
+        },
+        second: {
+            status: true,
+            height: limitedChild2.scrollHeight,
+            style: window.getComputedStyle(limitedChild2),
+            fontSize(){
+                return this.second.style.getPropertyValue("font-size")
+            }, 
+            lineHeight(){
+                return parseInt(this.second.style.getPropertyValue("line-height"))
+            },   
+        }
+    }
+
+    console.log(`this is first child height ${managedChildren.first.height} and its lineheight is ${managedChildren.first.lineHeight()}, and the linelimit is ${lineLimit1}. ${Math.floor(managedChildren.first.height/managedChildren.first.lineHeight()) === lineLimit1}`)
+
+    if (Math.floor(managedChildren.first.height/managedChildren.first.lineHeight()) === lineLimit1) {
+        limitedChild2.classList.add("removed");
+        managedChildren.second.status === false
+    }
+
+    if (managedChildren.first.height > containerHeight && Math.floor(managedChildren.first.height/managedChildren.first.lineHeight()) > lineLimit1){
+        limitedChild1.value = limitedChild1.value.slice(0, -1);
     }
 }
 
@@ -101,7 +124,8 @@ let stackMaker = function() {
 
         note.addEventListener('input', function(event) {
             let titleId = document.querySelector("#title")
-            limitLines(4, taskForm, titleId)
+            let descriptionID = document.querySelector("#description")
+            limitLines(4, 7, taskForm, titleId, descriptionID);
         })
 
         noteWrapper.appendChild(note);  

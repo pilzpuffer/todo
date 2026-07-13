@@ -14,12 +14,8 @@ let getCurrentProject = function(event) {
 
     let allNotes = document.querySelectorAll(".note");
     allNotes.forEach((note) => {
-        if (activeProject !== "main") {
-            if (!note.classList.contains(`${activeProject}`)) {
-                note.classList.add("removed");
-            } else {
-                note.classList.remove("removed");
-            }
+        if (activeProject !== "main" && !note.classList.contains(`${activeProject}`)) {
+            note.classList.add("removed");
         } else {
             note.classList.remove("removed");
         }
