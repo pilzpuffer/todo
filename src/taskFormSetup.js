@@ -2,17 +2,6 @@ function getRandomNumber(max) {
   return Math.floor(Math.random() * max);
 }
 
-// small letters:
-// 9 symbols per title, 14 symbols per text
-// big letters:
-// 7 symbols per title, 10 symbols per text
-//total lines fitting in:
-// 0 lines of title = 7 of text
-// 1 line of title = 5 of text
-// 2 lines of title = 3 text
-// 3 lines of title = 2 of text
-// 4 lines of title = 0 text
-
 let createEditableInput = function(setName, setID, setPlaceholder, appendTo) {
     let newInput = document.createElement('textarea');
     newInput.setAttribute('name', `${setName}`);
@@ -22,48 +11,82 @@ let createEditableInput = function(setName, setID, setPlaceholder, appendTo) {
     appendTo.appendChild(newInput);
 }
 
-let limitLines = function(lineLimit1, lineLimit2, limitingContainer, limitedChild1, limitedChild2) {
+function createManagedLimitedChildren(firstChild, secondChild) {
+    return {
+        first: createChild(firstChild),
+        second: createChild(secondChild)
+    }
+}
+
+function createChild(name) {
+    return {
+        status: true,
+        height: name.scrollHeight,
+        style: window.getComputedStyle(name),
+        fontSize(){
+            return this.style.getPropertyValue("font-size")
+        }, 
+        lineHeight(){
+            return parseInt(this.style.getPropertyValue("line-height"))
+        },
+    }
+}
+
+let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limitedChild1, limitedChild2) {
     let containerLimits = limitingContainer.getBoundingClientRect();
     let containerStyles = window.getComputedStyle(limitingContainer);
     let containerHeight = parseInt(containerLimits.height);
 
-    let managedChildren = {
-        first: {
-            status: true,
-            height: limitedChild1.scrollHeight,
-            style: window.getComputedStyle(limitedChild1),
-            fontSize(){
-                return this.style.getPropertyValue("font-size")
-            }, 
-            lineHeight(){
-                return parseInt(this.style.getPropertyValue("line-height"))
-            },
-            
-        },
-        second: {
-            status: true,
-            height: limitedChild2.scrollHeight,
-            style: window.getComputedStyle(limitedChild2),
-            fontSize(){
-                return this.second.style.getPropertyValue("font-size")
-            }, 
-            lineHeight(){
-                return parseInt(this.second.style.getPropertyValue("line-height"))
-            },   
-        }
-    }
+    console.log(event)
 
-    console.log(`this is first child height ${managedChildren.first.height} and its lineheight is ${managedChildren.first.lineHeight()}, and the linelimit is ${lineLimit1}. ${Math.floor(managedChildren.first.height/managedChildren.first.lineHeight()) === lineLimit1}`)
+    let managedChildren = createManagedLimitedChildren(limitedChild1, limitedChild2)
 
-    if (Math.floor(managedChildren.first.height/managedChildren.first.lineHeight()) === lineLimit1) {
+    let checkHeight = Math.floor(managedChildren.first.height/managedChildren.first.lineHeight());
+    let childBigger = managedChildren.first.height > containerHeight;
+
+    // if (managedChildren.limitReached === true && event.inputType !== 'deleteContentBackward') {
+        //checked this more carefully - need to create a separate keydown listener, as input even happens specifically when input is already DONE, can't cancel/preventDefault it
+    // } 
+
+    if (checkHeight === lineLimit1) {
         limitedChild2.classList.add("removed");
-        managedChildren.second.status === false
+        managedChildren.second.status = false
     }
 
-    if (managedChildren.first.height > containerHeight && Math.floor(managedChildren.first.height/managedChildren.first.lineHeight()) > lineLimit1){
+    if (childBigger && checkHeight > lineLimit1){
+        managedChildren.limitReached = true;
         limitedChild1.value = limitedChild1.value.slice(0, -1);
-    }
+        //i need to find some kind of solution for pasted text as well, as this only works for typing scenarios
+    }  
 }
+
+// let managedChildren;
+
+// let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, childManager, limitedChild1, limitedChild2) {
+//     let containerLimits = limitingContainer.getBoundingClientRect();
+//     let containerStyles = window.getComputedStyle(limitingContainer);
+//     let containerHeight = parseInt(containerLimits.height);
+
+//     console.log(event)
+
+//     let checkHeight = Math.floor(childManager.first.height/managedChildren.first.lineHeight());
+//     let childBigger = childManager.first.height > containerHeight;
+
+//     if (childManager.limitReached === true && event.code !== 'Backspace') {
+//         event.preventDefault()
+//     } 
+
+//     if (checkHeight === lineLimit1) {
+//         limitedChild2.classList.add("removed");
+//         childManager.second.status === false
+//     }
+
+//     if (childBigger && checkHeight > lineLimit1){
+//         childManager.limitReached = true;
+//         limitedChild1.value = limitedChild1.value.slice(0, -1); 
+//         //i need to find some kind of solution for pasted text as well, as this only works for typing scenarios
+//     }  
+// }
 
 let assignRandomUniqueArrayValue = function(array, compareArray) {
     let select;
@@ -106,7 +129,6 @@ let stackMaker = function() {
         note.style.backgroundColor = `var(--${noteColor})`;
 
         note.addEventListener("click", function(event) {
-            console.log(event);
             if (event.target.classList[0] === 'new' && event.target.id !== 'selected') {
                 let allNewNoteColors = document.querySelectorAll(".new");
                 allNewNoteColors.forEach((note) => {
@@ -123,9 +145,10 @@ let stackMaker = function() {
         })
 
         note.addEventListener('input', function(event) {
-            let titleId = document.querySelector("#title")
-            let descriptionID = document.querySelector("#description")
-            limitLines(4, 7, taskForm, titleId, descriptionID);
+            // managedChildren = createManagedLimitedChildren(titleId, descriptionId)
+            let titleId = document.querySelector('#title');
+            let descriptionId = document.querySelector('#description');
+            limitLines(event, 4, 7, taskForm, titleId, descriptionId);
         })
 
         noteWrapper.appendChild(note);  
