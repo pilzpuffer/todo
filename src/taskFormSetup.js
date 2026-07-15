@@ -36,6 +36,12 @@ let childStatus = {
     second: true
 }
 
+// 0 lines of title = 6 of text - handled
+// 1 line of title = 4 of text
+// 2 lines of title = 3 text
+// 3 lines of title = 1 of text
+// 4 lines of title = 0 text - handled
+
 let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limitedChild1, limitedChild2) {
     let containerLimits = limitingContainer.getBoundingClientRect();
     let containerStyles = window.getComputedStyle(limitingContainer);
@@ -43,19 +49,25 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
 
     let managedChildren = createManagedLimitedChildren(limitedChild1, limitedChild2)
 
-    let firstCheckHeight = Math.floor(managedChildren.first.height/managedChildren.first.lineHeight());
+    let firstLinesAmount = Math.floor(managedChildren.first.height/managedChildren.first.lineHeight());
     let firstChildBigger = managedChildren.first.height > containerHeight;
 
-    let secondCheckHeight = Math.floor(managedChildren.second.height/managedChildren.second.lineHeight());
+    let secondLinesAmount = Math.floor(managedChildren.second.height/managedChildren.second.lineHeight());
     let secondChildBigger = managedChildren.second.height > (containerHeight - 20);
-
-    // if (managedChildren.limitReached === true && event.inputType !== 'deleteContentBackward') {
-        //checked this more carefully - won't work, as input even happens specifically when input is already DONE, can't cancel/preventDefault it
-    // } 
-
-console.log(firstCheckHeight, firstCheckHeight < lineLimit1, childStatus.second)
     
-    if (firstCheckHeight < lineLimit1 && childStatus.second === false) {
+    let totalHeight = managedChildren.first.height + managedChildren.second.height;
+    let checkTotalLines = Math.floor(firstLinesAmount + secondLinesAmount)
+   
+    let totalLimit;
+
+    //not limited by a specific block size, I just think that this amount looks the best visually:
+    if (firstLinesAmount === 3 || firstLinesAmount === 4) {
+        totalLimit = 4
+    } else {
+        totalLimit = 5
+    }
+
+    if (!childStatus.second && firstLinesAmount < lineLimit1) {
         if (childStatus.limitReached) {
             childStatus.limitReached = false
         }
@@ -63,12 +75,13 @@ console.log(firstCheckHeight, firstCheckHeight < lineLimit1, childStatus.second)
         childStatus.second = true
     }
 
-    if (firstCheckHeight === lineLimit1) {
+    if (childStatus.second && limitedChild2.value.length === 0 && firstLinesAmount === lineLimit1) {
+        console.log('text hidden')
         limitedChild2.classList.add("removed");
         childStatus.second = false
     }
 
-    if (secondCheckHeight < lineLimit2-1 && childStatus.first === false) {
+    if (!childStatus.first && secondLinesAmount < lineLimit2-1) {
         if (childStatus.limitReached) {
             childStatus.limitReached = false
         }
@@ -76,50 +89,25 @@ console.log(firstCheckHeight, firstCheckHeight < lineLimit1, childStatus.second)
         childStatus.first = true
     }
 
-    if (secondCheckHeight === lineLimit2-1) {
+    if (childStatus.first && limitedChild1.value.length === 0 && secondLinesAmount === lineLimit2-1) {
+        console.log('title hidden')
         limitedChild1.classList.add("removed");
         childStatus.first = false
     }
 
-    if (firstChildBigger && firstCheckHeight > lineLimit1){
+    if (firstChildBigger && firstLinesAmount > lineLimit1){
         childStatus.limitReached = true;
         limitedChild1.value = limitedChild1.value.slice(0, -1);
-        //i need to find some kind of solution for pasted text as well, as this only works for typing scenarios
-    }  
-
-    if (secondChildBigger && secondCheckHeight > lineLimit2) {
+        //i need to find some kind of solution for pasted text as well, as this only works for typing scenarios - will need to handle that through paste event listener
+    } else if (secondChildBigger && secondLinesAmount > lineLimit2) {
+        childStatus.limitReached = true;
+        limitedChild2.value = limitedChild2.value.slice(0, -1);
+    } else if (limitedChild1.value.length > 0 && limitedChild2.value.length > 0 && checkTotalLines > totalLimit) {
+        console.log('children total limit ran')
         childStatus.limitReached = true;
         limitedChild2.value = limitedChild2.value.slice(0, -1);
     }
 }
-
-// let managedChildren;
-
-// let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, childManager, limitedChild1, limitedChild2) {
-//     let containerLimits = limitingContainer.getBoundingClientRect();
-//     let containerStyles = window.getComputedStyle(limitingContainer);
-//     let containerHeight = parseInt(containerLimits.height);
-
-//     console.log(event)
-
-//     let checkHeight = Math.floor(childManager.first.height/managedChildren.first.lineHeight());
-//     let childBigger = childManager.first.height > containerHeight;
-
-//     if (childManager.limitReached === true && event.code !== 'Backspace') {
-//         event.preventDefault()
-//     } 
-
-//     if (checkHeight === lineLimit1) {
-//         limitedChild2.classList.add("removed");
-//         childManager.second.status === false
-//     }
-
-//     if (childBigger && checkHeight > lineLimit1){
-//         childManager.limitReached = true;
-//         limitedChild1.value = limitedChild1.value.slice(0, -1); 
-//         //i need to find some kind of solution for pasted text as well, as this only works for typing scenarios
-//     }  
-// }
 
 let assignRandomUniqueArrayValue = function(array, compareArray) {
     let select;

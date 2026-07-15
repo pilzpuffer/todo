@@ -265,6 +265,11 @@ ul li:focus{
 	field-sizing: content;
 	line-height: 1.2;
 	resize: none;
+	align-self: start;
+}
+
+#title:not(.removed) + #description {
+	margin-top: -0.7rem;
 }
 
 .form textarea::-webkit-resizer {
