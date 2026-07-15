@@ -2,12 +2,11 @@ function getRandomNumber(max) {
   return Math.floor(Math.random() * max);
 }
 
-let createEditableInput = function(setName, setID, setPlaceholder, appendTo) {
+let createInput = function(setName, setID, setPlaceholder, appendTo) {
     let newInput = document.createElement('textarea');
     newInput.setAttribute('name', `${setName}`);
     newInput.setAttribute('id', `${setID}`);
     newInput.setAttribute('placeholder', `${setPlaceholder}`);
-    newInput.setAttribute('contenteditable', 'true');
     appendTo.appendChild(newInput);
 }
 
@@ -20,7 +19,6 @@ function createManagedLimitedChildren(firstChild, secondChild) {
 
 function createChild(name) {
     return {
-        status: true,
         height: name.scrollHeight,
         style: window.getComputedStyle(name),
         fontSize(){
@@ -32,32 +30,67 @@ function createChild(name) {
     }
 }
 
+let childStatus = {
+    limitReached: false,
+    first: true,
+    second: true
+}
+
 let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limitedChild1, limitedChild2) {
     let containerLimits = limitingContainer.getBoundingClientRect();
     let containerStyles = window.getComputedStyle(limitingContainer);
     let containerHeight = parseInt(containerLimits.height);
 
-    console.log(event)
-
     let managedChildren = createManagedLimitedChildren(limitedChild1, limitedChild2)
 
-    let checkHeight = Math.floor(managedChildren.first.height/managedChildren.first.lineHeight());
-    let childBigger = managedChildren.first.height > containerHeight;
+    let firstCheckHeight = Math.floor(managedChildren.first.height/managedChildren.first.lineHeight());
+    let firstChildBigger = managedChildren.first.height > containerHeight;
+
+    let secondCheckHeight = Math.floor(managedChildren.second.height/managedChildren.second.lineHeight());
+    let secondChildBigger = managedChildren.second.height > (containerHeight - 20);
 
     // if (managedChildren.limitReached === true && event.inputType !== 'deleteContentBackward') {
-        //checked this more carefully - need to create a separate keydown listener, as input even happens specifically when input is already DONE, can't cancel/preventDefault it
+        //checked this more carefully - won't work, as input even happens specifically when input is already DONE, can't cancel/preventDefault it
     // } 
 
-    if (checkHeight === lineLimit1) {
-        limitedChild2.classList.add("removed");
-        managedChildren.second.status = false
+console.log(firstCheckHeight, firstCheckHeight < lineLimit1, childStatus.second)
+    
+    if (firstCheckHeight < lineLimit1 && childStatus.second === false) {
+        if (childStatus.limitReached) {
+            childStatus.limitReached = false
+        }
+        limitedChild2.classList.remove("removed");
+        childStatus.second = true
     }
 
-    if (childBigger && checkHeight > lineLimit1){
-        managedChildren.limitReached = true;
+    if (firstCheckHeight === lineLimit1) {
+        limitedChild2.classList.add("removed");
+        childStatus.second = false
+    }
+
+    if (secondCheckHeight < lineLimit2-1 && childStatus.first === false) {
+        if (childStatus.limitReached) {
+            childStatus.limitReached = false
+        }
+        limitedChild1.classList.remove("removed");
+        childStatus.first = true
+    }
+
+    if (secondCheckHeight === lineLimit2-1) {
+        limitedChild1.classList.add("removed");
+        childStatus.first = false
+    }
+
+    if (firstChildBigger && firstCheckHeight > lineLimit1){
+        childStatus.limitReached = true;
         limitedChild1.value = limitedChild1.value.slice(0, -1);
         //i need to find some kind of solution for pasted text as well, as this only works for typing scenarios
     }  
+
+    if (secondChildBigger && secondCheckHeight > lineLimit2) {
+        childStatus.limitReached = true;
+        limitedChild2.value = limitedChild2.value.slice(0, -1);
+    }
 }
 
 // let managedChildren;
@@ -115,8 +148,8 @@ let stackMaker = function() {
     taskForm.id = 'taskInfo';
     taskForm.setAttribute('method', 'post');
 
-    createEditableInput('title', 'title', 'Add a title', taskForm);
-    createEditableInput('description', 'description', 'Add a description', taskForm);
+    createInput('title', 'title', 'Add a title', taskForm);
+    createInput('description', 'description', 'Add a description', taskForm);
 
     let noteHolder = document.querySelector("#allTasks");
     let noteWrapper = document.createElement("li");
@@ -144,11 +177,19 @@ let stackMaker = function() {
             
         })
 
+        note.addEventListener("keydown", function(event) {
+            if (childStatus.limitReached && event.key !== 'Backspace') {
+                event.preventDefault()
+            }  else if (childStatus.limitReached && event.key === 'Backspace') [
+                childStatus.limitReached = false
+            ]
+            
+        })
+
         note.addEventListener('input', function(event) {
-            // managedChildren = createManagedLimitedChildren(titleId, descriptionId)
             let titleId = document.querySelector('#title');
             let descriptionId = document.querySelector('#description');
-            limitLines(event, 4, 7, taskForm, titleId, descriptionId);
+            limitLines(event, 4, 6, taskForm, titleId, descriptionId);
         })
 
         noteWrapper.appendChild(note);  

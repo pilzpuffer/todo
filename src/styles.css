@@ -264,6 +264,7 @@ ul li:focus{
 	width: 100%;
 	field-sizing: content;
 	line-height: 1.2;
+	resize: none;
 }
 
 .form textarea::-webkit-resizer {
