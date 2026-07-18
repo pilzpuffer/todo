@@ -10,7 +10,7 @@
     <div id="allContent">
         <div id="control">
             <nav>
-                <button id="newTask"> <img src="./assets/img/plus.svg"> Task </button>
+                <!-- <button id="newTask"> <img src="./assets/img/plus.svg"> Task </button> -->
                 <button id="newProject"> <img src="./assets/img/plus.svg"> Project</button>
         </div>
 
@@ -48,40 +48,6 @@
             <input id="projectSubmit" type="submit" value="Submit" />
         </form>
         
-    </dialog>
-
-    <dialog id="taskOpen">
-        <button id="taskClose"><img src="./assets/img/plus.svg"></button>
-
-        <form id="taskInfo">
-            <div>
-                <label for="title">Task title:</label>
-                <input name="title" id="title" maxlength="28">
-            </div>
-
-            <div>
-                <label for="description">Task description:</label>
-                <input name="description" id="description">
-            </div>
-
-            <div>
-                <label for="priority">Priority</label>
-                    <select name="priority" id="priority">
-                            <option>Critical</option>
-                            <option>High</option>
-                            <option selected>Medium</option>
-                            <option>Low</option>
-                            <option>Minimal</option>
-                    </select>
-            </div>
-
-            <div> 
-                <label for="due">Due</label>
-                <input type="datetime-local" name="due" id="due">
-            </div>
-
-            <button id="taskSubmit" type="submit" value="Pin"><img src="./assets/img/pin.svg">Pin</button>
-        </form>
     </dialog>
     
 </body>

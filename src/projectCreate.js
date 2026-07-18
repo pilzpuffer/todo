@@ -20,8 +20,6 @@ let newProject = function() {
 
     projectHolder.appendChild(newInput);
     projectHolder.appendChild(newLabel);
-
-    console.log('yay, new project!!!')
 }
 
 export { newProject };

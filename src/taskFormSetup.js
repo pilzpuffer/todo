@@ -1,3 +1,7 @@
+import pinImgSource from './assets/img/pin.svg';
+
+import { newNote } from "./noteCreate.js";
+
 function getRandomNumber(max) {
   return Math.floor(Math.random() * max);
 }
@@ -36,11 +40,17 @@ let childStatus = {
     second: true
 }
 
-// 0 lines of title = 6 of text - handled
-// 1 line of title = 4 of text
-// 2 lines of title = 3 text
-// 3 lines of title = 1 of text
-// 4 lines of title = 0 text - handled
+let validateTaskForm = function() {
+    let titleLength = document.forms["taskInfo"]["title"].value.length;
+    let descriptionLength = document.forms["taskInfo"]["description"].value.length;
+
+    if (descriptionLength === 0 && titleLength === 0) {
+        alert("Please write something on this new note.");
+        return false
+    } else {
+        return true
+    }
+}
 
 let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limitedChild1, limitedChild2) {
     let containerLimits = limitingContainer.getBoundingClientRect();
@@ -123,11 +133,10 @@ let assignRandomUniqueArrayValue = function(array, compareArray) {
         compareArray.push(select);
     }
 
-    console.log(select, array, compareArray, filteredArray);
     return select
 }
 
-let stackMaker = function() {
+let createTaskForm = function() {
     let allColors = ["critical", "high", "medium", "low", "minimal"];
     let presentColors = [];
 
@@ -142,7 +151,24 @@ let stackMaker = function() {
     let noteHolder = document.querySelector("#allTasks");
     let noteWrapper = document.createElement("li");
     noteWrapper.classList.add("wrapper");
-    
+
+    let pinButton = document.createElement("button");
+    pinButton.id = 'submit';
+    let pinImage = document.createElement("img")
+    pinImage.src = pinImgSource;
+    pinButton.appendChild(pinImage)
+    pinButton.setAttribute('type', 'submit');
+    pinButton.setAttribute('data-tooltip', 'Click to pin a new note');
+
+    pinButton.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        if (validateTaskForm()) {
+            newNote();
+            taskForm.reset();
+        }
+    })
+
     for (let i = 0; i < 5; i++) {
         let note = document.createElement("div");
         let noteColor = `${assignRandomUniqueArrayValue(allColors, presentColors)}`
@@ -160,7 +186,8 @@ let stackMaker = function() {
                 }
                 })
                 event.target.id = 'selected';
-                event.target.appendChild(taskForm);
+                event.target.appendChild(pinButton);
+                event.target.appendChild(taskForm);    
             }
             
         })
@@ -174,13 +201,15 @@ let stackMaker = function() {
             
         })
 
+        //need to add an event listener for pasting to manage the amount of present text
+
         note.addEventListener('input', function(event) {
             let titleId = document.querySelector('#title');
             let descriptionId = document.querySelector('#description');
             limitLines(event, 4, 6, taskForm, titleId, descriptionId);
         })
 
-        noteWrapper.appendChild(note);  
+        noteWrapper.appendChild(note); 
     }
 
     noteHolder.appendChild(noteWrapper);
@@ -188,4 +217,4 @@ let stackMaker = function() {
     mediumNote.click();
 }
 
-export { stackMaker };
+export { createTaskForm };

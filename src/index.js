@@ -1,9 +1,8 @@
 import "./styles.css";
 
-import { newNote } from "./noteCreate.js";
 import { newProject } from "./projectCreate.js";
 
-import { stackMaker } from "./taskFormSetup.js";
+import { createTaskForm } from "./taskFormSetup.js";
 
 window.addEventListener("load", function() {
     let noteData = document.querySelector("#taskInfo");
@@ -14,11 +13,6 @@ window.addEventListener("load", function() {
     let projectModalClose = document.querySelector("#projectClose");
     let projectModalSubmit = document.querySelector("#projectSubmit");
 
-    let newTaskButton = document.querySelector("#newTask");
-    let taskModal = document.querySelector("#taskOpen");
-    let taskModalClose = document.querySelector("#taskClose");
-    let taskModalSubmit = document.querySelector("#taskSubmit");
-
     let modals = {
             project: {
                 button: newProjectButton,
@@ -27,26 +21,9 @@ window.addEventListener("load", function() {
                 submit: projectModalSubmit,
                 new: newProject
             },
-            task: {
-                button: newTaskButton,
-                type:  taskModal,
-                close:  taskModalClose,
-                submit: taskModalSubmit,
-                new: newNote
-            }
     }
 
-    //test
-    let buttonControl = document.querySelector("#control");
-    let paperStackButton = document.createElement("button");
-    paperStackButton.textContent = "test stack!";
-
-    paperStackButton.addEventListener("click", stackMaker);
-
-    buttonControl.appendChild(paperStackButton);
-
-
-    //test
+    createTaskForm();
 
     let handleSubmit = function(event) {
         event.preventDefault();
@@ -55,7 +32,6 @@ window.addEventListener("load", function() {
     }
 
     let clearForms = function() {
-        noteData.reset();
         projectData.reset();
     }
 
@@ -69,20 +45,6 @@ window.addEventListener("load", function() {
 
         if (projectList.includes(title.toLowerCase()) || title.length === 0) {
             alert("Please create a unique project.");
-            return false
-        } else {
-            return true
-        }
-    }
-
-    let validateTaskForm = function() {
-        let titleLength = document.forms["taskInfo"]["title"].value.length;
-        let descriptionLength = document.forms["taskInfo"]["description"].value.length;
-
-        console.log(titleLength, descriptionLength);
-
-        if (descriptionLength === 0 && titleLength === 0) {
-            alert("Please write something on this new note.");
             return false
         } else {
             return true

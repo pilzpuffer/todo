@@ -10,12 +10,13 @@ let newNote = function() {
     const noteData = new FormData(noteForm);
 
     let noteHolder = document.querySelector("#allTasks");
+    let getSelectedColor = document.querySelector("#selected").getAttribute('style');
     
     let note = document.createElement("li");
     note.classList.add("note");
     //to find currently open project and assign task that is being created to it:
     note.classList.add(`${getKeyByValue(allProjects, true)}`); 
-    note.style.backgroundColor = `var(--${noteData.get("priority").toLowerCase()})`;
+    note.setAttribute("style", getSelectedColor);
 
     let pin = document.createElement("div");
     pin.classList.add("pin");

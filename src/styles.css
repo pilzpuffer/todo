@@ -284,6 +284,43 @@ ul li:focus{
 	outline: none;
 }
 
+#submit {
+	position: absolute;
+	width: 2rem;
+	height: 2rem;
+	border: none;
+	background: none;
+	z-index: 7;
+	top: -3%;
+	left: 40%
+}
+
+#submit img {
+	width: 2rem;
+	height: 2rem;
+	transform: rotate(15deg);
+}
+
+#submit:hover img {
+	transform: rotate(0deg);
+}
+
+[data-tooltip]::before {
+	position: absolute;
+	width: 10rem;
+	top: 10%;
+	content: attr(data-tooltip);
+	opacity: 0;
+}
+
+[data-tooltip]:hover::before {
+	opacity: 1;
+}
+
+[data-tooltip]:not([data-tooltip-persistent])::before {
+	pointer-events: none;
+}
+
 fieldset {
 	--gap: 9px;
 	position: absolute;
@@ -385,11 +422,6 @@ fieldset {
 	label.critical {
 		--bg-color: var(--critical);
 	}
-}
-
-button[type="submit"] {
-	display: grid;
-	grid-template-columns: 1fr 2fr
 }
 
 .removed {
