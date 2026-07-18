@@ -65,8 +65,8 @@ h1, h2, h3, h4, h5, h6 {
 	overflow-y: visible;
 	position: relative;
 
-	width: 77.5%;
-	margin: 2rem auto;
+	width: 85%;
+	margin: 1.5rem auto;
 	border: 3px solid darkgrey;
 	border-top: none;
 }
@@ -107,7 +107,7 @@ button[id$="Close"] > img {
 
 #allTasks {
 	padding-inline-start: 0px;
-	padding: 2rem;
+	padding: 1.5rem 1rem;
 }
 
 ul,li {
@@ -118,6 +118,7 @@ ul {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+	row-gap: 1.5rem;
 }
 
 .note,
@@ -309,7 +310,7 @@ ul li:focus{
 [data-tooltip]::before {
 	position: absolute;
 	width: 6rem;
-	padding: 0 0 2rem 1rem;
+	padding: 0 0 2rem 0.5rem;
 	content: attr(data-tooltip);
 	text-align: center;
 	opacity: 0;
@@ -319,6 +320,7 @@ ul li:focus{
 
 .pin[data-tooltip]::before {
 	margin-top: -1rem;
+	padding: 0 0 2rem 1rem;
 }
 
 [data-tooltip]:hover::before {
@@ -332,7 +334,7 @@ ul li:focus{
 fieldset {
 	--gap: 9px;
 	position: absolute;
-	top: 5rem;
+	top: 3rem;
 	right: -5px;
 	border: none;
 	margin: 0;
@@ -357,17 +359,22 @@ fieldset {
 	label {
 		position: relative;
 		display: block;
-		width: 50px;
-		height: 2.25rem;
+		width: 5rem;
+		height: 2.5rem;
 		background: var(--bg-color);
 		margin: var(--gap) 0;
 		border-top-left-radius: 2px;
 		border-top-right-radius: 2px;
 		border-bottom-left-radius: 2px;
-		font-size: 1;
+		font-size: 1.3rem;
+		font-family: "Caveat";
+		font-weight: bold;
+		display: flex;
+		align-items: center;
+		padding-left: 0.25rem;
 		box-shadow: -2px 1px 3px rgba(0 0 0 / 0.2);
 		cursor: pointer;
-		transform: translate(0, 0) scaleX(1);
+		transform: translate(0, 0) scaleX(1.03);
 		transform-origin: left center;
 		filter: brightness(90%);
 		transition-property: transform filter;
@@ -375,7 +382,7 @@ fieldset {
 		transition-timing-function: cubic-bezier(1, 1, 0.5, 1.3333);
 
 		&:hover {
-			transform: translate(0, 0) scaleX(1.25);
+			transform: translate(0, 0) scaleX(1.1);
 		}
 
 		&:after {
@@ -383,7 +390,7 @@ fieldset {
 			position: absolute;
 			top: 100%;
 			right: 0;
-			width: 0;
+			width: 0rem;
 			height: 0;
 			border-top: 5px solid var(--bg-color);
 			border-right: 5px solid transparent;
@@ -396,7 +403,7 @@ fieldset {
 		}
 
 		&:hover:after {
-			border-right: 12px solid transparent;
+			border-right: 10px solid transparent;
 		}
 	}
 
@@ -406,7 +413,7 @@ fieldset {
 		filter: brightness(100%);
 
 		&:after {
-			border-right: 12px solid transparent;
+			border-right: 19px solid transparent;
 			filter: brightness(50%);
 		}
 	}
