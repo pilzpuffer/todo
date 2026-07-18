@@ -20,6 +20,7 @@ let newNote = function() {
 
     let pin = document.createElement("div");
     pin.classList.add("pin");
+    pin.setAttribute('data-tooltip', 'Click to unpin this note');
 
     let noteContent = document.createElement("div");
     noteContent.classList.add("noteContent");

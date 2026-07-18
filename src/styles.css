@@ -73,7 +73,7 @@ h1, h2, h3, h4, h5, h6 {
 
 #control {
 	background-color: darkgray;
-	height: 4rem;
+	height: 2rem;
 
 	display: grid;
 	justify-content: center;
@@ -107,7 +107,7 @@ button[id$="Close"] > img {
 
 #allTasks {
 	padding-inline-start: 0px;
-	padding: 1rem 2rem;
+	padding: 2rem;
 }
 
 ul,li {
@@ -149,7 +149,8 @@ ul {
 }
 
 .wrapper {
-	position: relative;
+	padding: 0 10% 0;
+	margin-right: 10%;
 	height: var(--note-size);
 	width: var(--note-size);
 }
@@ -307,10 +308,17 @@ ul li:focus{
 
 [data-tooltip]::before {
 	position: absolute;
-	width: 10rem;
-	top: 10%;
+	width: 6rem;
+	padding: 0 0 2rem 1rem;
 	content: attr(data-tooltip);
+	text-align: center;
 	opacity: 0;
+	line-height: 0.8;
+	margin-top: -0.5rem;
+}
+
+.pin[data-tooltip]::before {
+	margin-top: -1rem;
 }
 
 [data-tooltip]:hover::before {
