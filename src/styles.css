@@ -81,30 +81,6 @@ h1, h2, h3, h4, h5, h6 {
 	padding: 0.5rem 2rem;
 }
 
-#control > nav {
-	display: grid;
-	grid-template-columns: 0.75fr 1fr;
-	gap: 1rem;
-}
-
-#control > nav > button {
-	display: grid;
-	grid-template-columns: 2rem 1fr;
-	gap: 0.5rem;
-	justify-content: center;
-	align-items: center;
-	padding-inline-end: 12px;
-}
-
-#control > nav > button > img {
-	height: 2rem;
-}
-
-button[id$="Close"] > img {
-	height: 1rem;
-	transform: rotate(45deg);
-}
-
 #allTasks {
 	padding-inline-start: 0px;
 	padding: 1.5rem 1rem;
@@ -122,7 +98,7 @@ ul {
 }
 
 .note,
-.new {
+.newNote {
 	font-family: "Caveat";
 	text-decoration: none;
 	position: relative;
@@ -136,17 +112,21 @@ ul {
 	transition: transform .15s linear;
 }
 
-.new {
-	position: absolute;
+.newNote, .newProject {
+	position: absolute !important;
 	box-shadow: none;
-	display: flex;
-	flex-direction: column;
 }
 
 .noteContent {
 	display: grid;
 	grid-template-rows: auto 1fr;
 	z-index: 6;
+}
+
+.projectWrapper {
+	position: relative;
+	height: 2rem;
+	width: 6.5rem;
 }
 
 .wrapper {
@@ -210,44 +190,85 @@ ul li:focus{
 	z-index: 6;
 }
 
-.new.minimal {
+.newNote.minimal {
 	transform: rotate(5deg);
 	top: 1rem;
 	left: 2rem;
 }
 
-.new.low {
+.newNote.low {
 	transform: rotate(3deg);
 	top: -1.5rem;
 	left: 1rem;
 }
 
-.new.medium {
+.newNote.medium {
 	transform: rotate(-2deg);
 	top: 2rem;
 	left: 2rem;
 }
 
-.new.high {
+.newNote.high {
 	transform: rotate(-7deg);
 	top: 1rem;
 	left: -1rem;
 }
 
-.new.critical {
+.newNote.critical {
 	transform: rotate(7deg);
 	top: -0.5rem;
 	left: -1rem;
 }
 
-.wrapper:hover #selected {
+.newNote:hover {
+	transform: translate(0, 0);
+	transition-duration: 0.2s;
+	transition-timing-function: cubic-bezier(1, 1, 0.5, 1.3333);
+}
+
+.wrapper:hover #selectedNote, #selectedProject {
 	transform: translate(0, 0);
 }
 
-#selected {
+#selectedNote, #selectedProject {
 	z-index: 6;
 	top: 0rem;
 	left: 0rem;
+}
+
+#selectedProject form {
+	height: 2rem;
+	width: 6.5rem;
+}
+
+.newProject.minimal {
+	transform: rotate(5deg);
+	top: 1rem;
+	left: 2rem;
+}
+
+.newProject.low {
+	transform: rotate(3deg);
+	top: -1.5rem;
+	left: 1rem;
+}
+
+.newProject.medium {
+	transform: rotate(-2deg);
+	top: 2rem;
+	left: 2rem;
+}
+
+.newProject.high {
+	transform: rotate(-7deg);
+	top: 1rem;
+	left: -1rem;
+}
+
+.newProject.critical {
+	transform: rotate(7deg);
+	top: -0.5rem;
+	left: -1rem;
 }
 
 .form {
@@ -258,7 +279,7 @@ ul li:focus{
 	width: calc(var(--note-size)*0.8);
 }
 
-.form textarea {
+.form textarea, textarea#projectTitle {
 	border: none;
 	background: none;
 	padding: 0.1rem 0;
@@ -274,15 +295,16 @@ ul li:focus{
 	margin-top: -0.7rem;
 }
 
-.form textarea::-webkit-resizer {
-  display: none;
-}
-.form textarea::-moz-resizer {
+.form textarea::-webkit-resizer, 
+.form textarea::-moz-resizer,
+textarea#projectTitle::-webkit-resizer  {
   display: none;
 }
 
 .form textarea:active,
-.form textarea:focus {
+.form textarea:focus,
+textarea#projectTitle:active,
+textarea#projectTitle:focus {
 	outline: none;
 }
 
@@ -335,7 +357,7 @@ fieldset {
 	--gap: 9px;
 	position: absolute;
 	top: 3rem;
-	right: -5px;
+	right: -1.35rem;
 	border: none;
 	margin: 0;
 	padding: 0;
@@ -356,27 +378,25 @@ fieldset {
 		pointer-events: 0;
 	}
 
-	label {
+	label, .newProject {
 		position: relative;
 		display: block;
-		width: 5rem;
-		height: 2.5rem;
+		width: 6.5rem;
+		height: 2rem;
 		background: var(--bg-color);
 		margin: var(--gap) 0;
-		border-top-left-radius: 2px;
 		border-top-right-radius: 2px;
-		border-bottom-left-radius: 2px;
+		border: 1px solid #bbb;
 		font-size: 1.3rem;
 		font-family: "Caveat";
 		font-weight: bold;
 		display: flex;
 		align-items: center;
 		padding-left: 0.25rem;
-		box-shadow: -2px 1px 3px rgba(0 0 0 / 0.2);
+		box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.25);
 		cursor: pointer;
 		transform: translate(0, 0) scaleX(1.03);
 		transform-origin: left center;
-		filter: brightness(90%);
 		transition-property: transform filter;
 		transition-duration: 0.2s;
 		transition-timing-function: cubic-bezier(1, 1, 0.5, 1.3333);
@@ -385,7 +405,7 @@ fieldset {
 			transform: translate(0, 0) scaleX(1.1);
 		}
 
-		&:after {
+		&:not(.newProject):after {
 			content: "";
 			position: absolute;
 			top: 100%;
@@ -402,8 +422,8 @@ fieldset {
 			transition-timing-function: cubic-bezier(1, 1, 0.5, 1.3333);
 		}
 
-		&:hover:after {
-			border-right: 10px solid transparent;
+		&:not(.newProject):hover:after {
+			border-right: 11px solid transparent;
 		}
 	}
 
@@ -412,8 +432,8 @@ fieldset {
 		transform: translate(0, 0) scaleX(1.25);
 		filter: brightness(100%);
 
-		&:after {
-			border-right: 19px solid transparent;
+		&:not(.newProject):after {
+			border-right: 20px solid transparent;
 			filter: brightness(50%);
 		}
 	}

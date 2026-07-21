@@ -8,10 +8,7 @@
 </head>
 <body>
     <div id="allContent">
-        <div id="control">
-            <nav>
-                <button id="newProject"> <img src="./assets/img/plus.svg"> Project</button>
-        </div>
+        <div id="control"></div>
 
         </nav>
         <ul id="allTasks">
@@ -21,33 +18,6 @@
             <legend>Select a project:</legend>
         </fieldset>
     </div>
-
-    <dialog id="projectOpen">
-        <button id="projectClose"><img src="./assets/img/plus.svg"></button>
-        <div>Do you want to add a new project?</div>
-
-        <form id="projectInfo"> 
-            <div>
-                <label for="title">Task title:</label>
-                <input name="title" id="title" maxlength="20">
-                <!-- maybe this value would need to be increased/decreased -->
-            </div>
-
-            <div>
-                <label for="priority">Priority</label>
-                    <select name="priority" id="priority">
-                            <option>Critical</option>
-                            <option>High</option>
-                            <option selected>Medium</option>
-                            <option>Low</option>
-                            <option>Minimal</option>
-                    </select>
-            </div>
-
-            <input id="projectSubmit" type="submit" value="Submit" />
-        </form>
-        
-    </dialog>
     
 </body>
 </html>

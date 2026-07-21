@@ -6,8 +6,8 @@ function getRandomNumber(max) {
   return Math.floor(Math.random() * max);
 }
 
-let createInput = function(setName, setID, setPlaceholder, appendTo) {
-    let newInput = document.createElement('textarea');
+let createInput = function(inputType, setName, setID, setPlaceholder, appendTo) {
+    let newInput = document.createElement(`${inputType}`);
     newInput.setAttribute('name', `${setName}`);
     newInput.setAttribute('id', `${setID}`);
     newInput.setAttribute('placeholder', `${setPlaceholder}`);
@@ -137,7 +137,7 @@ let assignRandomUniqueArrayValue = function(array, compareArray) {
 }
 
 let createTaskForm = function() {
-    let allColors = ["critical", "high", "medium", "low", "minimal"];
+    let allNoteColors = ["critical", "high", "medium", "low", "minimal"];
     let presentColors = [];
 
     let taskForm = document.createElement("form");
@@ -145,8 +145,8 @@ let createTaskForm = function() {
     taskForm.id = 'taskInfo';
     taskForm.setAttribute('method', 'post');
 
-    createInput('title', 'title', 'Add a title', taskForm);
-    createInput('description', 'description', 'Add a description', taskForm);
+    createInput('textarea', 'title', 'title', 'Add a title', taskForm);
+    createInput('textarea', 'description', 'description', 'Add a description', taskForm);
 
     let noteHolder = document.querySelector("#allTasks");
     let noteWrapper = document.createElement("li");
@@ -171,21 +171,21 @@ let createTaskForm = function() {
 
     for (let i = 0; i < 5; i++) {
         let note = document.createElement("div");
-        let noteColor = `${assignRandomUniqueArrayValue(allColors, presentColors)}`
-        note.classList.add("new", noteColor);
+        let noteColor = `${assignRandomUniqueArrayValue(allNoteColors, presentColors)}`
+        note.classList.add("newNote", noteColor);
         note.style.backgroundColor = `var(--${noteColor})`;
 
         note.addEventListener("click", function(event) {
-            if (event.target.classList[0] === 'new' && event.target.id !== 'selected') {
-                let allNewNoteColors = document.querySelectorAll(".new");
+            if (event.target.classList[0] === 'newNote' && event.target.id !== 'selectedNote') {
+                let allNewNoteColors = document.querySelectorAll(".newNote");
                 allNewNoteColors.forEach((note) => {
-                if (note.id === 'selected') {
-                    let currentlySelected = document.querySelector('#selected');
+                if (note.id === 'selectedNote') {
+                    let currentlySelected = document.querySelector('#selectedNote');
                     currentlySelected.removeChild(taskForm);
                     currentlySelected.removeAttribute('id'); 
                 }
                 })
-                event.target.id = 'selected';
+                event.target.id = 'selectedNote';
                 event.target.appendChild(pinButton);
                 event.target.appendChild(taskForm);    
             }
@@ -194,6 +194,7 @@ let createTaskForm = function() {
 
         note.addEventListener("keydown", function(event) {
             if (childStatus.limitReached && event.key !== 'Backspace') {
+                //need to add a listener for Ctrl+A as well, to allow to select and delete everything through keyboard
                 event.preventDefault()
             }  else if (childStatus.limitReached && event.key === 'Backspace') [
                 childStatus.limitReached = false
@@ -213,8 +214,8 @@ let createTaskForm = function() {
     }
 
     noteHolder.appendChild(noteWrapper);
-    let mediumNote = document.querySelector(".new.medium");
+    let mediumNote = document.querySelector(".newNote.medium");
     mediumNote.click();
 }
 
-export { createTaskForm };
+export { createTaskForm, createInput, assignRandomUniqueArrayValue };
