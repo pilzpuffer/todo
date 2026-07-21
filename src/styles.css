@@ -243,20 +243,20 @@ ul li:focus{
 
 .newProject.minimal {
 	transform: rotate(5deg);
-	top: 1rem;
+	top: 0rem;
 	left: 2rem;
 }
 
 .newProject.low {
 	transform: rotate(3deg);
-	top: -1.5rem;
+	top: -0.5rem;
 	left: 1rem;
 }
 
 .newProject.medium {
 	transform: rotate(-2deg);
-	top: 2rem;
-	left: 2rem;
+	top: 1rem;
+	left: 1rem;
 }
 
 .newProject.high {

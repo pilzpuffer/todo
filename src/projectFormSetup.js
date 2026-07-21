@@ -1,9 +1,12 @@
+import paperclipImgSource from "./assets/img/attachment.svg"
+import { newProject } from "./projectCreate.js";
+
 import { createInput, assignRandomUniqueArrayValue } from "./taskFormSetup.js";
 
 let validateProjectForm = function() {
     let title = document.forms["projectInfo"]["projectTitle"].value;
 
-    let allProjectInputs = document.querySelectorAll("input[name='project']");
+    let allProjectInputs = document.querySelectorAll("input[name='project']:not(.newProject)");
     let projectList = [];
 
     allProjectInputs.forEach(project => projectList.push(project.id.toLowerCase()));
@@ -23,6 +26,23 @@ let createProjectForm = function() {
     let projectForm = document.createElement("form");
     projectForm.id = 'projectInfo';
     projectForm.setAttribute('method', 'post');
+
+    let paperclipButton = document.createElement('button');
+    paperclipButton.id = 'submit';
+    let paperclipImage = document.createElement("img")
+    paperclipImage.src = paperclipImgSource;
+    paperclipButton.appendChild(paperclipImage)
+    paperclipButton.setAttribute('type', 'submit');
+    paperclipButton.setAttribute('data-tooltip', 'Click to create a new project');
+
+    paperclipButton.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        if (validateProjectForm()) {
+            newProject();
+            projectForm.reset();
+        }
+    })
 
     let projectHolder = document.querySelector("#allProjects");
     let newInput = document.createElement("input");
@@ -54,7 +74,7 @@ let createProjectForm = function() {
                     }
                 })
                 event.target.id = 'selectedProject';
-                // event.target.appendChild(pinButton); add some kind of tape or paperclip instead?
+                event.target.appendChild(paperclipButton);
                 event.target.appendChild(projectForm);  
             }
         })

@@ -5,12 +5,13 @@ let getKeyByValue = function(object, value) {
 }
 
 let newNote = function() {   
+    console.log(allProjects);
     let noteForm = document.querySelector("#taskInfo");
 
     const noteData = new FormData(noteForm);
 
     let noteHolder = document.querySelector("#allTasks");
-    let getSelectedColor = document.querySelector("#selected").getAttribute('style');
+    let getSelectedColor = document.querySelector("#selectedNote").getAttribute('style');
     
     let note = document.createElement("li");
     note.classList.add("note");

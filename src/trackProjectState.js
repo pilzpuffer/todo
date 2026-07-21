@@ -7,7 +7,7 @@ let getCurrentProject = function(event) {
     allProjects[event.target.id] = true;
 
     Object.keys(allProjects).forEach(key => {
-        if (key !== activeProject) {
+        if (key !== activeProject || key === 'newProject') {
             allProjects[key] = false;
         }   
     });

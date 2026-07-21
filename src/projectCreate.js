@@ -6,14 +6,16 @@ let newProject = function() {
     let projectHolder = document.querySelector("#allProjects");
     let newInput = document.createElement("input");
     newInput.type = "radio";
-    newInput.id = `${projectData.get("title").toLowerCase()}`;
+    newInput.id = `${projectData.get("projectTitle").toLowerCase()}`;
     newInput.name = "project";
-    newInput.value = `${projectData.get("title").toLowerCase()}`;
+    newInput.value = `${projectData.get("projectTitle").toLowerCase()}`;
 
     let newLabel = document.createElement("label");
-    newLabel.classList.add(`${projectData.get("priority").toLowerCase()}`);
-    newLabel.setAttribute("for", `${projectData.get("title").toLowerCase()}`)
-    newLabel.textContent = `${projectData.get("title")}`;
+    // newLabel.classList.add(`${projectData.get("priority").toLowerCase()}`);
+    newLabel.setAttribute("for", `${projectData.get("projectTitle").toLowerCase()}`)
+    let getSelectedColor = document.querySelector("#selectedProject").getAttribute('style');
+    newLabel.setAttribute("style", getSelectedColor);
+    newLabel.textContent = `${projectData.get("projectTitle")}`;
     newLabel.addEventListener("click", function() {
         event.stopPropagation();
     })
