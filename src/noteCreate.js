@@ -5,7 +5,6 @@ let getKeyByValue = function(object, value) {
 }
 
 let newNote = function() {   
-    console.log(allProjects);
     let noteForm = document.querySelector("#taskInfo");
 
     const noteData = new FormData(noteForm);

@@ -153,7 +153,7 @@ let createTaskForm = function() {
     noteWrapper.classList.add("wrapper");
 
     let pinButton = document.createElement("button");
-    pinButton.id = 'submit';
+    pinButton.id = 'taskSubmit';
     let pinImage = document.createElement("img")
     pinImage.src = pinImgSource;
     pinButton.appendChild(pinImage)

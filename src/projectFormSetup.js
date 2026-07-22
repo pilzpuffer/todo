@@ -28,7 +28,7 @@ let createProjectForm = function() {
     projectForm.setAttribute('method', 'post');
 
     let paperclipButton = document.createElement('button');
-    paperclipButton.id = 'submit';
+    paperclipButton.id = 'projectSubmit';
     let paperclipImage = document.createElement("img")
     paperclipImage.src = paperclipImgSource;
     paperclipButton.appendChild(paperclipImage)
@@ -74,12 +74,13 @@ let createProjectForm = function() {
                     }
                 })
                 event.target.id = 'selectedProject';
-                event.target.appendChild(paperclipButton);
+                // event.target.appendChild(paperclipButton);
                 event.target.appendChild(projectForm);  
             }
         })
 
         labelHolder.appendChild(label)
+        labelHolder.appendChild(paperclipButton)
     }
 
     createInput('textarea', 'projectTitle', 'projectTitle', 'Add a title', projectForm)

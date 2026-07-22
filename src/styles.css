@@ -308,7 +308,8 @@ textarea#projectTitle:focus {
 	outline: none;
 }
 
-#submit {
+#taskSubmit, 
+#projectSubmit {
 	position: absolute;
 	width: 2rem;
 	height: 2rem;
@@ -319,13 +320,20 @@ textarea#projectTitle:focus {
 	left: 40%
 }
 
-#submit img {
+#projectSubmit {
+	left: -20%;
+	top: 70%;
+}
+
+#taskSubmit img, 
+#projectSubmit img {
 	width: 2rem;
 	height: 2rem;
 	transform: rotate(15deg);
 }
 
-#submit:hover img {
+#taskSubmit:hover img,
+#projectSubmit:hover img {
 	transform: rotate(0deg);
 }
 
@@ -333,7 +341,9 @@ textarea#projectTitle:focus {
 	position: absolute;
 	width: 6rem;
 	padding: 0 0 2rem 0.5rem;
+	font-size: 1rem;
 	content: attr(data-tooltip);
+	font-family: 'Caveat';
 	text-align: center;
 	opacity: 0;
 	line-height: 0.8;
@@ -343,6 +353,12 @@ textarea#projectTitle:focus {
 .pin[data-tooltip]::before {
 	margin-top: -1rem;
 	padding: 0 0 2rem 1rem;
+}
+
+#projectSubmit[data-tooltip]::before {
+	margin-top: -1rem;
+	padding-right: 1rem;
+	left: -200%;
 }
 
 [data-tooltip]:hover::before {
