@@ -74,7 +74,6 @@ let createProjectForm = function() {
                     }
                 })
                 event.target.id = 'selectedProject';
-                // event.target.appendChild(paperclipButton);
                 event.target.appendChild(projectForm);  
             }
         })
@@ -89,6 +88,9 @@ let createProjectForm = function() {
     projectHolder.appendChild(labelHolder);
     let mediumLabel = document.querySelector(".newProject.medium");
     mediumLabel.click();
+    //check why newly created projects don't have a dogtail, even though they should have one by css rules
+    //adjust behavior to leave the currently selected project still selected, even when new projects are added
+
 }
 
 export { createProjectForm }
