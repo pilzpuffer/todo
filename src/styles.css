@@ -484,3 +484,7 @@ fieldset {
 .removed {
 	display: none !important;
 }
+
+.done {
+	text-decoration: line-through;
+}

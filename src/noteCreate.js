@@ -31,9 +31,17 @@ let newNote = function() {
 
     let noteTitle = document.createElement("h2");
     noteTitle.textContent = noteData.get("title");
+    noteTitle.addEventListener('click', function() {
+        noteDescription.classList.toggle('done');
+        noteTitle.classList.toggle('done');
+    })
 
     let noteDescription = document.createElement("p");
     noteDescription.textContent = noteData.get("description");
+    noteDescription.addEventListener('click', function() {
+        noteDescription.classList.toggle('done');
+        noteTitle.classList.toggle('done');
+    })
 
     noteContent.appendChild(noteTitle);
     noteContent.appendChild(noteDescription);
