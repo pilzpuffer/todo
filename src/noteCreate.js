@@ -14,6 +14,7 @@ let newNote = function() {
     
     let note = document.createElement("li");
     note.classList.add("note");
+
     //to find currently open project and assign task that is being created to it:
     note.classList.add(`${getKeyByValue(allProjects, true)}`); 
     note.setAttribute("style", getSelectedColor);
@@ -21,6 +22,9 @@ let newNote = function() {
     let pin = document.createElement("div");
     pin.classList.add("pin");
     pin.setAttribute('data-tooltip', 'Click to unpin this note');
+    pin.addEventListener('click', function() {
+        noteHolder.removeChild(note);
+    })
 
     let noteContent = document.createElement("div");
     noteContent.classList.add("noteContent");

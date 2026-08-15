@@ -22,5 +22,6 @@ window.addEventListener("load", function() {
     createTaskForm();
     createProjectForm();
     createProjectManually('main');
-
+    let mainProject = document.querySelector('label[for="main"]');
+    mainProject.click();
 })
