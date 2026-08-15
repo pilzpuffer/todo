@@ -105,9 +105,11 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
         childStatus.first = false
     }
 
-    if (firstChildBigger && firstLinesAmount > lineLimit1){
-        childStatus.limitReached = true;
-        limitedChild1.value = limitedChild1.value.slice(0, -1);
+    if (firstChildBigger && firstLinesAmount > lineLimit1){   
+            console.log('this ran!!!')
+            childStatus.limitReached = true;
+            limitedChild1.value = limitedChild1.value.slice(0, -1);
+
         //i need to find some kind of solution for pasted text as well, as this only works for typing scenarios - will need to handle that through paste event listener
     } else if (secondChildBigger && secondLinesAmount > lineLimit2) {
         childStatus.limitReached = true;
@@ -193,13 +195,12 @@ let createTaskForm = function() {
         })
 
         note.addEventListener("keydown", function(event) {
-            if (childStatus.limitReached && event.key !== 'Backspace') {
-                //need to add a listener for Ctrl+A as well, to allow to select and delete everything through keyboard
+            if (childStatus.limitReached && ((event.key !== 'Backspace') && (!event.ctrlKey && event.code !== "KeyA"))) {
+                //at the moment, 2 symbols get removed anytime the limit is reached through pasting text - issue will be removed once I'll be able to manage specifically pasted text
                 event.preventDefault()
-            }  else if (childStatus.limitReached && event.key === 'Backspace') [
+            }  else if (childStatus.limitReached && event.key === 'Backspace') {
                 childStatus.limitReached = false
-            ]
-            
+            }          
         })
 
         //need to add an event listener for pasting to manage the amount of present text
