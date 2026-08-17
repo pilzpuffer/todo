@@ -106,11 +106,9 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
     }
 
     if (firstChildBigger && firstLinesAmount > lineLimit1){   
-            console.log('this ran!!!')
-            childStatus.limitReached = true;
-            limitedChild1.value = limitedChild1.value.slice(0, -1);
-
-        //i need to find some kind of solution for pasted text as well, as this only works for typing scenarios - will need to handle that through paste event listener
+        console.log('this ran!!!')
+        childStatus.limitReached = true;
+        limitedChild1.value = limitedChild1.value.slice(0, -1);
     } else if (secondChildBigger && secondLinesAmount > lineLimit2) {
         childStatus.limitReached = true;
         limitedChild2.value = limitedChild2.value.slice(0, -1);
@@ -118,6 +116,7 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
         console.log('children total limit ran')
         childStatus.limitReached = true;
         limitedChild2.value = limitedChild2.value.slice(0, -1);
+        
     }
 }
 
@@ -194,8 +193,11 @@ let createTaskForm = function() {
             
         })
 
+        let allowedKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Backspace'];
+
         note.addEventListener("keydown", function(event) {
-            if (childStatus.limitReached && ((event.key !== 'Backspace') && (!event.ctrlKey && event.code !== "KeyA"))) {
+            if (childStatus.limitReached && ((!event.ctrlKey && event.code !== "KeyA") && (!allowedKeys.includes(event.code)))) {
+                //arrows do move the caret now, but for some reason it resets to the end of textbox after using backspace if we're still over limit
                 //at the moment, 2 symbols get removed anytime the limit is reached through pasting text - issue will be removed once I'll be able to manage specifically pasted text
                 event.preventDefault()
             }  else if (childStatus.limitReached && event.key === 'Backspace') {
@@ -203,12 +205,25 @@ let createTaskForm = function() {
             }          
         })
 
-        //need to add an event listener for pasting to manage the amount of present text
-
         note.addEventListener('input', function(event) {
             let titleId = document.querySelector('#title');
             let descriptionId = document.querySelector('#description');
             limitLines(event, 4, 6, taskForm, titleId, descriptionId);
+
+            if (event.inputType === 'insertFromPaste') {
+                if (childStatus.limitReached) {
+                    let limit;
+                    event.target.id === title ? limit = 40 : limit = 80;
+                    event.target.value = event.target.value.slice(0, limit);
+                    //make sure to hide title/text after pasting, as currently, that doesn't happen unless we also type
+                }
+            }
+        })
+
+        note.addEventListener('paste', function(event) {
+            if (childStatus.limitReached) {
+                event.preventDefault()
+            } 
         })
 
         noteWrapper.appendChild(note); 
@@ -217,6 +232,7 @@ let createTaskForm = function() {
     noteHolder.appendChild(noteWrapper);
     let mediumNote = document.querySelector(".newNote.medium");
     mediumNote.click();
+    //add deadline setting + !!manage pasting!! + allow navigation with arrows when text limit is reached
 }
 
 export { createTaskForm, createInput, assignRandomUniqueArrayValue };

@@ -50,6 +50,7 @@ let newNote = function() {
     note.appendChild(noteContent);
 
     noteHolder.appendChild(note);   
+    //need to add a deadline at creation/for editing, as well as an option to edit note text post-adding
 }
 
 export { newNote };
