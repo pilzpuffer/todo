@@ -23,14 +23,19 @@ function createManagedLimitedChildren(firstChild, secondChild) {
 
 function createChild(name) {
     return {
-        height: name.scrollHeight,
         style: window.getComputedStyle(name),
+        height() {
+            return name.scrollHeight
+        }, 
         fontSize(){
             return this.style.getPropertyValue("font-size")
         }, 
         lineHeight(){
             return parseInt(this.style.getPropertyValue("line-height"))
         },
+        lineAmount() {
+            return Math.floor(this.height()/this.lineHeight())
+        }
     }
 }
 
@@ -59,25 +64,22 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
 
     let managedChildren = createManagedLimitedChildren(limitedChild1, limitedChild2)
 
-    let firstLinesAmount = Math.floor(managedChildren.first.height/managedChildren.first.lineHeight());
-    let firstChildBigger = managedChildren.first.height > containerHeight;
-
-    let secondLinesAmount = Math.floor(managedChildren.second.height/managedChildren.second.lineHeight());
-    let secondChildBigger = managedChildren.second.height > (containerHeight - 20);
+    let firstChildBigger = managedChildren.first.height() > containerHeight;
+    let secondChildBigger = managedChildren.second.height() > (containerHeight - 20);
     
-    let totalHeight = managedChildren.first.height + managedChildren.second.height;
-    let checkTotalLines = Math.floor(firstLinesAmount + secondLinesAmount)
+    let totalHeight = managedChildren.first.height() + managedChildren.second.height();
+    let checkTotalLines = Math.floor(managedChildren.first.lineAmount() + managedChildren.second.lineAmount())
    
     let totalLimit;
 
     //not limited by a specific block size, I just think that this amount looks the best visually:
-    if (firstLinesAmount === 3 || firstLinesAmount === 4) {
+    if (managedChildren.first.lineAmount() <= 4) {
         totalLimit = 4
     } else {
         totalLimit = 5
     }
 
-    if (!childStatus.second && firstLinesAmount < lineLimit1) {
+    if (!childStatus.second && managedChildren.first.lineAmount() < lineLimit1) {
         if (childStatus.limitReached) {
             childStatus.limitReached = false
         }
@@ -85,13 +87,13 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
         childStatus.second = true
     }
 
-    if (childStatus.second && limitedChild2.value.length === 0 && firstLinesAmount === lineLimit1) {
+    if (childStatus.second && limitedChild2.value.length === 0 && managedChildren.first.lineAmount() === lineLimit1) {
         console.log('text hidden')
         limitedChild2.classList.add("removed");
         childStatus.second = false
     }
 
-    if (!childStatus.first && secondLinesAmount < lineLimit2-1) {
+    if (!childStatus.first && managedChildren.second.lineAmount() < lineLimit2-1) {
         if (childStatus.limitReached) {
             childStatus.limitReached = false
         }
@@ -99,24 +101,45 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
         childStatus.first = true
     }
 
-    if (childStatus.first && limitedChild1.value.length === 0 && secondLinesAmount === lineLimit2-1) {
+    if (childStatus.first && limitedChild1.value.length === 0 && managedChildren.second.lineAmount() === lineLimit2-1) {
         console.log('title hidden')
         limitedChild1.classList.add("removed");
         childStatus.first = false
     }
 
-    if (firstChildBigger && firstLinesAmount > lineLimit1){   
+    if (firstChildBigger && managedChildren.first.lineAmount() > lineLimit1){   
         console.log('this ran!!!')
         childStatus.limitReached = true;
         limitedChild1.value = limitedChild1.value.slice(0, -1);
-    } else if (secondChildBigger && secondLinesAmount > lineLimit2) {
+    } else if (secondChildBigger && managedChildren.second.lineAmount() > lineLimit2) {
         childStatus.limitReached = true;
         limitedChild2.value = limitedChild2.value.slice(0, -1);
     } else if (limitedChild1.value.length > 0 && limitedChild2.value.length > 0 && checkTotalLines > totalLimit) {
         console.log('children total limit ran')
         childStatus.limitReached = true;
         limitedChild2.value = limitedChild2.value.slice(0, -1);
-        
+    }
+
+    if (event.inputType === 'insertFromPaste') {
+        limitedChild1.value = limitedChild1.value.slice(0, 100);
+        limitedChild1.value = limitedChild1.value.slice(0, 230);
+            while (managedChildren.first.lineAmount() > lineLimit1) {
+                limitedChild1.value = limitedChild1.value.slice(0, -1);
+                console.log(limitedChild1.value)
+                console.log('first height is ', managedChildren.first.height(), 'and its line height is ', managedChildren.first.lineHeight())
+                console.log("we have this amount of lines: ", managedChildren.first.lineAmount(), "line limit is ", lineLimit1)
+                //for some reason, the amount of lines doesn't get updated properly after deletion, look into that
+                console.log('first limiter ran');   
+            } 
+
+            while (managedChildren.second.lineAmount() > lineLimit2) {
+                limitedChild2.value = limitedChild2.value.slice(0, -1);
+                console.log(limitedChild2.value)
+                console.log('second height is ', managedChildren.second.height(), 'and its line height is ', managedChildren.second.lineHeight())
+                console.log("we have this amount of lines: ", managedChildren.second.lineAmount(), "line limit is ", lineLimit2)
+                //for some reason, the amount of lines doesn't get updated properly after deletion, look into that
+                console.log('second limiter ran');   
+            } 
     }
 }
 
@@ -197,8 +220,6 @@ let createTaskForm = function() {
 
         note.addEventListener("keydown", function(event) {
             if (childStatus.limitReached && ((!event.ctrlKey && event.code !== "KeyA") && (!allowedKeys.includes(event.code)))) {
-                //arrows do move the caret now, but for some reason it resets to the end of textbox after using backspace if we're still over limit
-                //at the moment, 2 symbols get removed anytime the limit is reached through pasting text - issue will be removed once I'll be able to manage specifically pasted text
                 event.preventDefault()
             }  else if (childStatus.limitReached && event.key === 'Backspace') {
                 childStatus.limitReached = false
@@ -209,15 +230,6 @@ let createTaskForm = function() {
             let titleId = document.querySelector('#title');
             let descriptionId = document.querySelector('#description');
             limitLines(event, 4, 6, taskForm, titleId, descriptionId);
-
-            if (event.inputType === 'insertFromPaste') {
-                if (childStatus.limitReached) {
-                    let limit;
-                    event.target.id === title ? limit = 40 : limit = 80;
-                    event.target.value = event.target.value.slice(0, limit);
-                    //make sure to hide title/text after pasting, as currently, that doesn't happen unless we also type
-                }
-            }
         })
 
         note.addEventListener('paste', function(event) {
@@ -232,7 +244,7 @@ let createTaskForm = function() {
     noteHolder.appendChild(noteWrapper);
     let mediumNote = document.querySelector(".newNote.medium");
     mediumNote.click();
-    //add deadline setting + !!manage pasting!! + allow navigation with arrows when text limit is reached
+    //add deadline setting
 }
 
 export { createTaskForm, createInput, assignRandomUniqueArrayValue };
