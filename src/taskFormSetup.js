@@ -79,43 +79,45 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
         totalLimit = 5
     }
 
-    if (!childStatus.second && managedChildren.first.lineAmount() < lineLimit1) {
-        if (childStatus.limitReached) {
-            childStatus.limitReached = false
+    let manageTextSectionVisibility = function() {
+        if (!childStatus.second && managedChildren.first.lineAmount() < lineLimit1) {
+            if (childStatus.limitReached) {
+                childStatus.limitReached = false
+            }
+            limitedChild2.classList.remove("removed");
+            childStatus.second = true
         }
-        limitedChild2.classList.remove("removed");
-        childStatus.second = true
-    }
 
-    if (childStatus.second && limitedChild2.value.length === 0 && managedChildren.first.lineAmount() === lineLimit1) {
-        console.log('text hidden')
-        limitedChild2.classList.add("removed");
-        childStatus.second = false
-    }
-
-    if (!childStatus.first && managedChildren.second.lineAmount() < lineLimit2-1) {
-        if (childStatus.limitReached) {
-            childStatus.limitReached = false
+        if (childStatus.second && limitedChild2.value.length === 0 && managedChildren.first.lineAmount() === lineLimit1) {
+            console.log('text hidden')
+            limitedChild2.classList.add("removed");
+            childStatus.second = false
         }
-        limitedChild1.classList.remove("removed");
-        childStatus.first = true
+
+        if (!childStatus.first && managedChildren.second.lineAmount() < lineLimit2-1) {
+            if (childStatus.limitReached) {
+                childStatus.limitReached = false
+            }
+            limitedChild1.classList.remove("removed");
+            childStatus.first = true
+        }
+
+        if (childStatus.first && limitedChild1.value.length === 0 && managedChildren.second.lineAmount() >= lineLimit2-1) {
+            console.log('title hidden')
+            limitedChild1.classList.add("removed");
+            childStatus.first = false
+        }
     }
 
-    if (childStatus.first && limitedChild1.value.length === 0 && managedChildren.second.lineAmount() === lineLimit2-1) {
-        console.log('title hidden')
-        limitedChild1.classList.add("removed");
-        childStatus.first = false
-    }
+    manageTextSectionVisibility()
 
     if (firstChildBigger && managedChildren.first.lineAmount() > lineLimit1){   
-        console.log('this ran!!!')
         childStatus.limitReached = true;
         limitedChild1.value = limitedChild1.value.slice(0, -1);
     } else if (secondChildBigger && managedChildren.second.lineAmount() > lineLimit2) {
         childStatus.limitReached = true;
         limitedChild2.value = limitedChild2.value.slice(0, -1);
     } else if (limitedChild1.value.length > 0 && limitedChild2.value.length > 0 && checkTotalLines > totalLimit) {
-        console.log('children total limit ran')
         childStatus.limitReached = true;
         limitedChild2.value = limitedChild2.value.slice(0, -1);
     }
@@ -140,6 +142,7 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
                 //for some reason, the amount of lines doesn't get updated properly after deletion, look into that
                 console.log('second limiter ran');   
             } 
+        manageTextSectionVisibility();
     }
 }
 
