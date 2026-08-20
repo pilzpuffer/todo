@@ -1,4 +1,5 @@
 import pinImgSource from './assets/img/pin.svg';
+import deadlineAddImgSource from './assets/img/clock-edit.svg';
 
 import { newNote } from "./noteCreate.js";
 
@@ -10,7 +11,9 @@ let createInput = function(inputType, setName, setID, setPlaceholder, appendTo) 
     let newInput = document.createElement(`${inputType}`);
     newInput.setAttribute('name', `${setName}`);
     newInput.setAttribute('id', `${setID}`);
-    newInput.setAttribute('placeholder', `${setPlaceholder}`);
+    if (setPlaceholder.length > 0) {
+        newInput.setAttribute('placeholder', `${setPlaceholder}`);
+    }
     appendTo.appendChild(newInput);
 }
 
@@ -80,6 +83,7 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
     }
 
     let manageTextSectionVisibility = function() {
+        //adjust visibility rules for this scenario: desc goes over limit, we delete some text for title to reappear - currently, we can only type 1 symbol, and then it's considered to be 'over limit'
         if (!childStatus.second && managedChildren.first.lineAmount() < lineLimit1) {
             if (childStatus.limitReached) {
                 childStatus.limitReached = false
@@ -89,7 +93,6 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
         }
 
         if (childStatus.second && limitedChild2.value.length === 0 && managedChildren.first.lineAmount() === lineLimit1) {
-            console.log('text hidden')
             limitedChild2.classList.add("removed");
             childStatus.second = false
         }
@@ -103,7 +106,6 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
         }
 
         if (childStatus.first && limitedChild1.value.length === 0 && managedChildren.second.lineAmount() >= lineLimit2-1) {
-            console.log('title hidden')
             limitedChild1.classList.add("removed");
             childStatus.first = false
         }
@@ -125,23 +127,15 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
     if (event.inputType === 'insertFromPaste') {
         limitedChild1.value = limitedChild1.value.slice(0, 100);
         limitedChild1.value = limitedChild1.value.slice(0, 230);
-            while (managedChildren.first.lineAmount() > lineLimit1) {
-                limitedChild1.value = limitedChild1.value.slice(0, -1);
-                console.log(limitedChild1.value)
-                console.log('first height is ', managedChildren.first.height(), 'and its line height is ', managedChildren.first.lineHeight())
-                console.log("we have this amount of lines: ", managedChildren.first.lineAmount(), "line limit is ", lineLimit1)
-                //for some reason, the amount of lines doesn't get updated properly after deletion, look into that
-                console.log('first limiter ran');   
-            } 
+        
+        while (managedChildren.first.lineAmount() > lineLimit1) {
+            limitedChild1.value = limitedChild1.value.slice(0, -1);
+        } 
 
-            while (managedChildren.second.lineAmount() > lineLimit2) {
-                limitedChild2.value = limitedChild2.value.slice(0, -1);
-                console.log(limitedChild2.value)
-                console.log('second height is ', managedChildren.second.height(), 'and its line height is ', managedChildren.second.lineHeight())
-                console.log("we have this amount of lines: ", managedChildren.second.lineAmount(), "line limit is ", lineLimit2)
-                //for some reason, the amount of lines doesn't get updated properly after deletion, look into that
-                console.log('second limiter ran');   
-            } 
+        while (managedChildren.second.lineAmount() > lineLimit2) {
+            limitedChild2.value = limitedChild2.value.slice(0, -1);
+        } 
+
         manageTextSectionVisibility();
     }
 }
@@ -174,6 +168,7 @@ let createTaskForm = function() {
 
     createInput('textarea', 'title', 'title', 'Add a title', taskForm);
     createInput('textarea', 'description', 'description', 'Add a description', taskForm);
+    createInput('datetime-local', 'setDeadline', 'setDeadline', '', taskForm)
 
     let noteHolder = document.querySelector("#allTasks");
     let noteWrapper = document.createElement("li");
@@ -187,13 +182,27 @@ let createTaskForm = function() {
     pinButton.setAttribute('type', 'submit');
     pinButton.setAttribute('data-tooltip', 'Click to pin a new note');
 
+    let clockButton = document.createElement("button");
+    clockButton.id = 'giveDeadline';
+    let clockImage = document.createElement("img");
+    clockImage.src = deadlineAddImgSource;
+    clockButton.appendChild(clockImage);
+    clockButton.setAttribute('data-tooltip', 'Click to set a deadline');
+
     pinButton.addEventListener('click', function(event) {
         event.preventDefault();
 
         if (validateTaskForm()) {
             newNote();
+            clockButton.classList.remove('hidden');
+            // calendar.classList.add('removed');
             taskForm.reset();
         }
+    })
+
+    clockButton.addEventListener('click', function(event) {
+        clockButton.classList.add('removed');
+        // calendar.classList.remove('removed');
     })
 
     for (let i = 0; i < 5; i++) {
@@ -214,7 +223,8 @@ let createTaskForm = function() {
                 })
                 event.target.id = 'selectedNote';
                 event.target.appendChild(pinButton);
-                event.target.appendChild(taskForm);    
+                event.target.appendChild(taskForm);  
+                event.target.appendChild(clockButton);  
             }
             
         })

@@ -317,7 +317,8 @@ textarea#projectTitle:focus {
 }
 
 #taskSubmit, 
-#projectSubmit {
+#projectSubmit,
+#giveDeadline {
 	position: absolute;
 	width: 2rem;
 	height: 2rem;
@@ -331,6 +332,20 @@ textarea#projectTitle:focus {
 #projectSubmit {
 	left: -20%;
 	top: 70%;
+}
+
+#setDeadline {
+	position: absolute;
+	outline: none;
+	border: none;
+	background: none;
+	width: 88%;
+	margin-left: -0.25rem;
+}
+
+#giveDeadline, #setDeadline {
+	top: 85%;
+	opacity: 70%
 }
 
 #taskSubmit img, 
@@ -367,6 +382,10 @@ textarea#projectTitle:focus {
 	margin-top: -1rem;
 	padding-right: 1rem;
 	left: -200%;
+}
+
+#giveDeadline[data-tooltip]::before {
+	margin-top: 0.5rem;
 }
 
 [data-tooltip]:hover::before {
