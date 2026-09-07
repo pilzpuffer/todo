@@ -334,18 +334,20 @@ textarea#projectTitle:focus {
 	top: 70%;
 }
 
+#giveDeadline, #setDeadline {
+	top: 85%;
+	opacity: 70%
+}
+
 #setDeadline {
 	position: absolute;
 	outline: none;
 	border: none;
 	background: none;
-	width: 88%;
-	margin-left: -0.25rem;
-}
-
-#giveDeadline, #setDeadline {
-	top: 85%;
-	opacity: 70%
+	width: 107.5%;
+	height: 2rem;
+	left: -2.5%;
+	top: 93%;
 }
 
 #taskSubmit img, 
@@ -506,4 +508,12 @@ fieldset {
 
 .done {
 	text-decoration: line-through;
+}
+
+#test {
+	position: absolute;
+	z-index: 10;
+	width: 10rem;
+	height: 3rem;
+	left: 50%
 }

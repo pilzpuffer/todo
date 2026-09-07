@@ -8,11 +8,21 @@ function getRandomNumber(max) {
 }
 
 let createInput = function(inputType, setName, setID, setPlaceholder, appendTo) {
-    let newInput = document.createElement(`${inputType}`);
+    let newInput;
+    if (inputType === 'textarea') {
+        newInput = document.createElement(`${inputType}`);
+    } else {
+        newInput = document.createElement(`input`);
+        newInput.setAttribute('type', `${inputType}`);
+    }
+    
     newInput.setAttribute('name', `${setName}`);
     newInput.setAttribute('id', `${setID}`);
     if (setPlaceholder.length > 0) {
         newInput.setAttribute('placeholder', `${setPlaceholder}`);
+    }
+    if (setID === 'setDeadline') {
+        newInput.classList.add('removed');
     }
     appendTo.appendChild(newInput);
 }
@@ -168,7 +178,7 @@ let createTaskForm = function() {
 
     createInput('textarea', 'title', 'title', 'Add a title', taskForm);
     createInput('textarea', 'description', 'description', 'Add a description', taskForm);
-    createInput('datetime-local', 'setDeadline', 'setDeadline', '', taskForm)
+    createInput('datetime-local', 'setDeadline', 'setDeadline', 'Add a deadline', taskForm)
 
     let noteHolder = document.querySelector("#allTasks");
     let noteWrapper = document.createElement("li");
@@ -194,15 +204,15 @@ let createTaskForm = function() {
 
         if (validateTaskForm()) {
             newNote();
-            clockButton.classList.remove('hidden');
-            // calendar.classList.add('removed');
+            clockButton.classList.remove('removed');
+            setDeadline.classList.add('removed');
             taskForm.reset();
         }
     })
 
     clockButton.addEventListener('click', function(event) {
         clockButton.classList.add('removed');
-        // calendar.classList.remove('removed');
+        setDeadline.classList.remove('removed');
     })
 
     for (let i = 0; i < 5; i++) {
