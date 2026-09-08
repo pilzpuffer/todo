@@ -46,22 +46,17 @@ let newNote = function() {
         noteTitle.classList.toggle('done');
     })
 
-    let timeHolder = document.createElement('div');
-    timeHolder.id = 'noteDeadline';
-
-    let noteDeadline = document.createElement("p");
-    console.log(noteData.get('deadline'));
-    if (noteData.get('deadline')) {
-        let timeDiff = formatDistanceToNow(new Date(noteData.get('deadline')), {addSuffix: true});
-        console.log(timeDiff);
-        noteDeadline.textContent = timeDiff;  
-    }
-
     textHolder.appendChild(noteTitle);
     textHolder.appendChild(noteDescription);
-    timeHolder.appendChild(noteDeadline);
     noteContent.appendChild(textHolder);
-    noteContent.appendChild(timeHolder);
+
+    if (noteData.get('deadline')) {
+        let noteDeadline = document.createElement("p");
+        noteDeadline.id = 'noteDeadline';
+        let timeDiff = formatDistanceToNow(new Date(noteData.get('deadline')), {addSuffix: true});
+        noteDeadline.textContent = timeDiff;  
+        noteContent.appendChild(noteDeadline);
+    }
 
     note.appendChild(pin);
     note.appendChild(noteContent);
