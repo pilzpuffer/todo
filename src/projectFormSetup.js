@@ -58,8 +58,7 @@ let createProjectForm = function() {
         let label = document.createElement("label");
         let labelColor = `${assignRandomUniqueArrayValue(allProjectColors, presentColors)}`
         label.classList.add("newProject", labelColor);
-        label.setAttribute("for", "newProject")
-        label.style.backgroundColor = `var(--${labelColor})`;
+        label.setAttribute("for", "newProject");
 
         label.addEventListener("click", function() {
             event.stopPropagation();

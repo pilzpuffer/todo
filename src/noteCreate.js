@@ -1,6 +1,7 @@
 import pencilImgSource from "./assets/img/pencil-outline.svg"
 
 import { allProjects } from "./trackProjectState.js";
+import { editNote } from "./noteEdit.js";
 import { formatDistanceToNow } from "date-fns";
 
 let getKeyByValue = function(object, value) {
@@ -16,6 +17,8 @@ let newNote = function() {
     let getSelectedColor = document.querySelector("#selectedNote").getAttribute('style');
     
     let note = document.createElement("li");
+    note.dataset.id = crypto.randomUUID();
+    console.log(note.dataset.id);
     note.classList.add("note");
 
     //to find currently open project and assign task that is being created to it:
@@ -36,6 +39,9 @@ let newNote = function() {
     pencilButton.appendChild(pencilImage);
     pencilButton.setAttribute('data-tooltip', 'Click to edit this note');
     pencilButton.classList.add('removed');
+    pencilButton.addEventListener('click', function(event) {
+        editNote(note);
+    });
 
     let noteContent = document.createElement("div");
     noteContent.classList.add("noteContent");

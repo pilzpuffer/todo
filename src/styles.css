@@ -100,8 +100,29 @@ ul {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  align-content: start;
 	row-gap: 1.5rem;
 }
+
+	.minimal {
+		background-color: var(--minimal);
+	}
+
+	.low {
+		background-color: var(--low);
+	}
+
+	.medium {
+		background-color: var(--medium);
+	}
+
+	.high {
+		background-color: var(--high);
+	}
+
+	.critical {
+		background-color: var(--critical);
+	}
 
 .note,
 .newNote {
@@ -326,6 +347,10 @@ textarea#projectTitle::-webkit-resizer  {
 textarea#projectTitle:active,
 textarea#projectTitle:focus {
 	outline: none;
+}
+
+#edit img {
+	pointer-events: none;
 }
 
 .pin, #taskSubmit, #giveDeadline, #projectSubmit, #edit {

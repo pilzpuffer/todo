@@ -219,7 +219,6 @@ let createTaskForm = function() {
         let note = document.createElement("div");
         let noteColor = `${assignRandomUniqueArrayValue(allNoteColors, presentColors)}`
         note.classList.add("newNote", noteColor);
-        note.style.backgroundColor = `var(--${noteColor})`;
 
         note.addEventListener("click", function(event) {
             if (event.target.classList[0] === 'newNote' && event.target.id !== 'selectedNote') {
