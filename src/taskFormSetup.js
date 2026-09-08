@@ -1,5 +1,5 @@
 import pinImgSource from './assets/img/pin.svg';
-import deadlineAddImgSource from './assets/img/clock-edit.svg';
+import deadlineAddImgSource from './assets/img/clock-plus.svg';
 
 import { newNote } from "./noteCreate.js";
 
@@ -21,7 +21,7 @@ let createInput = function(inputType, setName, setID, setPlaceholder, appendTo) 
     if (setPlaceholder.length > 0) {
         newInput.setAttribute('placeholder', `${setPlaceholder}`);
     }
-    if (setID === 'setDeadline') {
+    if (setID === 'deadline') {
         newInput.classList.add('removed');
     }
     appendTo.appendChild(newInput);
@@ -178,7 +178,7 @@ let createTaskForm = function() {
 
     createInput('textarea', 'title', 'title', 'Add a title', taskForm);
     createInput('textarea', 'description', 'description', 'Add a description', taskForm);
-    createInput('datetime-local', 'setDeadline', 'setDeadline', 'Add a deadline', taskForm)
+    createInput('datetime-local', 'deadline', 'deadline', 'Add a deadline', taskForm)
 
     let noteHolder = document.querySelector("#allTasks");
     let noteWrapper = document.createElement("li");
@@ -205,14 +205,14 @@ let createTaskForm = function() {
         if (validateTaskForm()) {
             newNote();
             clockButton.classList.remove('removed');
-            setDeadline.classList.add('removed');
+            deadline.classList.add('removed');
             taskForm.reset();
         }
     })
 
     clockButton.addEventListener('click', function(event) {
         clockButton.classList.add('removed');
-        setDeadline.classList.remove('removed');
+        deadline.classList.remove('removed');
     })
 
     for (let i = 0; i < 5; i++) {
@@ -267,7 +267,7 @@ let createTaskForm = function() {
     noteHolder.appendChild(noteWrapper);
     let mediumNote = document.querySelector(".newNote.medium");
     mediumNote.click();
-    //add deadline setting
+    //maybe i can add an option for lists?..
 }
 
 export { createTaskForm, createInput, assignRandomUniqueArrayValue };

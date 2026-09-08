@@ -1,4 +1,5 @@
 import { allProjects } from "./trackProjectState.js";
+import { formatDistanceToNow } from "date-fns";
 
 let getKeyByValue = function(object, value) {
     return Object.keys(object).find(key => object[key] === value);
@@ -29,6 +30,8 @@ let newNote = function() {
     let noteContent = document.createElement("div");
     noteContent.classList.add("noteContent");
 
+    let textHolder = document.createElement("div");
+
     let noteTitle = document.createElement("h2");
     noteTitle.textContent = noteData.get("title");
     noteTitle.addEventListener('click', function() {
@@ -43,8 +46,22 @@ let newNote = function() {
         noteTitle.classList.toggle('done');
     })
 
-    noteContent.appendChild(noteTitle);
-    noteContent.appendChild(noteDescription);
+    let timeHolder = document.createElement('div');
+    timeHolder.id = 'noteDeadline';
+
+    let noteDeadline = document.createElement("p");
+    console.log(noteData.get('deadline'));
+    if (noteData.get('deadline')) {
+        let timeDiff = formatDistanceToNow(new Date(noteData.get('deadline')), {addSuffix: true});
+        console.log(timeDiff);
+        noteDeadline.textContent = timeDiff;  
+    }
+
+    textHolder.appendChild(noteTitle);
+    textHolder.appendChild(noteDescription);
+    timeHolder.appendChild(noteDeadline);
+    noteContent.appendChild(textHolder);
+    noteContent.appendChild(timeHolder);
 
     note.appendChild(pin);
     note.appendChild(noteContent);

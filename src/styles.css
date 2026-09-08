@@ -124,9 +124,16 @@ ul {
 }
 
 .noteContent {
-	display: grid;
-	grid-template-rows: auto 1fr;
+	display: flex;
+	height: 105%;
+	flex-direction: column;
+	justify-content: space-between;	
 	z-index: 6;
+}
+
+#noteDeadline {
+	align-self: center;
+	opacity: 70%;
 }
 
 .projectWrapper {
@@ -334,12 +341,12 @@ textarea#projectTitle:focus {
 	top: 70%;
 }
 
-#giveDeadline, #setDeadline {
+#giveDeadline, #deadline {
 	top: 85%;
 	opacity: 70%
 }
 
-#setDeadline {
+#deadline {
 	position: absolute;
 	outline: none;
 	border: none;
@@ -507,7 +514,14 @@ fieldset {
 }
 
 .done {
-	text-decoration: line-through;
+	text-decoration: underline black .1rem;
+  	text-underline-offset: -.3rem;
+ 	text-decoration-skip-ink: none;
+}
+
+h2.done {
+	text-decoration-thickness: 0.25rem;
+	text-underline-offset: -.5rem;
 }
 
 #test {
