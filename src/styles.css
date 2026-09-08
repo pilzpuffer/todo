@@ -110,12 +110,17 @@ ul {
 	position: relative;
 	border: 1px solid #bbb;
 	box-shadow: 1px 1px 1px rgba(0,0,0,0.25);
-  color: #000;
-  height: var(--note-size);
-  width: var(--note-size);
-  padding: 1em;
+	color: #000;
+	height: var(--note-size);
+	width: var(--note-size);
+	padding: 1em;
 	margin: 1em;
 	transition: transform .15s linear;
+	cursor: zoom-out;
+}
+
+.newNote:not(#selectedNote) {
+	cursor: pointer;
 }
 
 .newNote, .newProject {
@@ -323,9 +328,14 @@ textarea#projectTitle:focus {
 	outline: none;
 }
 
+.pin, #taskSubmit, #giveDeadline, #projectSubmit, #edit {
+	cursor: pointer;
+}
+
 #taskSubmit, 
 #projectSubmit,
-#giveDeadline {
+#giveDeadline,
+#edit {
 	position: absolute;
 	width: 2rem;
 	height: 2rem;
@@ -344,6 +354,10 @@ textarea#projectTitle:focus {
 #giveDeadline, #deadline {
 	top: 85%;
 	opacity: 70%
+}
+
+#edit {
+	left: 85%;
 }
 
 #deadline {
@@ -407,7 +421,6 @@ textarea#projectTitle:focus {
 
 fieldset {
 	--gap: 9px;
-	/* position: absolute; */
 	border: none;
 	margin: 0;
 	padding: 0;

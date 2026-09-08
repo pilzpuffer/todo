@@ -1,3 +1,5 @@
+import pencilImgSource from "./assets/img/pencil-outline.svg"
+
 import { allProjects } from "./trackProjectState.js";
 import { formatDistanceToNow } from "date-fns";
 
@@ -26,6 +28,14 @@ let newNote = function() {
     pin.addEventListener('click', function() {
         noteHolder.removeChild(note);
     })
+
+    let pencilButton = document.createElement("button");
+    pencilButton.id = 'edit';
+    let pencilImage = document.createElement("img");
+    pencilImage.src = pencilImgSource;
+    pencilButton.appendChild(pencilImage);
+    pencilButton.setAttribute('data-tooltip', 'Click to edit this note');
+    pencilButton.classList.add('removed');
 
     let noteContent = document.createElement("div");
     noteContent.classList.add("noteContent");
@@ -59,7 +69,16 @@ let newNote = function() {
     }
 
     note.appendChild(pin);
+    note.appendChild(pencilButton);
     note.appendChild(noteContent);
+
+    note.addEventListener('mouseenter', function() {
+        pencilButton.classList.remove('removed');
+    })
+
+    note.addEventListener('mouseleave', function() {
+        pencilButton.classList.add('removed');
+    })
 
     noteHolder.appendChild(note);   
     //need to add a deadline at creation/for editing, as well as an option to edit note text post-adding
