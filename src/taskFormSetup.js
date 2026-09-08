@@ -269,4 +269,4 @@ let createTaskForm = function() {
     //maybe i can add an option for lists?..
 }
 
-export { createTaskForm, createInput, assignRandomUniqueArrayValue };
+export { createTaskForm, createInput, assignRandomUniqueArrayValue, getRandomNumber, createManagedLimitedChildren, createChild, validateTaskForm, limitLines };

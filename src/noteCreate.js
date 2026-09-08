@@ -14,7 +14,7 @@ let newNote = function() {
     const noteData = new FormData(noteForm);
 
     let noteHolder = document.querySelector("#allTasks");
-    let getSelectedColor = document.querySelector("#selectedNote").getAttribute('style');
+    let getSelectedColor = document.querySelector("#selectedNote").classList[1];
     
     let note = document.createElement("li");
     note.dataset.id = crypto.randomUUID();
@@ -23,7 +23,7 @@ let newNote = function() {
 
     //to find currently open project and assign task that is being created to it:
     note.classList.add(`${getKeyByValue(allProjects, true)}`); 
-    note.setAttribute("style", getSelectedColor);
+    note.classList.add(getSelectedColor);
 
     let pin = document.createElement("div");
     pin.classList.add("pin");
