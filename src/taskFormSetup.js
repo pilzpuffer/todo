@@ -2,6 +2,7 @@ import pinImgSource from './assets/img/pin.svg';
 import deadlineAddImgSource from './assets/img/clock-plus.svg';
 
 import { newNote } from "./noteCreate.js";
+import { noteState } from "./noteEdit.js";
 
 function getRandomNumber(max) {
   return Math.floor(Math.random() * max);
@@ -168,38 +169,49 @@ let assignRandomUniqueArrayValue = function(array, compareArray) {
 }
 
 let createTaskForm = function() {
+
     let allNoteColors = ["critical", "high", "medium", "low", "minimal"];
     let presentColors = [];
 
-    let taskForm = document.createElement("form");
-    taskForm.classList.add('form');
-    taskForm.id = 'taskInfo';
-    taskForm.setAttribute('method', 'post');
+    let taskForm;
+    let taskFormEdited;
 
-    createInput('textarea', 'title', 'title', 'Add a title', taskForm);
-    createInput('textarea', 'description', 'description', 'Add a description', taskForm);
-    createInput('datetime-local', 'deadline', 'deadline', 'Add a deadline', taskForm)
+    if (noteState.beingEdited) {
+        taskFormEdited = document.createElement("form");
+        taskFormEdited.id = 'taskInfoEdit';
+        createInput('textarea', 'titleEdit', 'titleEdit', 'Add a title', taskFormEdited);
+        createInput('textarea', 'descriptionEdit', 'descriptionEdit', 'Add a description', taskFormEdited);
+        //createInput('datetime-local', 'deadline', 'deadline', 'Add a deadline', taskForm)
+    } else {
+        taskForm = document.createElement("form");
+        taskForm.id = 'taskInfo';
+        taskForm.classList.add('form');
+        taskForm.setAttribute('method', 'post');
+        createInput('textarea', 'title', 'title', 'Add a title', taskForm);
+        createInput('textarea', 'description', 'description', 'Add a description', taskForm);
+        createInput('datetime-local', 'deadline', 'deadline', 'Add a deadline', taskForm)
+    }
 
     let noteHolder = document.querySelector("#allTasks");
     let noteWrapper = document.createElement("li");
     noteWrapper.classList.add("wrapper");
 
     let pinButton = document.createElement("button");
-    pinButton.id = 'taskSubmit';
+    noteState.beingEdited ? pinButton.id = 'taskSubmitEdit' : pinButton.id = 'taskSubmit';
     let pinImage = document.createElement("img")
     pinImage.src = pinImgSource;
     pinButton.appendChild(pinImage)
     pinButton.setAttribute('type', 'submit');
-    pinButton.setAttribute('data-tooltip', 'Click to pin a new note');
+    noteState.beingEdited ? pinButton.setAttribute('data-tooltip', 'Click to pin back the edited note') : pinButton.setAttribute('data-tooltip', 'Click to pin a new note');
 
     let clockButton = document.createElement("button");
-    clockButton.id = 'giveDeadline';
+    noteState.beingEdited ? clockButton.id = 'giveDeadlineEdit' : clockButton.id = 'giveDeadline';
     let clockImage = document.createElement("img");
     clockImage.src = deadlineAddImgSource;
     clockButton.appendChild(clockImage);
     clockButton.setAttribute('data-tooltip', 'Click to set a deadline');
 
-    pinButton.addEventListener('click', function(event) {
+    pinButton.addEventListener('click', function(event) { //will need to manage the submit logic separately for submitted/new notes
         event.preventDefault();
 
         if (validateTaskForm()) {
@@ -210,7 +222,7 @@ let createTaskForm = function() {
         }
     })
 
-    clockButton.addEventListener('click', function(event) {
+    clockButton.addEventListener('click', function(event) { //same here, time should be managed
         clockButton.classList.add('removed');
         deadline.classList.remove('removed');
     })
@@ -269,4 +281,4 @@ let createTaskForm = function() {
     //maybe i can add an option for lists?..
 }
 
-export { createTaskForm, createInput, assignRandomUniqueArrayValue, getRandomNumber, createManagedLimitedChildren, createChild, validateTaskForm, limitLines };
+export { assignRandomUniqueArrayValue, validateTaskForm, createTaskForm, createInput };

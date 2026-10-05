@@ -18,7 +18,6 @@ let newNote = function() {
     
     let note = document.createElement("li");
     note.dataset.id = crypto.randomUUID();
-    console.log(note.dataset.id);
     note.classList.add("note");
 
     //to find currently open project and assign task that is being created to it:
@@ -85,6 +84,18 @@ let newNote = function() {
     note.addEventListener('mouseleave', function() {
         pencilButton.classList.add('removed');
     })
+
+    let notePreservationInfo = {
+        id: note.dataset.id,
+        title: noteData.get("title"),
+        description: noteData.get("description"),
+        priority: getSelectedColor,
+        deadline: noteData.get('deadline'),
+        project: getKeyByValue(allProjects, true)
+    }
+
+    JSON.stringify(notePreservationInfo);
+    localStorage.setItem(`${note.dataset.id}`, JSON.stringify(notePreservationInfo));
 
     noteHolder.appendChild(note);   
     //need to add a deadline at creation/for editing, as well as an option to edit note text post-adding

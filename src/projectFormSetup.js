@@ -3,6 +3,8 @@ import { newProject } from "./projectCreate.js";
 
 import { createInput, assignRandomUniqueArrayValue } from "./taskFormSetup.js";
 
+//adjust how unselected labels look!!! at the moment, their 'dogtag' is inside the main part of the page, while it should be outside
+
 let validateProjectForm = function() {
     let title = document.forms["projectInfo"]["projectTitle"].value;
 
@@ -60,7 +62,7 @@ let createProjectForm = function() {
         label.classList.add("newProject", labelColor);
         label.setAttribute("for", "newProject");
 
-        label.addEventListener("click", function() {
+        label.addEventListener("click", function(event) {
             event.stopPropagation();
 
             if (event.target.classList[0] === 'newProject' && event.target.id !== 'selectedProject') {
