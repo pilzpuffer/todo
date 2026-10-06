@@ -172,7 +172,7 @@ ul {
 
 .wrapper {
 	padding: 0 10% 0;
-	margin-right: 10%;
+	margin-right: clamp( 1.5rem, 10%, 3rem);
 	height: var(--note-size);
 	width: var(--note-size);
 }

@@ -4,6 +4,7 @@ import { newProject } from "./projectCreate.js";
 import { createInput, assignRandomUniqueArrayValue } from "./taskFormSetup.js";
 
 //adjust how unselected labels look!!! at the moment, their 'dogtag' is inside the main part of the page, while it should be outside
+//also, we need a way to edit and delete projects
 
 let validateProjectForm = function() {
     let title = document.forms["projectInfo"]["projectTitle"].value;

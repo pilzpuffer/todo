@@ -3,25 +3,33 @@ import pencilImgSource from "./assets/img/pencil-outline.svg"
 import { allProjects } from "./trackProjectState.js";
 import { editNote } from "./noteEdit.js";
 import { formatDistanceToNow } from "date-fns";
+import { id } from "date-fns/locale";
 
 let getKeyByValue = function(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }
 
-let newNote = function() {   
+
+
+let newNote = function(id, title, description, priority, deadline, project) {   
     let noteForm = document.querySelector("#taskInfo");
 
     const noteData = new FormData(noteForm);
 
     let noteHolder = document.querySelector("#allTasks");
-    let getSelectedColor = document.querySelector("#selectedNote").classList[1];
+    let getSelectedColor = priority === undefined ? document.querySelector("#selectedNote").classList[1] : priority;
     
     let note = document.createElement("li");
-    note.dataset.id = crypto.randomUUID();
+    note.dataset.id = id === undefined? crypto.randomUUID() : id;
     note.classList.add("note");
 
     //to find currently open project and assign task that is being created to it:
-    note.classList.add(`${getKeyByValue(allProjects, true)}`); 
+    if (project === undefined) {
+        note.classList.add(`${getKeyByValue(allProjects, true)}`); 
+    } else {
+        note.classList.add(project); 
+    }
+    
     note.classList.add(getSelectedColor);
 
     let pin = document.createElement("div");
@@ -48,14 +56,14 @@ let newNote = function() {
     let textHolder = document.createElement("div");
 
     let noteTitle = document.createElement("h2");
-    noteTitle.textContent = noteData.get("title");
+    noteTitle.textContent = title === undefined ? noteData.get("title") : title;
     noteTitle.addEventListener('click', function() {
         noteDescription.classList.toggle('done');
         noteTitle.classList.toggle('done');
     })
 
     let noteDescription = document.createElement("p");
-    noteDescription.textContent = noteData.get("description");
+    noteDescription.textContent = description === undefined ? noteData.get("description") : description;
     noteDescription.addEventListener('click', function() {
         noteDescription.classList.toggle('done');
         noteTitle.classList.toggle('done');
@@ -66,11 +74,11 @@ let newNote = function() {
     noteContent.appendChild(textHolder);
 
     if (noteData.get('deadline')) {
-        let noteDeadline = document.createElement("p");
-        noteDeadline.id = 'noteDeadline';
-        let timeDiff = formatDistanceToNow(new Date(noteData.get('deadline')), {addSuffix: true});
-        noteDeadline.textContent = timeDiff;  
-        noteContent.appendChild(noteDeadline);
+            let noteDeadline = document.createElement("p");
+            noteDeadline.id = 'noteDeadline';
+            let timeDiff = formatDistanceToNow(new Date(noteData.get('deadline')), {addSuffix: true});
+            noteDeadline.textContent = timeDiff;  
+            noteContent.appendChild(noteDeadline);
     }
 
     note.appendChild(pin);
@@ -85,19 +93,21 @@ let newNote = function() {
         pencilButton.classList.add('removed');
     })
 
-    let notePreservationInfo = {
-        id: note.dataset.id,
-        title: noteData.get("title"),
-        description: noteData.get("description"),
-        priority: getSelectedColor,
-        deadline: noteData.get('deadline'),
-        project: getKeyByValue(allProjects, true)
+    if (id === undefined) {
+        let notePreservationInfo = {
+            id: note.dataset.id,
+            title: noteData.get("title"),
+            description: noteData.get("description"),
+            priority: getSelectedColor,
+            deadline: noteData.get('deadline'),
+            project: getKeyByValue(allProjects, true)
+        }
+
+        JSON.stringify(notePreservationInfo);
+        localStorage.setItem(`${localStorage.length}`, JSON.stringify(notePreservationInfo));
     }
 
-    JSON.stringify(notePreservationInfo);
-    localStorage.setItem(`${note.dataset.id}`, JSON.stringify(notePreservationInfo));
-
-    noteHolder.appendChild(note);   
+    noteHolder.appendChild(note);  
     //need to add a deadline at creation/for editing, as well as an option to edit note text post-adding
 }
 
