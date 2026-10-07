@@ -36,7 +36,9 @@ let newNote = function(id, title, description, priority, deadline, project) {
     pin.classList.add("pin");
     pin.setAttribute('data-tooltip', 'Click to unpin this note');
     pin.addEventListener('click', function() {
+        console.log(note.dataset.id)
         noteHolder.removeChild(note);
+        localStorage.removeItem(note.dataset.id);
     })
 
     let pencilButton = document.createElement("button");
@@ -101,7 +103,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
             priority: getSelectedColor,
             deadline: noteData.get('deadline'),
             project: getKeyByValue(allProjects, true),
-            order: localStorage.length
+            timestamp: new Date(Date.now())
         }
 
         JSON.stringify(notePreservationInfo);
