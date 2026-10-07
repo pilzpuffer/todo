@@ -100,11 +100,12 @@ let newNote = function(id, title, description, priority, deadline, project) {
             description: noteData.get("description"),
             priority: getSelectedColor,
             deadline: noteData.get('deadline'),
-            project: getKeyByValue(allProjects, true)
+            project: getKeyByValue(allProjects, true),
+            order: localStorage.length
         }
 
         JSON.stringify(notePreservationInfo);
-        localStorage.setItem(`${localStorage.length}`, JSON.stringify(notePreservationInfo));
+        localStorage.setItem(`${note.dataset.id}`, JSON.stringify(notePreservationInfo));
     }
 
     noteHolder.appendChild(note);  
