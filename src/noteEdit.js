@@ -4,26 +4,29 @@ import deadlineAddImgSource from './assets/img/clock-plus.svg';
 import { createTaskForm } from "./taskFormSetup.js";
 
 let noteState = {
-    beingEdited: false
+    beingEdited: false,
+    hasDeadline: false
 }
 
 let editNote = function(editedNote) {
-    console.log(editedNote);
-    let noteID = editedNote.dataset.id;
-    let notePriority = editedNote.classList[2]; //assign this as the currently selected edit note
-    let currentNote = document.querySelector(`[data-id="${noteID}"]`);
-    noteState.editedNotePriority = notePriority;
-    console.log(noteState)
-    // let noteTitle = document.querySelector(`[data-id="${noteID}"] div.noteContent div h2`)
-    // let noteDescription = document.querySelector(`[data-id="${noteID}"] div.noteContent div p`)
-    // console.log(noteTitle)
-    // console.log(noteDescription.value);
-
-    //will need to manage tis through createTaskForm function, it needs adjustments
-
-    currentNote.replaceWith(createTaskForm());
     noteState['beingEdited'] = true;
 
+    let noteID = editedNote.dataset.id;
+    let currentNoteDOM = document.querySelector(`[data-id="${noteID}"]`);
+    let currentNote = JSON.parse(localStorage.getItem(noteID));
+    if (currentNote.deadline !== undefined) noteState.hasDeadline = true
+
+    //manage through localStorage!!!!!!!!!!!!
+    //assign the priority key as the currently selected edit note in the form (instead of 'medium' as default)
+    
+    currentNoteDOM.remove();
+    createTaskForm();
+    let editedNoteAssignPriority = document.querySelector(`.editedNote.${currentNote.priority}`);
+    editedNoteAssignPriority.click();
+
+    document.forms["taskInfoEdit"]["titleEdit"].value = currentNote.title;
+    document.forms["taskInfoEdit"]["descriptionEdit"].value = currentNote.description;
+    document.forms["taskInfoEdit"]["deadlineEdit"].value = currentNote.deadline;
 }
 
 export { editNote, noteState }

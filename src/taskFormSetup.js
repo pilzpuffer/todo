@@ -173,24 +173,21 @@ let createTaskForm = function() {
     let allNoteColors = ["critical", "high", "medium", "low", "minimal"];
     let presentColors = [];
 
-    let taskForm;
-    let taskFormEdited;
+    let taskForm = document.createElement("form");
+    taskForm.id = noteState.beingEdited ? 'taskInfoEdit' : 'taskInfo';
+    taskForm.classList.add('form');
+    taskForm.setAttribute('method', 'post');
 
     if (noteState.beingEdited) {
-        taskFormEdited = document.createElement("form");
-        taskFormEdited.id = 'taskInfoEdit';
-        createInput('textarea', 'titleEdit', 'titleEdit', 'Add a title', taskFormEdited);
-        createInput('textarea', 'descriptionEdit', 'descriptionEdit', 'Add a description', taskFormEdited);
-        //createInput('datetime-local', 'deadline', 'deadline', 'Add a deadline', taskForm)
-    } else {
-        taskForm = document.createElement("form");
-        taskForm.id = 'taskInfo';
-        taskForm.classList.add('form');
-        taskForm.setAttribute('method', 'post');
-        createInput('textarea', 'title', 'title', 'Add a title', taskForm);
+        createInput('textarea', 'titleEdit', 'titleEdit', 'Add a title', taskForm)
+        createInput('textarea', 'descriptionEdit', 'descriptionEdit', 'Add a description', taskForm);
+        createInput('datetime-local', 'deadlineEdit', 'deadlineEdit', 'Add a deadline', taskForm)
+        
+    }  else {
+        createInput('textarea', 'title', 'title', 'Add a title', taskForm)
         createInput('textarea', 'description', 'description', 'Add a description', taskForm);
         createInput('datetime-local', 'deadline', 'deadline', 'Add a deadline', taskForm)
-    }
+    }  
 
     let noteHolder = document.querySelector("#allTasks");
     let noteWrapper = document.createElement("li");
@@ -220,6 +217,9 @@ let createTaskForm = function() {
             deadline.classList.add('removed');
             taskForm.reset();
         }
+
+        //create separate validation rules for edited notes, set editing state to false on submission
+        // noteState['beingEdited'] = false;
     })
 
     clockButton.addEventListener('click', function(event) { //same here, time should be managed
@@ -227,27 +227,31 @@ let createTaskForm = function() {
         deadline.classList.remove('removed');
     })
 
-    for (let i = 0; i < 5; i++) {
-        let note = document.createElement("div");
-        let noteColor = `${assignRandomUniqueArrayValue(allNoteColors, presentColors)}`
-        note.classList.add("newNote", noteColor);
-
-        note.addEventListener("click", function(event) {
-            if (event.target.classList[0] === 'newNote' && event.target.id !== 'selectedNote') {
-                let allNewNoteColors = document.querySelectorAll(".newNote");
-                allNewNoteColors.forEach((note) => {
-                if (note.id === 'selectedNote') {
-                    let currentlySelected = document.querySelector('#selectedNote');
+    let manageSelectedNote = function(event, noteSelector, id) {
+        if (event.target.classList[0] === noteSelector && event.target.id !== id) {
+            let allNewNoteColors = document.querySelectorAll(`.${noteSelector}`);
+            allNewNoteColors.forEach((note) => {
+                if (note.id === id) {
+                    let currentlySelected = document.querySelector(`#${id}`);
                     currentlySelected.removeChild(taskForm);
                     currentlySelected.removeAttribute('id'); 
                 }
-                })
-                event.target.id = 'selectedNote';
-                event.target.appendChild(pinButton);
-                event.target.appendChild(taskForm);  
-                event.target.appendChild(clockButton);  
-            }
-            
+            })
+            event.target.id = id;
+            event.target.appendChild(pinButton);
+            event.target.appendChild(taskForm);  
+            event.target.appendChild(clockButton);  
+        }
+    }
+
+    for (let i = 0; i < 5; i++) {
+        let note = document.createElement("div");
+        let noteColor = `${assignRandomUniqueArrayValue(allNoteColors, presentColors)}`
+        noteState.beingEdited ? note.classList.add("editedNote", noteColor) : note.classList.add("newNote", noteColor);
+
+        note.addEventListener("click", function(event) {
+            if (noteState.beingEdited) manageSelectedNote(event, 'editedNote', 'selectedNoteEdit')  
+            manageSelectedNote(event, 'newNote', 'selectedNote');       
         })
 
         let allowedKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Backspace'];
@@ -261,9 +265,16 @@ let createTaskForm = function() {
         })
 
         note.addEventListener('input', function(event) {
-            let titleId = document.querySelector('#title');
-            let descriptionId = document.querySelector('#description');
-            limitLines(event, 4, 6, taskForm, titleId, descriptionId);
+            console.log(event);
+            if (noteState.beingEdited) {
+                let titleIdEdit = document.querySelector('#titleEdit');
+                let descriptionIdEdit = document.querySelector('#descriptionEdit');
+                limitLines(event, 4, 6, taskForm, titleIdEdit, descriptionIdEdit);
+            } else {
+                let titleId = document.querySelector('#title');
+                let descriptionId = document.querySelector('#description');
+                limitLines(event, 4, 6, taskForm, titleId, descriptionId);
+            }   
         })
 
         note.addEventListener('paste', function(event) {

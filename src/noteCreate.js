@@ -3,7 +3,7 @@ import pencilImgSource from "./assets/img/pencil-outline.svg"
 import { allProjects } from "./trackProjectState.js";
 import { editNote } from "./noteEdit.js";
 import { formatDistanceToNow } from "date-fns";
-import { id } from "date-fns/locale";
+import { noteState } from "./noteEdit.js";
 
 let getKeyByValue = function(object, value) {
     return Object.keys(object).find(key => object[key] === value);
@@ -36,7 +36,6 @@ let newNote = function(id, title, description, priority, deadline, project) {
     pin.classList.add("pin");
     pin.setAttribute('data-tooltip', 'Click to unpin this note');
     pin.addEventListener('click', function() {
-        console.log(note.dataset.id)
         noteHolder.removeChild(note);
         localStorage.removeItem(note.dataset.id);
     })
@@ -49,7 +48,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
     pencilButton.setAttribute('data-tooltip', 'Click to edit this note');
     pencilButton.classList.add('removed');
     pencilButton.addEventListener('click', function(event) {
-        editNote(note);
+        noteState.beingEdited ? alert('Please finish editing the previous note first.') : editNote(note);
     });
 
     let noteContent = document.createElement("div");
@@ -76,11 +75,11 @@ let newNote = function(id, title, description, priority, deadline, project) {
     noteContent.appendChild(textHolder);
 
     if (noteData.get('deadline')) {
-            let noteDeadline = document.createElement("p");
-            noteDeadline.id = 'noteDeadline';
-            let timeDiff = formatDistanceToNow(new Date(noteData.get('deadline')), {addSuffix: true});
-            noteDeadline.textContent = timeDiff;  
-            noteContent.appendChild(noteDeadline);
+        let noteDeadline = document.createElement("p");
+        noteDeadline.classList.add('noteDeadline');
+        let timeDiff = formatDistanceToNow(new Date(noteData.get('deadline')), {addSuffix: true});
+        noteDeadline.textContent = timeDiff;  
+        noteContent.appendChild(noteDeadline);
     }
 
     note.appendChild(pin);

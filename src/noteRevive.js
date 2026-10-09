@@ -11,7 +11,7 @@ let revive = function() {
         let item = JSON.parse( localStorage.getItem( key ) );
         allNotes.push(item)
     }
-    
+
     allNotes.sort((a, b) => compareAsc(a.timestamp, b.timestamp)); //sorting in ascending order
     allNotes.forEach((note) => newNote(note.id, note.title, note.description, note.priority, note.project)); //item.deadline
 }

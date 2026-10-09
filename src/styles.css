@@ -125,7 +125,8 @@ ul {
 	}
 
 .note,
-.newNote {
+.newNote,
+.editedNote {
 	font-family: "Caveat";
 	text-decoration: none;
 	position: relative;
@@ -140,11 +141,12 @@ ul {
 	cursor: zoom-out;
 }
 
-.newNote:not(#selectedNote) {
+.newNote:not(#selectedNote),
+.editedNote:not(#selectedNoteEdit) {
 	cursor: pointer;
 }
 
-.newNote, .newProject {
+.newNote, .editedNote, .newProject {
 	position: absolute !important;
 	box-shadow: none;
 }
@@ -157,7 +159,7 @@ ul {
 	z-index: 6;
 }
 
-#noteDeadline {
+.noteDeadline {
 	align-self: center;
 	opacity: 70%;
 }
@@ -178,13 +180,15 @@ ul {
 }
 
 .note h2,
-.form textarea#title {
+.form textarea#title,
+.form textarea#titleEdit {
 	font-weight: bold;
 	font-size: 2rem;
 }
 
 .note p,
-.form textarea#description  {
+.form textarea#description,
+.form textarea#descriptionEdit {
 	font-size: 1.3rem;
 }
 
@@ -231,47 +235,57 @@ ul li:focus{
 	z-index: 6;
 }
 
-.newNote.minimal {
+.newNote.minimal,
+.editedNote.minimal {
 	transform: rotate(5deg);
 	top: 1rem;
 	left: 2rem;
 }
 
-.newNote.low {
+.newNote.low,
+.editedNote.low  {
 	transform: rotate(3deg);
 	top: -1.5rem;
 	left: 1rem;
 }
 
-.newNote.medium {
+.newNote.medium,
+.editedNote.medium  {
 	transform: rotate(-2deg);
 	top: 2rem;
 	left: 2rem;
 }
 
-.newNote.high {
+.newNote.high,
+.editedNote.high {
 	transform: rotate(-7deg);
 	top: 1rem;
 	left: -1rem;
 }
 
-.newNote.critical {
+.newNote.critical,
+.editedNote.critical {
 	transform: rotate(7deg);
 	top: -0.5rem;
 	left: -1rem;
 }
 
-.newNote:hover {
+.newNote:hover,
+.editedNote:hover {
 	transform: translate(0, 0);
 	transition-duration: 0.2s;
 	transition-timing-function: cubic-bezier(1, 1, 0.5, 1.3333);
 }
 
-.wrapper:hover #selectedNote, #selectedProject {
+.wrapper:hover #selectedNote, 
+.wrapper:hover #selectedNoteEdit,
+#selectedProject {
 	transform: translate(0, 0);
 }
 
-#selectedNote, #selectedProject {
+#selectedNote, 
+#selectedNoteEdit,
+#selectedProject {
 	z-index: 6;
 	top: 0rem;
 	left: 0rem;
@@ -332,7 +346,8 @@ ul li:focus{
 	align-self: start;
 }
 
-#title:not(.removed) + #description {
+#title:not(.removed) + #description,
+#titleEdit:not(.removed) + #descriptionEdit  {
 	margin-top: -0.7rem;
 }
 
@@ -353,13 +368,15 @@ textarea#projectTitle:focus {
 	pointer-events: none;
 }
 
-.pin, #taskSubmit, #giveDeadline, #projectSubmit, #edit {
+.pin, #taskSubmit, #taskSubmitEdit, #giveDeadline, #giveDeadlineEdit, #projectSubmit, #edit {
 	cursor: pointer;
 }
 
 #taskSubmit, 
+#taskSubmitEdit,
 #projectSubmit,
 #giveDeadline,
+#giveDeadlineEdit,
 #edit {
 	position: absolute;
 	width: 2rem;
@@ -376,7 +393,7 @@ textarea#projectTitle:focus {
 	top: 70%;
 }
 
-#giveDeadline, #deadline {
+#giveDeadline, #deadline, #giveDeadlineEdit, #deadlineEdit {
 	top: 85%;
 	opacity: 70%
 }
@@ -385,7 +402,8 @@ textarea#projectTitle:focus {
 	left: 85%;
 }
 
-#deadline {
+#deadline,
+#deadlineEdit {
 	position: absolute;
 	outline: none;
 	border: none;
@@ -397,6 +415,7 @@ textarea#projectTitle:focus {
 }
 
 #taskSubmit img, 
+#taskSubmitEdit img,
 #projectSubmit img {
 	width: 2rem;
 	height: 2rem;
@@ -404,6 +423,7 @@ textarea#projectTitle:focus {
 }
 
 #taskSubmit:hover img,
+#taskSubmitEdit:hover img,
 #projectSubmit:hover img {
 	transform: rotate(0deg);
 }
@@ -432,7 +452,8 @@ textarea#projectTitle:focus {
 	left: -200%;
 }
 
-#giveDeadline[data-tooltip]::before {
+#giveDeadline[data-tooltip]::before,
+#giveDeadlineEdit[data-tooltip]::before {
 	margin-top: 0.5rem;
 }
 
