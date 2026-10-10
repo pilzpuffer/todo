@@ -13,7 +13,7 @@ let revive = function() {
     }
 
     allNotes.sort((a, b) => compareAsc(a.timestamp, b.timestamp)); //sorting in ascending order
-    allNotes.forEach((note) => newNote(note.id, note.title, note.description, note.priority, note.project)); //item.deadline
+    allNotes.forEach((note) => newNote(note.id, note.title, note.description, note.priority, note.deadline, note.project));
 }
 
 export { revive }

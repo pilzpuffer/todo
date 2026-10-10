@@ -47,7 +47,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
     pencilButton.appendChild(pencilImage);
     pencilButton.setAttribute('data-tooltip', 'Click to edit this note');
     pencilButton.classList.add('removed');
-    pencilButton.addEventListener('click', function(event) {
+    pencilButton.addEventListener('click', function() {
         noteState.beingEdited ? alert('Please finish editing the previous note first.') : editNote(note);
     });
 
@@ -74,10 +74,10 @@ let newNote = function(id, title, description, priority, deadline, project) {
     textHolder.appendChild(noteDescription);
     noteContent.appendChild(textHolder);
 
-    if (noteData.get('deadline')) {
+    if (noteData.get('deadline') || deadline !== undefined) {
         let noteDeadline = document.createElement("p");
         noteDeadline.classList.add('noteDeadline');
-        let timeDiff = formatDistanceToNow(new Date(noteData.get('deadline')), {addSuffix: true});
+        let timeDiff = deadline === undefined ? formatDistanceToNow(new Date(noteData.get('deadline')), {addSuffix: true}) : formatDistanceToNow(new Date(deadline), {addSuffix: true});
         noteDeadline.textContent = timeDiff;  
         noteContent.appendChild(noteDeadline);
     }
