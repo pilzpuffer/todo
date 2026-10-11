@@ -168,7 +168,7 @@ let assignRandomUniqueArrayValue = function(array, compareArray) {
     return select
 }
 
-let createTaskForm = function() {
+let createTaskForm = function(elementOrder) {
 
     let allNoteColors = ["critical", "high", "medium", "low", "minimal"];
     let presentColors = [];
@@ -207,6 +207,9 @@ let createTaskForm = function() {
     clockImage.src = deadlineAddImgSource;
     clockButton.appendChild(clockImage);
     clockButton.setAttribute('data-tooltip', 'Click to set a deadline');
+    if (noteState.beingEdited && noteState.hasDeadline) {
+        clockButton.classList.add('removed');
+    }
 
     pinButton.addEventListener('click', function(event) { //will need to manage the submit logic separately for submitted/new notes
         event.preventDefault();
@@ -265,7 +268,6 @@ let createTaskForm = function() {
         })
 
         note.addEventListener('input', function(event) {
-            console.log(event);
             if (noteState.beingEdited) {
                 let titleIdEdit = document.querySelector('#titleEdit');
                 let descriptionIdEdit = document.querySelector('#descriptionEdit');
@@ -284,9 +286,15 @@ let createTaskForm = function() {
         })
 
         noteWrapper.appendChild(note); 
+        
     }
 
-    noteHolder.appendChild(noteWrapper);
+    if (elementOrder === 'undefined') {
+        noteHolder.appendChild(noteWrapper); 
+    } else {
+        noteHolder.insertBefore(noteWrapper, noteHolder.children[elementOrder]);
+    }
+
     let mediumNote = document.querySelector(".newNote.medium");
     mediumNote.click();
     //maybe i can add an option for lists?..

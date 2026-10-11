@@ -74,10 +74,19 @@ let newNote = function(id, title, description, priority, deadline, project) {
     textHolder.appendChild(noteDescription);
     noteContent.appendChild(textHolder);
 
+
     if (noteData.get('deadline') || deadline !== undefined) {
         let noteDeadline = document.createElement("p");
         noteDeadline.classList.add('noteDeadline');
-        let timeDiff = deadline === undefined ? formatDistanceToNow(new Date(noteData.get('deadline')), {addSuffix: true}) : formatDistanceToNow(new Date(deadline), {addSuffix: true});
+        let timeDiff;
+        if (deadline !== undefined && deadline.length > 0) {
+            timeDiff = formatDistanceToNow(new Date(deadline), {addSuffix: true});
+        } 
+        
+        if (noteData.get('deadline')) {
+            timeDiff =  formatDistanceToNow(new Date(noteData.get('deadline')), {addSuffix: true});
+        }
+         
         noteDeadline.textContent = timeDiff;  
         noteContent.appendChild(noteDeadline);
     }
