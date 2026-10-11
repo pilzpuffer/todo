@@ -20,24 +20,18 @@ let editNote = function(editedNote) {
     let currentNote = JSON.parse(localStorage.getItem(noteID));
     if (currentNote.deadline !== undefined) noteState.hasDeadline = true
 
-    //manage through localStorage!!!!!!!!!!!!
-    //assign the priority key as the currently selected edit note in the form (instead of 'medium' as default)
     let noteHolder = document.querySelector("#allTasks");
-    
-    console.log(elementOrder(noteHolder, currentNoteDOM))
-    console.log(noteHolder.children);
     let rightOrder = elementOrder(noteHolder, currentNoteDOM);
-    console.log(rightOrder)
     currentNoteDOM.remove();
     
-    createTaskForm(rightOrder);
+    console.log(rightOrder)
+    createTaskForm(rightOrder); //causes issues with element with id of 6/12/etc for some reason????
     let editedNoteAssignPriority = document.querySelector(`.editedNote.${currentNote.priority}`);
     editedNoteAssignPriority.click();
 
     document.forms["taskInfoEdit"]["titleEdit"].value = currentNote.title;
     document.forms["taskInfoEdit"]["descriptionEdit"].value = currentNote.description;
-    console.log(document.forms["taskInfoEdit"]["deadlineEdit"].value);
-    if (document.forms["taskInfoEdit"]["deadlineEdit"].value > 0) {
+    if (currentNote.deadline !== undefined) {
         document.forms["taskInfoEdit"]["deadlineEdit"].value = currentNote.deadline;
     }
     

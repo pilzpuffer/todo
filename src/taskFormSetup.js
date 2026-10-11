@@ -22,7 +22,7 @@ let createInput = function(inputType, setName, setID, setPlaceholder, appendTo) 
     if (setPlaceholder.length > 0) {
         newInput.setAttribute('placeholder', `${setPlaceholder}`);
     }
-    if (setID === 'deadline') {
+    if (setID === 'deadline' || (setID === 'deadlineEdit' && noteState.hasDeadline === false)) { 
         newInput.classList.add('removed');
     }
     appendTo.appendChild(newInput);
@@ -60,11 +60,19 @@ let childStatus = {
 }
 
 let validateTaskForm = function() {
-    let titleLength = document.forms["taskInfo"]["title"].value.length;
-    let descriptionLength = document.forms["taskInfo"]["description"].value.length;
+    let titleLength;
+    let descriptionLength;
+
+    if (noteState.beingEdited) {
+        titleLength = document.forms["taskInfoEdit"]["titleEdit"].value.length;
+        descriptionLength = document.forms["taskInfoEdit"]["descriptionEdit"].value.length;
+    } else {
+        titleLength = document.forms["taskInfo"]["title"].value.length;
+        descriptionLength = document.forms["taskInfo"]["description"].value.length;
+    }   
 
     if (descriptionLength === 0 && titleLength === 0) {
-        alert("Please write something on this new note.");
+        noteState.beingEdited ? alert("Please write something on this edited note.") : alert("Please write something on this new note.");
         return false
     } else {
         return true
@@ -207,8 +215,10 @@ let createTaskForm = function(elementOrder) {
     clockImage.src = deadlineAddImgSource;
     clockButton.appendChild(clockImage);
     clockButton.setAttribute('data-tooltip', 'Click to set a deadline');
-    if (noteState.beingEdited && noteState.hasDeadline) {
-        clockButton.classList.add('removed');
+    if (noteState.beingEdited) {
+        if (noteState.hasDeadline) {
+            clockButton.classList.add('removed');
+        } 
     }
 
     pinButton.addEventListener('click', function(event) { //will need to manage the submit logic separately for submitted/new notes
@@ -292,7 +302,12 @@ let createTaskForm = function(elementOrder) {
     if (elementOrder === 'undefined') {
         noteHolder.appendChild(noteWrapper); 
     } else {
+        if (elementOrder % 6 === 0) {
+            elementOrder -= 1; ////???????? this is really a mystery issue, any 6th element just fucks off to the same place where the 'initial' form is located?? temp fix, investigate
+        }
+        console.log(elementOrder)
         noteHolder.insertBefore(noteWrapper, noteHolder.children[elementOrder]);
+        
     }
 
     let mediumNote = document.querySelector(".newNote.medium");
