@@ -218,6 +218,8 @@ let createTaskForm = function(elementOrder) {
     if (noteState.beingEdited) {
         if (noteState.hasDeadline) {
             clockButton.classList.add('removed');
+            // console.log(deadlineEdit)
+            // deadline.classlist.remove('removed');
         } 
     }
 
@@ -227,6 +229,7 @@ let createTaskForm = function(elementOrder) {
         if (validateTaskForm()) {
             newNote();
             clockButton.classList.remove('removed');
+            console.log(deadline)
             deadline.classList.add('removed');
             taskForm.reset();
         }
@@ -302,12 +305,7 @@ let createTaskForm = function(elementOrder) {
     if (elementOrder === 'undefined') {
         noteHolder.appendChild(noteWrapper); 
     } else {
-        if (elementOrder % 6 === 0) {
-            elementOrder -= 1; ////???????? this is really a mystery issue, any 6th element just fucks off to the same place where the 'initial' form is located?? temp fix, investigate
-        }
-        console.log(elementOrder)
-        noteHolder.insertBefore(noteWrapper, noteHolder.children[elementOrder]);
-        
+        noteHolder.insertBefore(noteWrapper, noteHolder.children[elementOrder]);   
     }
 
     let mediumNote = document.querySelector(".newNote.medium");

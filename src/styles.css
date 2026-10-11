@@ -195,6 +195,10 @@ ul {
 /* if this 1st rule is removed, all n % 7 (% 15) AND (% 22) === 0  notes get fucked up??? 
 BUT if all rules are left as-is OR if all of them are removed, that fucks up notes where n % 6 === 0 IN THE SAME WAY
 as it's happening to above-described notes*/
+ul li {
+	position:relative;
+}
+
 ul li:nth-child(even){ 
   transform:rotate(4deg);
   position:relative;
@@ -216,7 +220,6 @@ ul li:hover,
 ul li:focus{
   box-shadow: 3px 5px 10px rgba(33,33,33,.7);
   transform: scale(1.25);
-  position:relative;
   z-index:5;
 }
 
