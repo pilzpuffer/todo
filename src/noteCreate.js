@@ -9,19 +9,28 @@ let getKeyByValue = function(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }
 
-
-
 let newNote = function(id, title, description, priority, deadline, project) {   
-    let noteForm = document.querySelector("#taskInfo");
+    let noteForm;
+    let noteHolder = document.querySelector("#allTasks");
+    let note = document.createElement("li");
+    note.classList.add("note");
+    
+    let selectedNote;
+    if (noteState.beingEdited) {
+        selectedNote = document.querySelector("#selectedNoteEdit");
+        noteForm = document.querySelector("#taskInfoEdit"); //notes are not getting this data, for some reason?
+        note.dataset.id = noteState.editedNoteId;
+    } else {
+        selectedNote = document.querySelector("#selectedNote");
+        noteForm = document.querySelector("#taskInfo");
+        note.dataset.id = id === undefined? crypto.randomUUID() : id;
+    }
 
     const noteData = new FormData(noteForm);
+    console.log(noteState.beingEdited);
+    // console.log(noteData.get("titleEdit")) <-comes up blank when the note is revived, makes sense
 
-    let noteHolder = document.querySelector("#allTasks");
-    let getSelectedColor = priority === undefined ? document.querySelector("#selectedNote").classList[1] : priority;
-    
-    let note = document.createElement("li");
-    note.dataset.id = id === undefined? crypto.randomUUID() : id;
-    note.classList.add("note");
+    let getSelectedColor = priority === undefined ? selectedNote.classList[1] : priority;    
 
     //to find currently open project and assign task that is being created to it:
     if (project === undefined) {
@@ -41,7 +50,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
     })
 
     let pencilButton = document.createElement("button");
-    pencilButton.id = 'edit';
+    pencilButton.classList.add('edit');
     let pencilImage = document.createElement("img");
     pencilImage.src = pencilImgSource;
     pencilButton.appendChild(pencilImage);
@@ -57,6 +66,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
     let textHolder = document.createElement("div");
 
     let noteTitle = document.createElement("h2");
+    //let titleText = noteData.get("title") : noteData.get("titleEdit") : title
     noteTitle.textContent = title === undefined ? noteData.get("title") : title;
     noteTitle.addEventListener('click', function() {
         noteDescription.classList.toggle('done');
@@ -73,7 +83,6 @@ let newNote = function(id, title, description, priority, deadline, project) {
     textHolder.appendChild(noteTitle);
     textHolder.appendChild(noteDescription);
     noteContent.appendChild(textHolder);
-
 
     if (noteData.get('deadline') || deadline !== undefined) {
         let noteDeadline = document.createElement("p");
@@ -113,6 +122,8 @@ let newNote = function(id, title, description, priority, deadline, project) {
             project: getKeyByValue(allProjects, true),
             timestamp: new Date(Date.now())
         }
+
+        //we also need to keep track of the 'completed' status for title/desk on notes, but will manage that later
 
         JSON.stringify(notePreservationInfo);
         localStorage.setItem(`${note.dataset.id}`, JSON.stringify(notePreservationInfo));

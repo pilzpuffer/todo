@@ -4,6 +4,8 @@ import deadlineAddImgSource from './assets/img/clock-plus.svg';
 import { newNote } from "./noteCreate.js";
 import { noteState } from "./noteEdit.js";
 
+let initialSetup = false;
+
 function getRandomNumber(max) {
   return Math.floor(Math.random() * max);
 }
@@ -208,6 +210,7 @@ let createTaskForm = function(elementOrder) {
     pinButton.appendChild(pinImage)
     pinButton.setAttribute('type', 'submit');
     noteState.beingEdited ? pinButton.setAttribute('data-tooltip', 'Click to pin back the edited note') : pinButton.setAttribute('data-tooltip', 'Click to pin a new note');
+    let editSubmit = document.querySelector("#taskSubmitEdit");
 
     let clockButton = document.createElement("button");
     noteState.beingEdited ? clockButton.id = 'giveDeadlineEdit' : clockButton.id = 'giveDeadline';
@@ -225,11 +228,15 @@ let createTaskForm = function(elementOrder) {
 
     pinButton.addEventListener('click', function(event) { //will need to manage the submit logic separately for submitted/new notes
         event.preventDefault();
+        //basically, the logic should be this: if a user clicks out of the edited form to click on the new note form, that should immediately submit changes
+        //also, it would be best if the same logic applied for cases when user clicks on an 'edit' option on other notes
 
         if (validateTaskForm()) {
+            if (event.currentTarget === editSubmit) {
+                noteState.beingEdited = false;
+            }
             newNote();
             clockButton.classList.remove('removed');
-            console.log(deadline)
             deadline.classList.add('removed');
             taskForm.reset();
         }
@@ -299,18 +306,36 @@ let createTaskForm = function(elementOrder) {
         })
 
         noteWrapper.appendChild(note); 
-        
     }
 
-    if (elementOrder === 'undefined') {
+    if (noteState.beingEdited === false) noteWrapper.id = 'newNoteForm';
+
+    noteWrapper.addEventListener('click', function(event) {
+        console.log(event.currentTarget)
+        if (event.currentTarget.id !== 'currentlyEdited' && noteState.beingEdited) { 
+            if (validateTaskForm()) {
+                newNote();
+                clockButton.classList.remove('removed');
+                deadline.classList.add('removed');
+                taskForm.reset();
+                noteState.beingEdited = false;
+            }
+        }
+    })
+
+    if (typeof elementOrder === 'undefined') {
         noteHolder.appendChild(noteWrapper); 
     } else {
-        noteHolder.insertBefore(noteWrapper, noteHolder.children[elementOrder]);   
+        noteHolder.insertBefore(noteWrapper, noteHolder.children[elementOrder]); 
+        noteWrapper.id = 'currentlyEdited';
     }
+    //maybe i can add an option for lists?..
 
     let mediumNote = document.querySelector(".newNote.medium");
-    mediumNote.click();
-    //maybe i can add an option for lists?..
+    if (!initialSetup) {
+        initialSetup = true
+        mediumNote.click();
+    };
 }
 
 export { assignRandomUniqueArrayValue, validateTaskForm, createTaskForm, createInput };

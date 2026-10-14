@@ -370,11 +370,11 @@ textarea#projectTitle:focus {
 	outline: none;
 }
 
-#edit img {
+.edit img {
 	pointer-events: none;
 }
 
-.pin, #taskSubmit, #taskSubmitEdit, #giveDeadline, #giveDeadlineEdit, #projectSubmit, #edit {
+.pin, #taskSubmit, #taskSubmitEdit, #giveDeadline, #giveDeadlineEdit, #projectSubmit, .edit {
 	cursor: pointer;
 }
 
@@ -383,7 +383,7 @@ textarea#projectTitle:focus {
 #projectSubmit,
 #giveDeadline,
 #giveDeadlineEdit,
-#edit {
+.edit {
 	position: absolute;
 	width: 2rem;
 	height: 2rem;
@@ -404,7 +404,7 @@ textarea#projectTitle:focus {
 	opacity: 70%
 }
 
-#edit {
+.edit {
 	left: 85%;
 }
 

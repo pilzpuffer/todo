@@ -13,9 +13,10 @@ let elementOrder = function(parentElement, childToFind) {
 }
 
 let editNote = function(editedNote) {
-    noteState['beingEdited'] = true;
+    noteState.beingEdited = true;
 
     let noteID = editedNote.dataset.id;
+    noteState.editedNoteId = noteID;;
     let currentNoteDOM = document.querySelector(`[data-id="${noteID}"]`);
     let currentNote = JSON.parse(localStorage.getItem(noteID));
     if (currentNote.deadline !== undefined) noteState.hasDeadline = true
@@ -24,8 +25,7 @@ let editNote = function(editedNote) {
     let rightOrder = elementOrder(noteHolder, currentNoteDOM);
     currentNoteDOM.remove();
     
-    console.log(rightOrder)
-    createTaskForm(rightOrder); //causes issues with element with id of 6/12/etc for some reason????
+    createTaskForm(rightOrder); 
     let editedNoteAssignPriority = document.querySelector(`.editedNote.${currentNote.priority}`);
     editedNoteAssignPriority.click();
 
