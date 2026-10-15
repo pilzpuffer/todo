@@ -10,36 +10,43 @@ let getKeyByValue = function(object, value) {
 }
 
 let newNote = function(id, title, description, priority, deadline, project) {   
-    let noteForm;
     let noteHolder = document.querySelector("#allTasks");
     let note = document.createElement("li");
     note.classList.add("note");
-    
+    let assignProject; 
     let selectedNote;
+    let titleText;
+    let descriptionText;
+    let deadlineData;
+
+    const noteData = noteState.beingEdited ? new FormData(document.querySelector("#taskInfoEdit")) : new FormData(document.querySelector("#taskInfo"))
+
     if (noteState.beingEdited) {
         selectedNote = document.querySelector("#selectedNoteEdit");
-        noteForm = document.querySelector("#taskInfoEdit"); //notes are not getting this data, for some reason?
         note.dataset.id = noteState.editedNoteId;
+        
+        assignProject = JSON.parse(localStorage.getItem(`${noteState.editedNoteId}`)).project;
+        titleText = noteData.get("titleEdit").length === 0 ? null : noteData.get("titleEdit");;
+        descriptionText = noteData.get("descriptionEdit").length === 0 ? null : noteData.get("descriptionEdit");
+        deadlineData = noteData.get("deadlineEdit").length === 0 ? null : noteData.get("deadlineEdit");
+        console.log(noteData.get("deadlineEdit").length);
+        console.log(deadlineData, typeof deadlineData);
     } else {
         selectedNote = document.querySelector("#selectedNote");
-        noteForm = document.querySelector("#taskInfo");
         note.dataset.id = id === undefined? crypto.randomUUID() : id;
-    }
 
-    const noteData = new FormData(noteForm);
-    console.log(noteState.beingEdited);
-    // console.log(noteData.get("titleEdit")) <-comes up blank when the note is revived, makes sense
+        //to find currently open project and assign task that is being created to it:
+        assignProject = note.classList.add(`${getKeyByValue(allProjects, true)}`); 
+        titleText = noteData.get("title").length === 0 ? null : noteData.get("title");
+        descriptionText = noteData.get("description").length === 0 ? null : noteData.get("description");
+        deadlineData = noteData.get("deadline").length === 0 ? null : noteData.get("deadline");
+        console.log(noteData.get("deadline").length);
+        console.log(deadlineData, typeof deadlineData, noteData.get("deadline").valueOf.length, noteData.get("deadline").length);
+    }
 
     let getSelectedColor = priority === undefined ? selectedNote.classList[1] : priority;    
-
-    //to find currently open project and assign task that is being created to it:
-    if (project === undefined) {
-        note.classList.add(`${getKeyByValue(allProjects, true)}`); 
-    } else {
-        note.classList.add(project); 
-    }
-    
     note.classList.add(getSelectedColor);
+    project === undefined? note.classList.add(assignProject) : note.classList.add(project); 
 
     let pin = document.createElement("div");
     pin.classList.add("pin");
@@ -58,6 +65,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
     pencilButton.classList.add('removed');
     pencilButton.addEventListener('click', function() {
         noteState.beingEdited ? alert('Please finish editing the previous note first.') : editNote(note);
+        console.log('the edit ran')
     });
 
     let noteContent = document.createElement("div");
@@ -66,15 +74,14 @@ let newNote = function(id, title, description, priority, deadline, project) {
     let textHolder = document.createElement("div");
 
     let noteTitle = document.createElement("h2");
-    //let titleText = noteData.get("title") : noteData.get("titleEdit") : title
-    noteTitle.textContent = title === undefined ? noteData.get("title") : title;
+    noteTitle.textContent = title == null ? titleText : title;
     noteTitle.addEventListener('click', function() {
         noteDescription.classList.toggle('done');
         noteTitle.classList.toggle('done');
     })
 
     let noteDescription = document.createElement("p");
-    noteDescription.textContent = description === undefined ? noteData.get("description") : description;
+    noteDescription.textContent = description == null ? descriptionText : description;
     noteDescription.addEventListener('click', function() {
         noteDescription.classList.toggle('done');
         noteTitle.classList.toggle('done');
@@ -84,16 +91,16 @@ let newNote = function(id, title, description, priority, deadline, project) {
     textHolder.appendChild(noteDescription);
     noteContent.appendChild(textHolder);
 
-    if (noteData.get('deadline') || deadline !== undefined) {
+    if ( (deadlineData !== null && deadlineData !== undefined) || (deadline !== null && deadline !== undefined)) {
         let noteDeadline = document.createElement("p");
         noteDeadline.classList.add('noteDeadline');
         let timeDiff;
-        if (deadline !== undefined && deadline.length > 0) {
+        if (deadline !== null && deadline !== undefined) {
             timeDiff = formatDistanceToNow(new Date(deadline), {addSuffix: true});
         } 
         
-        if (noteData.get('deadline')) {
-            timeDiff =  formatDistanceToNow(new Date(noteData.get('deadline')), {addSuffix: true});
+        if (deadlineData !== null && deadlineData !== undefined) {
+            timeDiff =  formatDistanceToNow(new Date(deadlineData), {addSuffix: true});
         }
          
         noteDeadline.textContent = timeDiff;  
@@ -115,22 +122,23 @@ let newNote = function(id, title, description, priority, deadline, project) {
     if (id === undefined) {
         let notePreservationInfo = {
             id: note.dataset.id,
-            title: noteData.get("title"),
-            description: noteData.get("description"),
+            title: titleText,
+            description: descriptionText,
             priority: getSelectedColor,
-            deadline: noteData.get('deadline'),
-            project: getKeyByValue(allProjects, true),
-            timestamp: new Date(Date.now())
+            deadline: deadlineData,
+            project: assignProject,
         }
+
+        notePreservationInfo.timestamp = noteState.beingEdited ? JSON.parse(localStorage.getItem(`${noteState.editedNoteId}`)).timestamp : new Date(Date.now());
 
         //we also need to keep track of the 'completed' status for title/desk on notes, but will manage that later
 
         JSON.stringify(notePreservationInfo);
         localStorage.setItem(`${note.dataset.id}`, JSON.stringify(notePreservationInfo));
+        
     }
 
     noteHolder.appendChild(note);  
-    //need to add a deadline at creation/for editing, as well as an option to edit note text post-adding
 }
 
 export { newNote };

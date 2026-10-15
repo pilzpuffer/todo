@@ -226,19 +226,18 @@ let createTaskForm = function(elementOrder) {
         } 
     }
 
-    pinButton.addEventListener('click', function(event) { //will need to manage the submit logic separately for submitted/new notes
+    pinButton.addEventListener('click', function(event) { 
         event.preventDefault();
-        //basically, the logic should be this: if a user clicks out of the edited form to click on the new note form, that should immediately submit changes
-        //also, it would be best if the same logic applied for cases when user clicks on an 'edit' option on other notes
 
         if (validateTaskForm()) {
-            if (event.currentTarget === editSubmit) {
-                noteState.beingEdited = false;
-            }
             newNote();
             clockButton.classList.remove('removed');
             deadline.classList.add('removed');
             taskForm.reset();
+            if (noteState.beingEdited) {
+                document.querySelector("#currentlyEdited").remove();
+                noteState.beingEdited = false;
+            }
         }
 
         //create separate validation rules for edited notes, set editing state to false on submission
@@ -311,13 +310,13 @@ let createTaskForm = function(elementOrder) {
     if (noteState.beingEdited === false) noteWrapper.id = 'newNoteForm';
 
     noteWrapper.addEventListener('click', function(event) {
-        console.log(event.currentTarget)
         if (event.currentTarget.id !== 'currentlyEdited' && noteState.beingEdited) { 
             if (validateTaskForm()) {
                 newNote();
                 clockButton.classList.remove('removed');
                 deadline.classList.add('removed');
                 taskForm.reset();
+                document.querySelector("#currentlyEdited").remove();
                 noteState.beingEdited = false;
             }
         }

@@ -23,6 +23,7 @@ let editNote = function(editedNote) {
 
     let noteHolder = document.querySelector("#allTasks");
     let rightOrder = elementOrder(noteHolder, currentNoteDOM);
+    noteState.orderOfEdited = rightOrder;
     currentNoteDOM.remove();
     
     createTaskForm(rightOrder); 
@@ -31,9 +32,10 @@ let editNote = function(editedNote) {
 
     document.forms["taskInfoEdit"]["titleEdit"].value = currentNote.title;
     document.forms["taskInfoEdit"]["descriptionEdit"].value = currentNote.description;
-    if (currentNote.deadline !== undefined) {
+    if (currentNote.deadline !== (undefined||null)) {
         document.forms["taskInfoEdit"]["deadlineEdit"].value = currentNote.deadline;
     }
+    //currently, after note is edited and THEN revived, its values come up as 'null' after refreshing the page
     
 }
 

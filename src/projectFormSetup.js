@@ -57,7 +57,6 @@ let createProjectForm = function() {
     labelHolder.classList.add("projectWrapper");
 
     for (let i = 0; i < 5; i++) {
-        console.log('this ran')
         let label = document.createElement("label");
         let labelColor = `${assignRandomUniqueArrayValue(allProjectColors, presentColors)}`
         label.classList.add("newProject", labelColor);
