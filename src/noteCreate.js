@@ -29,8 +29,6 @@ let newNote = function(id, title, description, priority, deadline, project) {
         titleText = noteData.get("titleEdit").length === 0 ? null : noteData.get("titleEdit");;
         descriptionText = noteData.get("descriptionEdit").length === 0 ? null : noteData.get("descriptionEdit");
         deadlineData = noteData.get("deadlineEdit").length === 0 ? null : noteData.get("deadlineEdit");
-        console.log(noteData.get("deadlineEdit").length);
-        console.log(deadlineData, typeof deadlineData);
     } else {
         selectedNote = document.querySelector("#selectedNote");
         note.dataset.id = id === undefined? crypto.randomUUID() : id;
@@ -40,8 +38,6 @@ let newNote = function(id, title, description, priority, deadline, project) {
         titleText = noteData.get("title").length === 0 ? null : noteData.get("title");
         descriptionText = noteData.get("description").length === 0 ? null : noteData.get("description");
         deadlineData = noteData.get("deadline").length === 0 ? null : noteData.get("deadline");
-        console.log(noteData.get("deadline").length);
-        console.log(deadlineData, typeof deadlineData, noteData.get("deadline").valueOf.length, noteData.get("deadline").length);
     }
 
     let getSelectedColor = priority === undefined ? selectedNote.classList[1] : priority;    
@@ -65,7 +61,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
     pencilButton.classList.add('removed');
     pencilButton.addEventListener('click', function() {
         noteState.beingEdited ? alert('Please finish editing the previous note first.') : editNote(note);
-        console.log('the edit ran')
+        //adjust this, and enter the editing state for a new note + submit the old one
     });
 
     let noteContent = document.createElement("div");
@@ -138,7 +134,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
         
     }
 
-    noteHolder.appendChild(note);  
+    noteState.beingEdited ? noteHolder.insertBefore(note, noteHolder.children[noteState.orderOfEdited]) : noteHolder.appendChild(note);  
 }
 
 export { newNote };
