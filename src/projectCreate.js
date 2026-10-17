@@ -29,6 +29,7 @@ let newProject = function(id, priority) {
             id: projectTitle,
             priority: projectPriority,
             type: 'project',
+            timestamp: new Date(Date.now()),
             status,
         }
 

@@ -283,7 +283,21 @@ let createTaskForm = function(elementOrder) {
                 event.preventDefault()
             }  else if (childStatus.limitReached && event.key === 'Backspace') {
                 childStatus.limitReached = false
-            }          
+            }   
+            
+            if (event.ctrlKey && event.code === 'Enter') {
+                event.preventDefault()
+                if (validateTaskForm()) {
+                    newNote();
+                    clockButton.classList.remove('removed');
+                    deadline.classList.add('removed');
+                    taskForm.reset();
+                    if (noteState.beingEdited) {
+                        document.querySelector("#currentlyEdited").remove();
+                        noteState.beingEdited = false;
+                    }
+                } 
+            } 
         })
 
         note.addEventListener('input', function(event) {
