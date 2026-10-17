@@ -85,8 +85,19 @@ let createProjectForm = function() {
 
     createInput('textarea', 'projectTitle', 'projectTitle', 'Add a title', projectForm)
 
+    projectForm.addEventListener('keydown', function(event) {
+        if (event.code === 'Enter') {
+            event.preventDefault()
+            if (validateProjectForm()) {
+                newProject();
+                projectForm.reset();
+            }
+        }
+    })
+
     projectHolder.appendChild(newInput);
     projectHolder.appendChild(labelHolder);
+
     let mediumLabel = document.querySelector(".newProject.medium");
     mediumLabel.click();
     //check why newly created projects don't have a dogtail, even though they should have one by css rules
