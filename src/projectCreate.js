@@ -30,7 +30,7 @@ let newProject = function(id, priority) {
             priority: projectPriority,
             type: 'project',
             timestamp: new Date(Date.now()),
-            status,
+            status: false
         }
 
         localStorage.setItem(`${projectTitle}`, JSON.stringify(projectPreservationInfo));

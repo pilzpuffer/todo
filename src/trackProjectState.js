@@ -11,10 +11,18 @@ let getCurrentProject = function(event) {
             allProjects[activeProject] = true;
 
             Object.keys(allProjects).forEach(key => {
+                let currentKey = JSON.parse(localStorage.getItem(key))
                 if (key !== activeProject) {
                     allProjects[key] = false;
-                }   
+                    currentKey.status = false;
+                } else {
+                    currentKey.status = true;
+                } 
+                localStorage.setItem(`${key}`, JSON.stringify(currentKey));
+                
             });
+
+            
 
             let allNotes = document.querySelectorAll(".note");
             allNotes.forEach((note) => {
@@ -28,17 +36,6 @@ let getCurrentProject = function(event) {
     }
 }
 
-console.log(allProjects);
-
-// let projectPreservationData = {
-//             name: activeProject,
-//             status: , 
-//             type: 'project'
-//         }
-//         JSON.stringify(notePreservationInfo);
-//         localStorage.setItem(`${note.dataset.id}`, JSON.stringify(notePreservationInfo));
-
-//store projects in localstorage as well
 projectHolder.addEventListener("click", getCurrentProject)
 
 export { allProjects };

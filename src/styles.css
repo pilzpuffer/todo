@@ -495,7 +495,7 @@ fieldset {
 	label {
 		position: relative;
 		display: block;
-		width: 6.5rem;
+		width: 6.7rem;
 		height: 2rem;
 		background: var(--bg-color);
 		margin: var(--gap) 0;
@@ -533,12 +533,12 @@ fieldset {
 			border-bottom: 5px solid transparent;
 			filter: brightness(62%);
 			transition-property: border-right filter;
-			transition-duration: 0.2s;
+			transition-duration: 0.1s;
 			transition-timing-function: cubic-bezier(1, 1, 0.5, 1.3333);
 		}
 
 		&:hover::after {
-			border-right: 11px solid transparent;
+			border-right: 9px solid transparent;
 		}
 	}
 
@@ -548,7 +548,7 @@ fieldset {
 		filter: brightness(100%);
 
 		&::after {
-			border-right: 20px solid transparent;
+			border-right: 21px solid transparent;
 			filter: brightness(50%);
 		}
 	}
