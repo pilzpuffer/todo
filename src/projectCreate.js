@@ -38,6 +38,8 @@ let newProject = function(id, priority, status) {
         }
 
         localStorage.setItem(`${projectTitle}`, JSON.stringify(projectPreservationInfo));
+        allProjects[`${projectTitle}`] = projectPreservationInfo.status;
+        console.log(allProjects);
     } else {
         if (status === true) {
             newInput.click()

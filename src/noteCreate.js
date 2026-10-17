@@ -25,8 +25,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
         selectedNote = document.querySelector("#selectedNoteEdit");
         note.dataset.id = noteState.editedNoteId;
         
-        assignProject = JSON.parse(localStorage.getItem(`${noteState.editedNoteId}`)).project;
-        console.log(assignProject)
+        assignProject = JSON.parse(localStorage.getItem(`${note.dataset.id}`)).project;
         titleText = noteData.get("titleEdit").length === 0 ? null : noteData.get("titleEdit");;
         descriptionText = noteData.get("descriptionEdit").length === 0 ? null : noteData.get("descriptionEdit");
         deadlineData = noteData.get("deadlineEdit").length === 0 ? null : noteData.get("deadlineEdit");
@@ -35,8 +34,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
         note.dataset.id = id === undefined? crypto.randomUUID() : id;
 
         //to find currently open project and assign task that is being created to it:
-        assignProject = note.classList.add(`${getKeyByValue(allProjects, true)}`); 
-        console.log(assignProject)
+        assignProject = getKeyByValue(allProjects, true); 
         titleText = noteData.get("title").length === 0 ? null : noteData.get("title");
         descriptionText = noteData.get("description").length === 0 ? null : noteData.get("description");
         deadlineData = noteData.get("deadline").length === 0 ? null : noteData.get("deadline");
@@ -44,7 +42,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
 
     let getSelectedColor = priority === undefined ? selectedNote.classList[1] : priority;    
     note.classList.add(getSelectedColor);
-    project === undefined? note.classList.add(assignProject) : note.classList.add(project); 
+    project === undefined? note.classList.add(assignProject) : note.classList.add(project);
 
     let pin = document.createElement("div");
     pin.classList.add("pin");
@@ -128,6 +126,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
             project: assignProject,
             type: 'note'
         }
+        console.log(assignProject);
 
         notePreservationInfo.timestamp = noteState.beingEdited ? JSON.parse(localStorage.getItem(`${noteState.editedNoteId}`)).timestamp : new Date(Date.now());
 

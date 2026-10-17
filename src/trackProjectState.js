@@ -34,8 +34,6 @@ let getCurrentProject = function(event) {
             })
         }  
     }
-
-    console.log(allProjects)
 }
 
 projectHolder.addEventListener("click", getCurrentProject)
