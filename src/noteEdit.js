@@ -35,7 +35,6 @@ let editNote = function(editedNote) {
     if (currentNote.deadline !== (undefined||null)) {
         document.forms["taskInfoEdit"]["deadlineEdit"].value = currentNote.deadline;
     }
-    //currently, after note is edited and THEN revived, its values come up as 'null' after refreshing the page
     
 }
 

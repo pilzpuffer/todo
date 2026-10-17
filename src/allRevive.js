@@ -1,28 +1,34 @@
 import { newNote } from './noteCreate.js'
 import { compareAsc } from "date-fns";
 import { newProject } from './projectCreate.js';
-import { allProjects } from './trackProjectState.js';
+import { getKeyByValue } from "./noteCreate.js";
 
 let revive = function() {
-    let allNotesRevive = [];
-    let allProjectsRevive = [];
+    let allNotes = [];
+    let allProjects = [];
+    let activeProject;
     
     for (let i = 0; i < localStorage.length; i++) {
         let key = localStorage.key( i );
         let item = JSON.parse( localStorage.getItem( key ) );
         if (item.type === 'note') {
-            allNotesRevive.push(item)
+            allNotes.push(item)
         } else if (item.type === 'project') {
-            allProjectsRevive.push(item)
+            allProjects.push(item)
         }
     }
 
-    allNotesRevive.sort((a, b) => compareAsc(a.timestamp, b.timestamp)); //sorting in ascending order
-    allProjectsRevive.sort((a, b) => compareAsc(a.timestamp, b.timestamp)); 
+    allNotes.sort((a, b) => compareAsc(a.timestamp, b.timestamp)); //sorting in ascending order
+    allProjects.sort((a, b) => compareAsc(a.timestamp, b.timestamp)); 
     
-    allProjectsRevive.forEach((project) => newProject(project.id, project.priority, project.status));
-    allProjectsRevive.forEach((project) => allProjects[project.id] = project.status);
-    allNotesRevive.forEach((note) => newNote(note.id, note.title, note.description, note.priority, note.deadline, note.project));
+    allProjects.forEach((project) => {
+        newProject(project.id, project.priority, project.status)
+        if (project.status === true) {
+            activeProject = project.id;
+        }
+    });
+    allNotes.forEach((note) => newNote(note.id, note.title, note.description, note.priority, note.deadline, note.project));
+    document.querySelector(`#${activeProject}`).click();
 }
 
 export { revive }

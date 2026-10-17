@@ -79,9 +79,10 @@ let newNote = function(id, title, description, priority, deadline, project) {
 
     let noteDescription = document.createElement("p");
     noteDescription.textContent = description == null ? descriptionText : description;
-    noteDescription.addEventListener('click', function() {
+    noteDescription.addEventListener('click', function(event) {
         noteDescription.classList.toggle('done');
         noteTitle.classList.toggle('done');
+        console.log(event.currentTarget);
     })
 
     textHolder.appendChild(noteTitle);
@@ -124,13 +125,13 @@ let newNote = function(id, title, description, priority, deadline, project) {
             priority: getSelectedColor,
             deadline: deadlineData,
             project: assignProject,
+            titleComplete: false,
+            descriptionComplete: false,
             type: 'note'
         }
         console.log(assignProject);
 
         notePreservationInfo.timestamp = noteState.beingEdited ? JSON.parse(localStorage.getItem(`${noteState.editedNoteId}`)).timestamp : new Date(Date.now());
-
-        //we also need to keep track of the 'completed' status for title/desk on notes, but will manage that later
         localStorage.setItem(`${note.dataset.id}`, JSON.stringify(notePreservationInfo));
         
     }

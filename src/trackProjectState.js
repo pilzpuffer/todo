@@ -38,4 +38,4 @@ let getCurrentProject = function(event) {
 
 projectHolder.addEventListener("click", getCurrentProject)
 
-export { allProjects };
+export { allProjects, getCurrentProject };
