@@ -9,7 +9,7 @@ let getKeyByValue = function(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }
 
-let newNote = function(id, title, description, priority, deadline, project) {   
+let newNote = function(id, title, description, priority, deadline, project, taskComplete) {   
     let noteHolder = document.querySelector("#allTasks");
     let note = document.createElement("li");
     note.classList.add("note");
@@ -18,6 +18,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
     let titleText;
     let descriptionText;
     let deadlineData;
+    let noteStatus;
 
     const noteData = noteState.beingEdited ? new FormData(document.querySelector("#taskInfoEdit")) : new FormData(document.querySelector("#taskInfo"))
 
@@ -29,6 +30,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
         titleText = noteData.get("titleEdit").length === 0 ? null : noteData.get("titleEdit");;
         descriptionText = noteData.get("descriptionEdit").length === 0 ? null : noteData.get("descriptionEdit");
         deadlineData = noteData.get("deadlineEdit").length === 0 ? null : noteData.get("deadlineEdit");
+        noteStatus = false;
     } else {
         selectedNote = document.querySelector("#selectedNote");
         note.dataset.id = id === undefined? crypto.randomUUID() : id;
@@ -38,6 +40,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
         titleText = noteData.get("title").length === 0 ? null : noteData.get("title");
         descriptionText = noteData.get("description").length === 0 ? null : noteData.get("description");
         deadlineData = noteData.get("deadline").length === 0 ? null : noteData.get("deadline");
+        noteStatus = status === undefined? false : status;
     }
 
     let getSelectedColor = priority === undefined ? selectedNote.classList[1] : priority;    
@@ -70,11 +73,19 @@ let newNote = function(id, title, description, priority, deadline, project) {
 
     let textHolder = document.createElement("div");
 
+    let updateNoteStatus = function(event) {
+        let textNoteId = event.currentTarget.parentNode.parentNode.parentNode.dataset.id;
+        let task = JSON.parse(localStorage.getItem(`${textNoteId}`));
+        task.taskComplete = !task.taskComplete;
+        localStorage.setItem(`${textNoteId}`, JSON.stringify(task));
+    }
+
     let noteTitle = document.createElement("h2");
     noteTitle.textContent = title == null ? titleText : title;
-    noteTitle.addEventListener('click', function() {
+    noteTitle.addEventListener('click', function(event) {
         noteDescription.classList.toggle('done');
         noteTitle.classList.toggle('done');
+        updateNoteStatus(event);
     })
 
     let noteDescription = document.createElement("p");
@@ -82,7 +93,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
     noteDescription.addEventListener('click', function(event) {
         noteDescription.classList.toggle('done');
         noteTitle.classList.toggle('done');
-        console.log(event.currentTarget);
+        updateNoteStatus(event);
     })
 
     textHolder.appendChild(noteTitle);
@@ -125,8 +136,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
             priority: getSelectedColor,
             deadline: deadlineData,
             project: assignProject,
-            titleComplete: false,
-            descriptionComplete: false,
+            taskComplete: noteStatus,
             type: 'note'
         }
         console.log(assignProject);
@@ -137,6 +147,9 @@ let newNote = function(id, title, description, priority, deadline, project) {
     }
 
     noteState.beingEdited ? noteHolder.insertBefore(note, noteHolder.children[noteState.orderOfEdited]) : noteHolder.appendChild(note);  
+    if (taskComplete === true) {
+       noteDescription.click() 
+    }
 }
 
 export { newNote };

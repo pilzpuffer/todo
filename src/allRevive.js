@@ -1,7 +1,6 @@
 import { newNote } from './noteCreate.js'
 import { compareAsc } from "date-fns";
 import { newProject } from './projectCreate.js';
-import { getKeyByValue } from "./noteCreate.js";
 
 let revive = function() {
     let allNotes = [];
@@ -27,7 +26,8 @@ let revive = function() {
             activeProject = project.id;
         }
     });
-    allNotes.forEach((note) => newNote(note.id, note.title, note.description, note.priority, note.deadline, note.project));
+
+    allNotes.forEach((note) => newNote(note.id, note.title, note.description, note.priority, note.deadline, note.project, note.taskComplete));
     document.querySelector(`#${activeProject}`).click();
 }
 
