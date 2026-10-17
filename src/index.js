@@ -1,6 +1,6 @@
 import "./styles.css";
 
-import { revive } from "./noteRevive.js";
+import { revive } from "./allRevive.js";
 
 import { createTaskForm } from "./taskFormSetup.js";
 import { createProjectForm } from "./projectFormSetup.js";
@@ -18,12 +18,13 @@ let createProjectManually = function(name) {
 window.addEventListener("load", function() {
     createTaskForm();
     createProjectForm();
-    createProjectManually('main');
-    let mainProject = document.querySelector('label[for="main"]');
-    mainProject.click();
 
     if (localStorage.length > 0) {
         revive();
+    } else {
+        createProjectManually('main');
+        let mainProject = document.querySelector('label[for="main"]');
+        mainProject.click();
     }
     
 })

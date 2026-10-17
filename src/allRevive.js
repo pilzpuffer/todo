@@ -1,19 +1,26 @@
 import { newNote } from './noteCreate.js'
 import { compareAsc } from "date-fns";
+import { newProject } from './projectCreate.js';
 
-//this seems to run in the correct order, but for some reason, newest entries get added first, not last
-//checked - entries are not ordered like in an array, so will need a different way to get them
 let revive = function() {
-    let allNotes = []
+    let allNotes = [];
+    let allProjects = [];
     
     for (let i = 0; i < localStorage.length; i++) {
         let key = localStorage.key( i );
         let item = JSON.parse( localStorage.getItem( key ) );
-        allNotes.push(item)
+        if (item.type === 'note') {
+            allNotes.push(item)
+        } else if (item.type === 'project') {
+            allProjects.push(item)
+        }
     }
 
     allNotes.sort((a, b) => compareAsc(a.timestamp, b.timestamp)); //sorting in ascending order
+    allProjects.sort((a, b) => compareAsc(a.timestamp, b.timestamp)); 
+    
     allNotes.forEach((note) => newNote(note.id, note.title, note.description, note.priority, note.deadline, note.project));
+    allProjects.forEach((project) => newProject(project.id, project.priority, project.status));
 }
 
 export { revive }

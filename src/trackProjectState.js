@@ -3,8 +3,9 @@ let projectHolder = document.querySelector("#allProjects");
 let allProjects = {  }
 
 let getCurrentProject = function(event) {
-    if (event.target.id !== 'projectSubmit' && !event.target.classList.contains("newProject") && event.target.id.length > 0) {
+    if (event.target.id !== 'projectSubmit' && event.target.id !== 'newProject' && !event.target.classList.contains("newProject") && event.target.id.length > 0) {
         let activeProject = event.target.id;
+        console.log(activeProject)
 
         if (activeProject !== 'newProject') {
             allProjects[activeProject] = true;
@@ -27,6 +28,17 @@ let getCurrentProject = function(event) {
     }
 }
 
+console.log(allProjects);
+
+// let projectPreservationData = {
+//             name: activeProject,
+//             status: , 
+//             type: 'project'
+//         }
+//         JSON.stringify(notePreservationInfo);
+//         localStorage.setItem(`${note.dataset.id}`, JSON.stringify(notePreservationInfo));
+
+//store projects in localstorage as well
 projectHolder.addEventListener("click", getCurrentProject)
 
 export { allProjects };

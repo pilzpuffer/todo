@@ -62,6 +62,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
     pencilButton.addEventListener('click', function() {
         noteState.beingEdited ? alert('Please finish editing the previous note first.') : editNote(note);
         //adjust this, and enter the editing state for a new note + submit the old one
+        //if there's any text on the new note form, delete it when the edit form is being accessed
     });
 
     let noteContent = document.createElement("div");
@@ -123,13 +124,12 @@ let newNote = function(id, title, description, priority, deadline, project) {
             priority: getSelectedColor,
             deadline: deadlineData,
             project: assignProject,
+            type: 'note'
         }
 
         notePreservationInfo.timestamp = noteState.beingEdited ? JSON.parse(localStorage.getItem(`${noteState.editedNoteId}`)).timestamp : new Date(Date.now());
 
         //we also need to keep track of the 'completed' status for title/desk on notes, but will manage that later
-
-        JSON.stringify(notePreservationInfo);
         localStorage.setItem(`${note.dataset.id}`, JSON.stringify(notePreservationInfo));
         
     }
