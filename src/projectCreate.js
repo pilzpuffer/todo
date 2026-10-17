@@ -1,4 +1,6 @@
-let newProject = function(id, priority) {
+import { allProjects } from "./trackProjectState.js";
+
+let newProject = function(id, priority, status) {
     let projectForm = document.querySelector("#projectInfo");
     const projectData = new FormData(projectForm);
 
@@ -24,17 +26,22 @@ let newProject = function(id, priority) {
     projectHolder.appendChild(newInput);
     projectHolder.appendChild(newLabel);
 
+    let currentStatus = status === undefined? false : status;
+
     if (id === undefined) {
         let projectPreservationInfo = {
             id: projectTitle,
             priority: projectPriority,
             type: 'project',
             timestamp: new Date(Date.now()),
-            status: false
+            status: currentStatus
         }
 
         localStorage.setItem(`${projectTitle}`, JSON.stringify(projectPreservationInfo));
-        
+    } else {
+        if (status === true) {
+            newInput.click()
+        }
     }
 }
 

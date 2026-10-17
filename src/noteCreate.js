@@ -26,6 +26,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
         note.dataset.id = noteState.editedNoteId;
         
         assignProject = JSON.parse(localStorage.getItem(`${noteState.editedNoteId}`)).project;
+        console.log(assignProject)
         titleText = noteData.get("titleEdit").length === 0 ? null : noteData.get("titleEdit");;
         descriptionText = noteData.get("descriptionEdit").length === 0 ? null : noteData.get("descriptionEdit");
         deadlineData = noteData.get("deadlineEdit").length === 0 ? null : noteData.get("deadlineEdit");
@@ -35,6 +36,7 @@ let newNote = function(id, title, description, priority, deadline, project) {
 
         //to find currently open project and assign task that is being created to it:
         assignProject = note.classList.add(`${getKeyByValue(allProjects, true)}`); 
+        console.log(assignProject)
         titleText = noteData.get("title").length === 0 ? null : noteData.get("title");
         descriptionText = noteData.get("description").length === 0 ? null : noteData.get("description");
         deadlineData = noteData.get("deadline").length === 0 ? null : noteData.get("deadline");

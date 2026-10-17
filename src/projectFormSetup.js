@@ -98,7 +98,6 @@ let createProjectForm = function() {
 
     let mediumLabel = document.querySelector(".newProject.medium");
     mediumLabel.click();
-    //check why newly created projects don't have a dogtail, even though they should have one by css rules
     //adjust behavior to leave the currently selected project still selected, even when new projects are added
 
 }

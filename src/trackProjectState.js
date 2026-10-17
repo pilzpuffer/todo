@@ -3,9 +3,8 @@ let projectHolder = document.querySelector("#allProjects");
 let allProjects = {  }
 
 let getCurrentProject = function(event) {
-    if (event.target.id !== 'projectSubmit' && event.target.id !== 'newProject' && !event.target.classList.contains("newProject") && event.target.id.length > 0) {
+    if (event.target.tagName === 'INPUT' && (event.target.id !== 'projectSubmit' && event.target.id !== 'newProject' && !event.target.classList.contains("newProject") && event.target.id.length > 0)) {
         let activeProject = event.target.id;
-        console.log(activeProject)
 
         if (activeProject !== 'newProject') {
             allProjects[activeProject] = true;
@@ -15,6 +14,7 @@ let getCurrentProject = function(event) {
                 if (key !== activeProject) {
                     allProjects[key] = false;
                     currentKey.status = false;
+                    
                 } else {
                     currentKey.status = true;
                 } 
@@ -34,6 +34,8 @@ let getCurrentProject = function(event) {
             })
         }  
     }
+
+    console.log(allProjects)
 }
 
 projectHolder.addEventListener("click", getCurrentProject)
