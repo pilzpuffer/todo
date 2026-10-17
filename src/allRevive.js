@@ -19,8 +19,9 @@ let revive = function() {
     allNotes.sort((a, b) => compareAsc(a.timestamp, b.timestamp)); //sorting in ascending order
     allProjects.sort((a, b) => compareAsc(a.timestamp, b.timestamp)); 
     
-    allNotes.forEach((note) => newNote(note.id, note.title, note.description, note.priority, note.deadline, note.project));
     allProjects.forEach((project) => newProject(project.id, project.priority, project.status));
+    allNotes.forEach((note) => newNote(note.id, note.title, note.description, note.priority, note.deadline, note.project));
+    
 }
 
 export { revive }
