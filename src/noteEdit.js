@@ -13,6 +13,8 @@ let elementOrder = function(parentElement, childToFind) {
 }
 
 let editNote = function(editedNote) {
+    let newNoteForm = document.querySelector("#taskInfo");
+    newNoteForm.reset();
     noteState.beingEdited = true;
 
     let noteID = editedNote.dataset.id;
