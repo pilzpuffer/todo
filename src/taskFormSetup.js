@@ -221,8 +221,6 @@ let createTaskForm = function(elementOrder) {
     if (noteState.beingEdited) {
         if (noteState.hasDeadline) {
             clockButton.classList.add('removed');
-            // console.log(deadlineEdit)
-            // deadline.classlist.remove('removed');
         } 
     }
 
@@ -239,9 +237,6 @@ let createTaskForm = function(elementOrder) {
                 noteState.beingEdited = false;
             }
         }
-
-        //create separate validation rules for edited notes, set editing state to false on submission
-        // noteState['beingEdited'] = false;
     })
 
     clockButton.addEventListener('click', function(event) { //same here, time should be managed
@@ -279,7 +274,7 @@ let createTaskForm = function(elementOrder) {
         let allowedKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Backspace'];
 
         note.addEventListener("keydown", function(event) {
-            if (childStatus.limitReached && ((!event.ctrlKey && event.code !== "KeyA") && (!allowedKeys.includes(event.code)))) {
+            if (childStatus.limitReached && (!(event.ctrlKey && event.code === "KeyA") && (!allowedKeys.includes(event.code)))) {
                 event.preventDefault()
             }  else if (childStatus.limitReached && event.key === 'Backspace') {
                 childStatus.limitReached = false
@@ -324,6 +319,7 @@ let createTaskForm = function(elementOrder) {
     if (noteState.beingEdited === false) noteWrapper.id = 'newNoteForm';
 
     noteWrapper.addEventListener('click', function(event) {
+        console.log(event.target.parentNode)
         if (event.currentTarget.id !== 'currentlyEdited' && noteState.beingEdited) { 
             if (validateTaskForm()) {
                 newNote();
@@ -342,7 +338,6 @@ let createTaskForm = function(elementOrder) {
         noteHolder.insertBefore(noteWrapper, noteHolder.children[elementOrder]); 
         noteWrapper.id = 'currentlyEdited';
     }
-    //maybe i can add an option for lists?..
 
     let mediumNote = document.querySelector(".newNote.medium");
     if (!initialSetup) {

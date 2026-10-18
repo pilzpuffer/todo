@@ -98,8 +98,6 @@ let createProjectForm = function() {
 
     let mediumLabel = document.querySelector(".newProject.medium");
     mediumLabel.click();
-    //adjust behavior to leave the currently selected project still selected, even when new projects are added
-
 }
 
 export { createProjectForm }

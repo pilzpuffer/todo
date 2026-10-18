@@ -64,7 +64,6 @@ let newNote = function(id, title, description, priority, deadline, project, task
     pencilButton.classList.add('removed');
     pencilButton.addEventListener('click', function() {
         noteState.beingEdited ? alert('Please finish editing the previous note first.') : editNote(note);
-        //adjust this, and enter the editing state for a new note + submit the old one
     });
 
     let noteContent = document.createElement("div");
