@@ -40,7 +40,7 @@ let newNote = function(id, title, description, priority, deadline, project, task
         titleText = noteData.get("title").length === 0 ? null : noteData.get("title");
         descriptionText = noteData.get("description").length === 0 ? null : noteData.get("description");
         deadlineData = noteData.get("deadline").length === 0 ? null : noteData.get("deadline");
-        noteStatus = status === undefined? false : status;
+        noteStatus = taskComplete === undefined? false : taskComplete;
     }
 
     let getSelectedColor = priority === undefined ? selectedNote.classList[1] : priority;    
@@ -139,7 +139,6 @@ let newNote = function(id, title, description, priority, deadline, project, task
             taskComplete: noteStatus,
             type: 'note'
         }
-        console.log(assignProject);
 
         notePreservationInfo.timestamp = noteState.beingEdited ? JSON.parse(localStorage.getItem(`${noteState.editedNoteId}`)).timestamp : new Date(Date.now());
         localStorage.setItem(`${note.dataset.id}`, JSON.stringify(notePreservationInfo));
@@ -148,7 +147,8 @@ let newNote = function(id, title, description, priority, deadline, project, task
 
     noteState.beingEdited ? noteHolder.insertBefore(note, noteHolder.children[noteState.orderOfEdited]) : noteHolder.appendChild(note);  
     if (taskComplete === true) {
-       noteDescription.click() 
+        noteDescription.classList.toggle('done');
+        noteTitle.classList.toggle('done');
     }
 }
 
