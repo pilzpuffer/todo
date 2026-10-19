@@ -104,7 +104,7 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
     }
 
     let manageTextSectionVisibility = function() {
-        //adjust visibility rules for this scenario: desc goes over limit, we delete some text for title to reappear - currently, we can only type 1 symbol, and then it's considered to be 'over limit'
+        //maybe adjust visibility rules for this scenario: desc goes over limit, we delete some text for title to reappear - currently, we can only type 1 symbol, and then it's considered to be 'over limit'
         if (!childStatus.second && managedChildren.first.lineAmount() < lineLimit1) {
             if (childStatus.limitReached) {
                 childStatus.limitReached = false
