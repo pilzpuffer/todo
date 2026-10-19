@@ -105,6 +105,7 @@ let limitLines = function(event, lineLimit1, lineLimit2, limitingContainer, limi
 
     let manageTextSectionVisibility = function() {
         //maybe adjust visibility rules for this scenario: desc goes over limit, we delete some text for title to reappear - currently, we can only type 1 symbol, and then it's considered to be 'over limit'
+
         if (!childStatus.second && managedChildren.first.lineAmount() < lineLimit1) {
             if (childStatus.limitReached) {
                 childStatus.limitReached = false
@@ -224,19 +225,33 @@ let createTaskForm = function(elementOrder) {
         } 
     }
 
-    pinButton.addEventListener('click', function(event) { 
-        event.preventDefault();
-
+    let noteSubmission = function(event) {
+        event.preventDefault()
+        
+        console.log(taskForm.childNodes)
         if (validateTaskForm()) {
             newNote();
             clockButton.classList.remove('removed');
             deadline.classList.add('removed');
             taskForm.reset();
+            childStatus.limitReached = false;
+            childStatus.first = true;
+            childStatus.second = true;
+            taskForm.childNodes.forEach((child) => {
+                if (child.type !== 'datetime-local') {
+                    child.classList.remove("removed");
+                }
+            })
+
             if (noteState.beingEdited) {
                 document.querySelector("#currentlyEdited").remove();
                 noteState.beingEdited = false;
             }
         }
+    }
+
+    pinButton.addEventListener('click', function(event) { 
+        noteSubmission(event)
     })
 
     clockButton.addEventListener('click', function(event) { //same here, time should be managed
@@ -281,17 +296,7 @@ let createTaskForm = function(elementOrder) {
             }   
             
             if (event.ctrlKey && event.code === 'Enter') {
-                event.preventDefault()
-                if (validateTaskForm()) {
-                    newNote();
-                    clockButton.classList.remove('removed');
-                    deadline.classList.add('removed');
-                    taskForm.reset();
-                    if (noteState.beingEdited) {
-                        document.querySelector("#currentlyEdited").remove();
-                        noteState.beingEdited = false;
-                    }
-                } 
+                noteSubmission(event)
             } 
         })
 
